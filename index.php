@@ -27,9 +27,9 @@
         <link rel="stylesheet" href="css/style.css" type="text/css"/>
         
         <script type="text/javascript" src="js/timeChecks.js">
- 
-            
-
+        </script>
+        
+        <script type="text/javascript" src="js/addEvent.js">
         </script>
         
     </head>
@@ -57,26 +57,26 @@
                             
                         </td>
                         <td>
-                            <div id="data1"></div>
+                            <div id="date1" class="date"></div>
                         </td>    
                         <td>
-                           <div id="data2"></div>
+                           <div id="date2" class="date"></div>
                         </td>
                       
                         <td>
-                            <div  id="data3"></div>
+                            <div  id="date3" class="date"></div>
                         </td>
                         <td>
-                            <div id="data4"></div>
+                            <div id="date4" class="date"></div>
                         </td>
                         <td >
-                            <div id="data5"></div>
+                            <div id="date5" class="date"></div>
                         </td>
                         <td>
-                            <div id="data6"></div>
+                            <div id="date6" class="date"></div>
                         </td>
                         <td>
-                            <div id="data7"></div>
+                            <div id="date7" class="date"></div>
                         </td>
                     </tr>
                     <tr id="cols" class="table-active">
@@ -118,123 +118,31 @@
                                      <td>45</td>
                                  </tr>
                              </table>
-                           
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                           <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                            <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                          
+                        </td>
+                     
+                        <td rowspan="13">
+                            <table width="100%" border="5">
+                               
+                              <?php  
+                              // '.$i.'"'.'
+                              for($i=0; $i<52; $i++){
+                               echo' <tr >
+                                    <td  class="cells" id="cell"'.$i.'"'.' onclick="add()">
+                                        napis1</td>
+                                </tr> ';
+                               echo '<script> function add(){
+
+                      document.getElementById("cell'.$i.'").innerHTML="kliknięte";
+}                           </script>';
+                               
+                              }
+                              
+                            ?>
+                            </table>
                         </td>
                         
                     </tr>
+                    <tr>
                         <td>
                           <div id="hour2" class="hour"></div>
                           
@@ -253,121 +161,11 @@
                                  </tr>
                              </table>
                          </td>
+                         </tr>
+                         <tr>
                          <td>
-                          <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                         <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                            <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                           <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
                          
-                    <tr>
-                      <td>
+                             
                           <div id="hour3" class="hour"></div>
                           
                             <table border="5" width="55%" height="100%">
@@ -385,123 +183,12 @@
                                  </tr>
                              </table>
                          </td>
-                         <td>
-                          <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                         <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                            <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                           <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
+                             </tr>
+                      
                          
-                        
-                    </tr>
-                    
-                    <td>
+                             
+                             <tr>
+                          <td>
                           <div id="hour4" class="hour"></div>
                           
                             <table border="5" width="55%" height="100%">
@@ -519,121 +206,9 @@
                                  </tr>
                              </table>
                          </td>
-                         <td>
-                          <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                         <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                            <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                           <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         
-                    <tr>
-                      <td>
+                         </tr>
+                           <tr>
+                        <td>
                           <div id="hour5" class="hour"></div>
                           
                             <table border="5" width="55%" height="100%">
@@ -651,122 +226,9 @@
                                  </tr>
                              </table>
                          </td>
-                         <td>
-                          <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                         <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                            <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                           <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         
-                        
-                    </tr>
-                      <td>
+                         </tr>
+                           <tr>
+                        <td>
                           <div id="hour6" class="hour"></div>
                           
                             <table border="5" width="55%" height="100%">
@@ -784,119 +246,7 @@
                                  </tr>
                              </table>
                          </td>
-                         <td>
-                          <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                         <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                            <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                           <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         
+                         </tr>
                     <tr>
                        <td>
                           <div id="hour7" class="hour"></div>
@@ -915,122 +265,11 @@
                                      <td>45</td>
                                  </tr>
                              </table>
-                         </td>
-                         <td>
-                          <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                         <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                            <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                           <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
+                         
+                         
                          </td>
                          
-                        
-                    </tr>
+                           <tr>
                         <td>
                           <div id="hour8" class="hour"></div>
                           
@@ -1049,120 +288,9 @@
                                  </tr>
                              </table>
                          </td>
-                         <td>
-                          <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                         <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                            <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                           <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         
-                    <tr>
+                         </tr>
+                    </tr>
+                      <tr>
                         <td>
                           <div id="hour9" class="hour"></div>
                           
@@ -1181,121 +309,8 @@
                                  </tr>
                              </table>
                          </td>
-                         <td>
-                          <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                         <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                            <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                           <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         
-                        
-                    </tr>
+                         </tr>
+                    <tr>
                         <td>
                           <div id="hour10" class="hour"></div>
                           
@@ -1314,121 +329,9 @@
                                  </tr>
                              </table>
                          </td>
-                         <td>
-                          <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                         <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                            <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                           <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         
-                    <tr>
-                      <td>
+                     </tr>
+                       <tr>
+                        <td>
                           <div id="hour11" class="hour"></div>
                           
                             <table border="5" width="55%" height="100%">
@@ -1446,121 +349,8 @@
                                  </tr>
                              </table>
                          </td>
-                         <td>
-                          <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                         <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                            <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                           <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         
-                        
-                    </tr>
+                         </tr>
+                     <tr>
                         <td>
                           <div id="hour12" class="hour"></div>
                           
@@ -1579,121 +369,8 @@
                                  </tr>
                              </table>
                          </td>
-                         <td>
-                          <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                         <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                            <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                           <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         
-                    
-                    <tr>
+                         </tr>
+                         <tr>
                         <td>
                           <div id="hour13" class="hour"></div>
                           
@@ -1712,118 +389,7 @@
                                  </tr>
                              </table>
                          </td>
-                         <td>
-                          <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                         <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                            <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                             <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
-                         <td>
-                           <table border="5" width="100%" height="100%">
-                                 <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                                  <tr>
-                                     <td></td>
-                                 </tr>
-                             </table>
-                         </td>
+                        </tr>
                          
                         
            

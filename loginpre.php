@@ -34,6 +34,7 @@
                  <h1>Terminarz</h1>
                  <div id="mainPage">
                      <a href="index.php" class="btn-link">Strona główna</a>
+       
                  </div>
                 
             </div>

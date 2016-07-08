@@ -10,50 +10,44 @@ function checkDay(){
     
     var hour = toDay.getHours();
     
-    var startDay;
-    
-    var endDay;
-    var beginWeek;
     
     
     if(dayOfWeek==1){
-        document.getElementById("data1").innerHTML = day+"/"+((month%13))+"/"+year;
-        var pom1=1;
-        for(i=1; i<8; i++){
-            
-       
-                
-                if(month<7 && month!=1 && month%2==0){
-                     document.getElementById("data"+i).innerHTML = (day+pom1)%31+"/"+
-                             ((month%13)+1)+"/"+year;
-                 }
-                 else if(month<7 && month!=1 && month%2!=0){
-                      document.getElementById("data"+i).innerHTML = (day+pom1)%31+"/"+
-                             ((month%13)+1)+"/"+year;
-                 }
-                else if(month>=7 && month!=1 && month%2!=0){
-                     document.getElementById("data"+i).innerHTML = (day+pom1)%31+"/"+
-                             ((month%13)+1)+"/"+year;
-                 }
-                 else if(month>=7 && month!=1 && month%2==0){
-                     document.getElementById("data"+i).innerHTML = (day+pom1)+"/"+
-                             ((month%13)+1)+"/"+year;
-                 }
-                 
-                 if(month==2) {
-                     if((year%4 && year%100!=0) || year%400==0){
-                         document.getElementById("data"+i).innerHTML = (day+pom1)%30+"/"+
-                             ((month%13)+1)+"/"+year;
-                     } else {
-                          document.getElementById("data"+i).innerHTML = (day+pom1)%29+"/"+
-                             ((month%13)+1)+"/"+year;
-                     }
-                 }
-                 pom1++;
-              
-            
-        }
+        document.getElementById("date1").innerHTML = day+"/"+(month%13)+"/"+year;
+        
 
+    }
+      if(dayOfWeek==2){
+        document.getElementById("date2").innerHTML = day+"/"+(month%13)+"/"+year;
+       
+
+    }
+      if(dayOfWeek==3){
+        document.getElementById("date3").innerHTML = day+"/"+(month%13)+"/"+year;
+       
+
+    }
+      if(dayOfWeek==4){
+        document.getElementById("date4").innerHTML = day+"/"+(month%13)+"/"+year;
+       
+
+    }
+      if(dayOfWeek==5){
+        document.getElementById("date5").innerHTML = day+"/"+(month%13)+"/"+year;
+       
+       
+    }
+      if(dayOfWeek==6){
+        document.getElementById("date6").innerHTML = day+"/"+(month%13)+"/"+year;
+       
+
+    }
+    
+    
+    if(dayOfWeek==7){
+        document.getElementById("date7").innerHTML = day+"/"+(month%13)+"/"+year;
+       
+       
     }
  
 

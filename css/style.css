@@ -118,3 +118,9 @@
     width: 400px;
     color: black;
 }
+
+.cells{
+    color: white;
+    padding: 2px;
+    text-align: center;
+}
