@@ -124,20 +124,157 @@
                             <table width="100%" border="5">
                                
                               <?php  
-                              // '.$i.'"'.'
+                          
                               for($i=0; $i<52; $i++){
                                echo' <tr >
-                                    <td  class="cells" id="cell"'.$i.'"'.' onclick="add()">
-                                        napis1</td>
+                                    <td  class="cells" id="cell'.$i.'"'.' onclick="add'.$i.'()">
+                                        napis'.$i.'</td>
                                 </tr> ';
-                               echo '<script> function add(){
+                               echo '<script> 
+                                   function add'.$i.'(){
 
-                      document.getElementById("cell'.$i.'").innerHTML="kliknięte";
-}                           </script>';
-                               
+                                         document.getElementById("cell'.$i.'").innerHTML="klik";
+                                    }                           
+                                </script>';
+
                               }
-                              
                             ?>
+
+                            </table>
+                        </td>
+                        
+                        <td rowspan="13">
+                             <table width="100%" border="5">
+                               
+                              <?php  
+                          
+                              for($i=52; $i<104; $i++){
+                               echo' <tr >
+                                    <td  class="cells" id="cell'.$i.'"'.' onclick="add'.$i.'()">
+                                        napis'.$i.'</td>
+                                </tr> ';
+                               echo '<script> 
+                                   function add'.$i.'(){
+
+                                         document.getElementById("cell'.$i.'").innerHTML="klik";
+                                    }                           
+                                </script>';
+
+                              }
+                            ?>
+
+                            </table>
+                        </td>
+                        
+                         <td rowspan="13">
+                             <table width="100%" border="5">
+                               
+                              <?php  
+                          
+                              for($i=104; $i<156; $i++){
+                               echo' <tr >
+                                    <td  class="cells" id="cell'.$i.'"'.' onclick="add'.$i.'()">
+                                        napis'.$i.'</td>
+                                </tr> ';
+                               echo '<script> 
+                                   function add'.$i.'(){
+
+                                         document.getElementById("cell'.$i.'").innerHTML="klik";
+                                    }                           
+                                </script>';
+
+                              }
+                            ?>
+
+                            </table>
+                        </td>
+                        
+                         <td rowspan="13">
+                             <table width="100%" border="5">
+                               
+                              <?php  
+                          
+                              for($i=156; $i<208; $i++){
+                               echo' <tr >
+                                    <td  class="cells" id="cell'.$i.'"'.' onclick="add'.$i.'()">
+                                        napis'.$i.'</td>
+                                </tr> ';
+                               echo '<script> 
+                                   function add'.$i.'(){
+
+                                         document.getElementById("cell'.$i.'").innerHTML="klik";
+                                    }                           
+                                </script>';
+
+                              }
+                            ?>
+
+                            </table>
+                        </td>
+                         <td rowspan="13">
+                             <table width="100%" border="5">
+                               
+                              <?php  
+                          
+                              for($i=208; $i<260; $i++){
+                               echo' <tr >
+                                    <td  class="cells" id="cell'.$i.'"'.' onclick="add'.$i.'()">
+                                        napis'.$i.'</td>
+                                </tr> ';
+                               echo '<script> 
+                                   function add'.$i.'(){
+
+                                         document.getElementById("cell'.$i.'").innerHTML="klik";
+                                    }                           
+                                </script>';
+
+                              }
+                            ?>
+
+                            </table>
+                        </td>
+                        <td rowspan="13">
+                             <table width="100%" border="5">
+                               
+                              <?php  
+                          
+                              for($i=260; $i<312; $i++){
+                               echo' <tr >
+                                    <td  class="cells" id="cell'.$i.'"'.' onclick="add'.$i.'()">
+                                        napis'.$i.'</td>
+                                </tr> ';
+                               echo '<script> 
+                                   function add'.$i.'(){
+
+                                         document.getElementById("cell'.$i.'").innerHTML="klik";
+                                    }                           
+                                </script>';
+
+                              }
+                            ?>
+
+                            </table>
+                        </td>
+                         <td rowspan="13">
+                             <table width="100%" border="5">
+                               
+                              <?php  
+                          
+                              for($i=312; $i<364; $i++){
+                               echo' <tr >
+                                    <td  class="cells" id="cell'.$i.'"'.' onclick="add'.$i.'()">
+                                        napis'.$i.'</td>
+                                </tr> ';
+                               echo '<script> 
+                                   function add'.$i.'(){
+
+                                         document.getElementById("cell'.$i.'").innerHTML="klik";
+                                    }                           
+                                </script>';
+
+                              }
+                            ?>
+
                             </table>
                         </td>
                         
@@ -161,11 +298,11 @@
                                  </tr>
                              </table>
                          </td>
-                         </tr>
-                         <tr>
+
+                    </tr>
+                    <tr>
                          <td>
-                         
-                             
+
                           <div id="hour3" class="hour"></div>
                           
                             <table border="5" width="55%" height="100%">
@@ -183,6 +320,8 @@
                                  </tr>
                              </table>
                          </td>
+                         
+                        
                              </tr>
                       
                          
