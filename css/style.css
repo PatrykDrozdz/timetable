@@ -1,5 +1,5 @@
 .body{
-    	background:  url("broken_noise.png");/*(from http://subtlepatterns.com/) */
+    background:  url("broken_noise.png");/*(from http://subtlepatterns.com/) */
     font-family: "Lucida Console", Monaco, monospace;
     color: #white
    
@@ -7,7 +7,7 @@
 
 #container{
 
-	background:  url("broken_noise.png");/*(from http://subtlepatterns.com/) */
+    background:  url("broken_noise.png");/*(from http://subtlepatterns.com/) */
     font-family: "Lucida Console", Monaco, monospace;
     color: #white
    
@@ -15,8 +15,8 @@
 }     
 
 #header{
-      height: 100px;
-   background-color: #1c2c2c;
+    height: 100px;
+    background-color: #1c2c2c;
     text-align: center;
     padding: 3px;
     color: white;
@@ -31,7 +31,7 @@
 }
 
 #footer{
-       height: 100px;
+    height: 100px;
     background-color: #1c2c2c;
     font-size: 20px;
     text-align: center;
@@ -49,7 +49,7 @@
 
 #table{
     height: 2000px;
-     font-size: 20px;
+    font-size: 20px;
     text-align: center;
     background-color:  #1c1c1c;
 }
@@ -79,10 +79,16 @@
 
 .hour{
     text-align: left;
-    padding: 10px;
-    width: 60px;
+    padding: 5px;
+    width: 30px;
     float: left;
 }
+
+.minutes{
+    float: left;
+
+}
+
 
 
 #leftLog{
@@ -123,4 +129,9 @@
     color: white;
     padding: 2px;
     text-align: center;
+}
+
+.error{
+    color: red;
+    font-size: 20px;
 }

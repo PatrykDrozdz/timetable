@@ -1,3 +1,8 @@
+
+<?php 
+    //session_start();
+?>
+
 <!DOCTYPE html>
 
 <html lang="pl">
@@ -56,10 +61,18 @@
                            placeholder="hasło"/>
                     <br/>
                     <br/>
-                    <input class="btn btn-primary active" 
+                    <input  class="btn btn-primary active" 
                            type="submit" value="Zaloguj się" id="button"/>
                     
                 </form>
+                
+                <?php 
+                
+                if(isset($_SESSION['error'])){
+                    echo $_SESSION['error'];
+                }
+                
+                ?>
                 
              </div>
                     <br/>

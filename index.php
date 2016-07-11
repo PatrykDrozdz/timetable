@@ -1,3 +1,42 @@
+<?php 
+
+require_once 'connection.php';
+
+session_start();
+
+if((isset($_POST['date1']) || isset($_POST['date2']) ||isset($_POST['date3']) || 
+        isset($_POST['date4']) || isset($_POST['date5']) || isset($_POST['date6'])
+        || isset($_POST['date7'])) && isset($_POST['dayOfweek'])){
+            
+            $dayOfWeek = $_POST['dayOfWeek'];
+            for($i=1; $i<=7; $i++){
+                 if($_POST['date'.$i]!=NULL){
+                    $date = $_POST['date1'];
+                 }
+                 $dayOfWeek = $dayOfWeek - 1;
+                 echo $date;
+                 try{
+                    $conncetion = new mysqli($host, $dbName, $dbUser, $dbPass);
+                    
+                    
+                     $query = "SELECT DATE_ADD()";
+                     
+                     if($conncetion->query($query)){
+                         
+                     }
+                    
+                 }catch(Exceptione $e){
+                     echo '<span class ="error">'.$e.'</span>';
+                     
+                    
+                 }
+            }
+          
+        }
+
+?>
+
+
 <!DOCTYPE html>
 
 <html lang="pl">
@@ -26,26 +65,25 @@
         
         <link rel="stylesheet" href="css/style.css" type="text/css"/>
         
-        <script type="text/javascript" src="js/timeChecks.js">
+        <script type="text/javascript" src="js/timeChecks.js">  
         </script>
-        
-        <script type="text/javascript" src="js/addEvent.js">
-        </script>
+     
         
     </head>
     <body onload="checkDay()">
         <div id="container">
+            <form method="post">
             <div id="header">
                  <h1>Terminarz</h1>
                  <div id="loging">
-                     <a href="loginpre.php" class="btn-link">Zaloguj się</a>
+                     <a href="logingpre.php" class="btn-link">Zaloguj się</a>
                  </div>
                 
             </div>
             
-            <div id="table" class="table-responsive">
+            <div id="table">
                 
-                <table id="trueTable" border="5" width="100%">
+                <table id="trueTable" border="5" width="100%"  class="table-responsive">
                    
                     <tr id="cols">
                         
@@ -56,6 +94,7 @@
                             </div>
                             
                         </td>
+                    
                         <td>
                             <div id="date1" class="date"></div>
                         </td>    
@@ -78,6 +117,7 @@
                         <td>
                             <div id="date7" class="date"></div>
                         </td>
+                        
                     </tr>
                     <tr id="cols" class="table-active">
 
@@ -99,238 +139,18 @@
                      
                         <td id="dayName"> Niedziela</td>
                     </tr>
-                    <tr>
-                        <td>
-                          <div id="hour1" class="hour"></div>
-
-                          
-                           <table border="5" width="55%" height="100%">
-                                 <tr>
-                                     <td>00</td>
-                                 </tr>
-                                  <tr>
-                                     <td>15</td>
-                                 </tr>
-                                  <tr>
-                                     <td>30</td>
-                                 </tr>
-                                  <tr>
-                                     <td>45</td>
-                                 </tr>
-                             </table>
-                        </td>
-                     
-                        <td rowspan="13">
-                            <table width="100%" border="5">
-                               
-                              <?php  
-                          
-                              for($i=0; $i<52; $i++){
-                               echo' <tr >
-                                    <td  class="cells" id="cell'.$i.'"'.' onclick="add'.$i.'()">
-                                        napis'.$i.'</td>
-                                </tr> ';
-                               echo '<script> 
-                                   function add'.$i.'(){
-
-                                         document.getElementById("cell'.$i.'").innerHTML="klik";
-                                    }                           
-                                </script>';
-
-                              }
-                            ?>
-
-                            </table>
-                        </td>
-                        
-                        <td rowspan="13">
-                             <table width="100%" border="5">
-                               
-                              <?php  
-                          
-                              for($i=52; $i<104; $i++){
-                               echo' <tr >
-                                    <td  class="cells" id="cell'.$i.'"'.' onclick="add'.$i.'()">
-                                        napis'.$i.'</td>
-                                </tr> ';
-                               echo '<script> 
-                                   function add'.$i.'(){
-
-                                         document.getElementById("cell'.$i.'").innerHTML="klik";
-                                    }                           
-                                </script>';
-
-                              }
-                            ?>
-
-                            </table>
-                        </td>
-                        
-                         <td rowspan="13">
-                             <table width="100%" border="5">
-                               
-                              <?php  
-                          
-                              for($i=104; $i<156; $i++){
-                               echo' <tr >
-                                    <td  class="cells" id="cell'.$i.'"'.' onclick="add'.$i.'()">
-                                        napis'.$i.'</td>
-                                </tr> ';
-                               echo '<script> 
-                                   function add'.$i.'(){
-
-                                         document.getElementById("cell'.$i.'").innerHTML="klik";
-                                    }                           
-                                </script>';
-
-                              }
-                            ?>
-
-                            </table>
-                        </td>
-                        
-                         <td rowspan="13">
-                             <table width="100%" border="5">
-                               
-                              <?php  
-                          
-                              for($i=156; $i<208; $i++){
-                               echo' <tr >
-                                    <td  class="cells" id="cell'.$i.'"'.' onclick="add'.$i.'()">
-                                        napis'.$i.'</td>
-                                </tr> ';
-                               echo '<script> 
-                                   function add'.$i.'(){
-
-                                         document.getElementById("cell'.$i.'").innerHTML="klik";
-                                    }                           
-                                </script>';
-
-                              }
-                            ?>
-
-                            </table>
-                        </td>
-                         <td rowspan="13">
-                             <table width="100%" border="5">
-                               
-                              <?php  
-                          
-                              for($i=208; $i<260; $i++){
-                               echo' <tr >
-                                    <td  class="cells" id="cell'.$i.'"'.' onclick="add'.$i.'()">
-                                        napis'.$i.'</td>
-                                </tr> ';
-                               echo '<script> 
-                                   function add'.$i.'(){
-
-                                         document.getElementById("cell'.$i.'").innerHTML="klik";
-                                    }                           
-                                </script>';
-
-                              }
-                            ?>
-
-                            </table>
-                        </td>
-                        <td rowspan="13">
-                             <table width="100%" border="5">
-                               
-                              <?php  
-                          
-                              for($i=260; $i<312; $i++){
-                               echo' <tr >
-                                    <td  class="cells" id="cell'.$i.'"'.' onclick="add'.$i.'()">
-                                        napis'.$i.'</td>
-                                </tr> ';
-                               echo '<script> 
-                                   function add'.$i.'(){
-
-                                         document.getElementById("cell'.$i.'").innerHTML="klik";
-                                    }                           
-                                </script>';
-
-                              }
-                            ?>
-
-                            </table>
-                        </td>
-                         <td rowspan="13">
-                             <table width="100%" border="5">
-                               
-                              <?php  
-                          
-                              for($i=312; $i<364; $i++){
-                               echo' <tr >
-                                    <td  class="cells" id="cell'.$i.'"'.' onclick="add'.$i.'()">
-                                        napis'.$i.'</td>
-                                </tr> ';
-                               echo '<script> 
-                                   function add'.$i.'(){
-
-                                         document.getElementById("cell'.$i.'").innerHTML="klik";
-                                    }                           
-                                </script>';
-
-                              }
-                            ?>
-
-                            </table>
-                        </td>
-                        
-                    </tr>
-                    <tr>
-                        <td>
-                          <div id="hour2" class="hour"></div>
-                          
-                            <table border="5" width="55%" height="100%">
-                                 <tr>
-                                     <td>00</td>
-                                 </tr>
-                                  <tr>
-                                     <td>15</td>
-                                 </tr>
-                                  <tr>
-                                     <td>30</td>
-                                 </tr>
-                                  <tr>
-                                     <td>45</td>
-                                 </tr>
-                             </table>
-                         </td>
-
-                    </tr>
-                    <tr>
-                         <td>
-
-                          <div id="hour3" class="hour"></div>
-                          
-                            <table border="5" width="55%" height="100%">
-                                 <tr>
-                                     <td>00</td>
-                                 </tr>
-                                  <tr>
-                                     <td>15</td>
-                                 </tr>
-                                  <tr>
-                                     <td>30</td>
-                                 </tr>
-                                  <tr>
-                                     <td>45</td>
-                                 </tr>
-                             </table>
-                         </td>
-                         
-                        
-                             </tr>
+                    <?php 
                       
-                         
-                             
-                             <tr>
-                          <td>
-                          <div id="hour4" class="hour"></div>
-                          
-                            <table border="5" width="55%" height="100%">
+                        $startTable = 0;
+                        $endTable = 12;
+                        $toSpan = $endTable;
+            
+                for($i=$startTable; $i<=$endTable; $i++){
+                          echo '<tr>';
+                             echo '<td>';
+                            echo'<div id="hour'.$i.'" class="hour">'.$i.'</div>
+                                
+                                   <table border="5" width="55%" height="100%" class="minutes">
                                  <tr>
                                      <td>00</td>
                                  </tr>
@@ -342,198 +162,29 @@
                                  </tr>
                                   <tr>
                                      <td>45</td>
-                                 </tr>
-                             </table>
-                         </td>
-                         </tr>
-                           <tr>
-                        <td>
-                          <div id="hour5" class="hour"></div>
-                          
-                            <table border="5" width="55%" height="100%">
-                                 <tr>
-                                     <td>00</td>
-                                 </tr>
-                                  <tr>
-                                     <td>15</td>
-                                 </tr>
-                                  <tr>
-                                     <td>30</td>
-                                 </tr>
-                                  <tr>
-                                     <td>45</td>
-                                 </tr>
-                             </table>
-                         </td>
-                         </tr>
-                           <tr>
-                        <td>
-                          <div id="hour6" class="hour"></div>
-                          
-                            <table border="5" width="55%" height="100%">
-                                 <tr>
-                                     <td>00</td>
-                                 </tr>
-                                  <tr>
-                                     <td>15</td>
-                                 </tr>
-                                  <tr>
-                                     <td>30</td>
-                                 </tr>
-                                  <tr>
-                                     <td>45</td>
-                                 </tr>
-                             </table>
-                         </td>
-                         </tr>
-                    <tr>
-                       <td>
-                          <div id="hour7" class="hour"></div>
-                          
-                            <table border="5" width="55%" height="100%">
-                                 <tr>
-                                     <td>00</td>
-                                 </tr>
-                                  <tr>
-                                     <td>15</td>
-                                 </tr>
-                                  <tr>
-                                     <td>30</td>
-                                 </tr>
-                                  <tr>
-                                     <td>45</td>
-                                 </tr>
+                                </tr>
                              </table>
                          
-                         
-                         </td>
-                         
-                           <tr>
-                        <td>
-                          <div id="hour8" class="hour"></div>
+                            </td> ';
+                            //echo '<td rowspan="'.$toSpan.'"><td>';
                           
-                            <table border="5" width="55%" height="100%">
-                                 <tr>
-                                     <td>00</td>
-                                 </tr>
-                                  <tr>
-                                     <td>15</td>
-                                 </tr>
-                                  <tr>
-                                     <td>30</td>
-                                 </tr>
-                                  <tr>
-                                     <td>45</td>
-                                 </tr>
-                             </table>
-                         </td>
-                         </tr>
-                    </tr>
-                      <tr>
-                        <td>
-                          <div id="hour9" class="hour"></div>
+                            
+                            //echo '<td><td>';
+                           // echo '<td><td>';
+                           // echo '<td><td>';
+                           // echo '<td><td>';
+                            
                           
-                            <table border="5" width="55%" height="100%">
-                                 <tr>
-                                     <td>00</td>
-                                 </tr>
-                                  <tr>
-                                     <td>15</td>
-                                 </tr>
-                                  <tr>
-                                     <td>30</td>
-                                 </tr>
-                                  <tr>
-                                     <td>45</td>
-                                 </tr>
-                             </table>
-                         </td>
-                         </tr>
-                    <tr>
-                        <td>
-                          <div id="hour10" class="hour"></div>
-                          
-                            <table border="5" width="55%" height="100%">
-                                 <tr>
-                                     <td>00</td>
-                                 </tr>
-                                  <tr>
-                                     <td>15</td>
-                                 </tr>
-                                  <tr>
-                                     <td>30</td>
-                                 </tr>
-                                  <tr>
-                                     <td>45</td>
-                                 </tr>
-                             </table>
-                         </td>
-                     </tr>
-                       <tr>
-                        <td>
-                          <div id="hour11" class="hour"></div>
-                          
-                            <table border="5" width="55%" height="100%">
-                                 <tr>
-                                     <td>00</td>
-                                 </tr>
-                                  <tr>
-                                     <td>15</td>
-                                 </tr>
-                                  <tr>
-                                     <td>30</td>
-                                 </tr>
-                                  <tr>
-                                     <td>45</td>
-                                 </tr>
-                             </table>
-                         </td>
-                         </tr>
-                     <tr>
-                        <td>
-                          <div id="hour12" class="hour"></div>
-                          
-                            <table border="5" width="55%" height="100%">
-                                 <tr>
-                                     <td>00</td>
-                                 </tr>
-                                  <tr>
-                                     <td>15</td>
-                                 </tr>
-                                  <tr>
-                                     <td>30</td>
-                                 </tr>
-                                  <tr>
-                                     <td>45</td>
-                                 </tr>
-                             </table>
-                         </td>
-                         </tr>
-                         <tr>
-                        <td>
-                          <div id="hour13" class="hour"></div>
-                          
-                            <table border="5" width="55%" height="100%">
-                                 <tr>
-                                     <td>00</td>
-                                 </tr>
-                                  <tr>
-                                     <td>15</td>
-                                 </tr>
-                                  <tr>
-                                     <td>30</td>
-                                 </tr>
-                                  <tr>
-                                     <td>45</td>
-                                 </tr>
-                             </table>
-                         </td>
-                        </tr>
-                         
-                        
-           
-                </table>
-                
+                            
+                           echo' </tr>';
+                    }
+                                
+                            
+            
+                         ?>
+ 
+                        </table> 
+                    
             </div>
         
             <div id="footer">
@@ -543,9 +194,9 @@
                  <div id="contact">
                      pdrozdz@onet.eu
                  </div>
-                 
+                 <div id="dayOfWeek"></div>
             </div>    
-            
+            </form>
         </div>
        
     </body>
