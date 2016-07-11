@@ -1,38 +1,10 @@
 <?php 
 
-require_once 'connection.php';
+
 
 session_start();
 
-if((isset($_POST['date1']) || isset($_POST['date2']) ||isset($_POST['date3']) || 
-        isset($_POST['date4']) || isset($_POST['date5']) || isset($_POST['date6'])
-        || isset($_POST['date7'])) && isset($_POST['dayOfweek'])){
-            
-            $dayOfWeek = $_POST['dayOfWeek'];
-            for($i=1; $i<=7; $i++){
-                 if($_POST['date'.$i]!=NULL){
-                    $date = $_POST['date1'];
-                 }
-                 $dayOfWeek = $dayOfWeek - 1;
-                 echo $date;
-                 try{
-                    $conncetion = new mysqli($host, $dbName, $dbUser, $dbPass);
-                    
-                    
-                     $query = "SELECT DATE_ADD()";
-                     
-                     if($conncetion->query($query)){
-                         
-                     }
-                    
-                 }catch(Exceptione $e){
-                     echo '<span class ="error">'.$e.'</span>';
-                     
-                    
-                 }
-            }
-          
-        }
+
 
 ?>
 
@@ -71,6 +43,7 @@ if((isset($_POST['date1']) || isset($_POST['date2']) ||isset($_POST['date3']) ||
         
     </head>
     <body onload="checkDay()">
+        <?php  echo date('Y-m-d');?>
         <div id="container">
             <form method="post">
             <div id="header">
@@ -80,7 +53,7 @@ if((isset($_POST['date1']) || isset($_POST['date2']) ||isset($_POST['date3']) ||
                  </div>
                 
             </div>
-            
+          
             <div id="table">
                 
                 <table id="trueTable" border="5" width="100%"  class="table-responsive">
@@ -94,7 +67,6 @@ if((isset($_POST['date1']) || isset($_POST['date2']) ||isset($_POST['date3']) ||
                             </div>
                             
                         </td>
-                    
                         <td>
                             <div id="date1" class="date"></div>
                         </td>    
@@ -117,10 +89,9 @@ if((isset($_POST['date1']) || isset($_POST['date2']) ||isset($_POST['date3']) ||
                         <td>
                             <div id="date7" class="date"></div>
                         </td>
-                        
                     </tr>
                     <tr id="cols" class="table-active">
-
+                        
                         <td id="dayName"> Poniedziałek</td>
                            
                         <td id="dayName"> Wtorek </td>
