@@ -9,6 +9,7 @@
 
     background:  url("broken_noise.png");/*(from http://subtlepatterns.com/) */
     font-family: "Lucida Console", Monaco, monospace;
+    height: 3000px;
     color: #white
    
     
@@ -48,7 +49,7 @@
 }
 
 #table{
-    height: 2000px;
+    height: 2700px;
     font-size: 20px;
     text-align: center;
     background-color:  #1c1c1c;
@@ -57,7 +58,7 @@
 #trueTable{
     border: 10px;
     text-align: center;
-    height: 760px;
+    padding: 50px;
     color: whitesmoke;
 }
 
@@ -75,22 +76,12 @@
 
 #cols{
     width: 500px;
+    padding: 10px;
 }
-
-.hour{
-    text-align: left;
-    padding: 5px;
-    width: 30px;
-    float: left;
+#menu{
+    width: 500px;
+    background-color:  red;
 }
-
-.minutes{
-    float: left;
-
-}
-
-
-
 #leftLog{
     height: 1000px;
     padding: 100px;

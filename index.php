@@ -4,8 +4,107 @@
 
 session_start();
 
+//stałe wartoßci domyslne
+///////////////////////
+$start=0;//start petli
+$end=4*8;//koniec petli
+                      
+$h=6;//domyslna godzina poczætkowa
+$check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
+///////////////////////////////
+//wybør widokøw do panelu administratora
+require_once 'connection.php';
+
+try{
+   // $valid=true;
+     $connection = new mysqli($host, $dbUser, $dbPass, $dbName);
+            
+    if($connection->connect_errno!=0){
+        echo "Error: ".$connection->connect_errno;
+    } else {
+
+        if($valid==true){
+            $query = "SELECT * FROM view";
+            $result = $connection->query($query);
+      
+            
+            $row = $result->fetch_assoc();
+            $count = $result->num_rows;
+         
+            for($i=1; $i<=$count; $i++){
+                $res1 = $connection->query("SELECT * FROM view WHERE idview = '$i'");
+                $row12 = fetch_assoc();
+            
+                $vievs[$i] = $row12['nameOfView'];
+         
+            
+            }
+       
+        }else{
+            throw new Exception($connection->errno);
+        }
+        
+    }
+    
+        
+        
+     $connection->close();   
+}catch(Exception $e){
+    echo $e;
+}
 
 
+try{
+    
+   $date = date('Y-m-d');
+   $day = date('w');
+
+    $valid2=true;
+    
+    $connection2 = new mysqli($host, $dbUser, $dbPass, $dbName);
+        
+    if($connection2->connect_errno!=0){
+       echo "Error: ".$connection2->connect_errno;
+       
+    } else {
+           
+       if($valid2==true){
+           $query2 = "SELECT DATE_ADD('$date', INTERVAL -'$day' DAY)";
+            $connection2->query($query2);
+        
+            $result2 =  $connection2->query($query2);
+            $row2 = $result2->fetch_assoc();
+            
+           
+            $mon = $row2["DATE_ADD('$date', INTERVAL -'$day' DAY)"];
+          
+            
+           
+           for($i=1; $i<=7; $i++){
+             
+               $res = $connection2->query("SELECT DATE_ADD('$mon', INTERVAL +'$i' DAY)");
+               
+               $row22 = $res->fetch_assoc();
+           
+               $tab[$i] = $row22["DATE_ADD('$mon', INTERVAL +'$i' DAY)"];
+
+           }
+           
+            
+         
+        } else {
+            throw new Exception($connection2->errno);
+       }
+   
+   } 
+    
+    $connection2->close();   
+    
+    
+}catch(Exceptine $e){
+    echo $e;
+}
+   
 ?>
 
 
@@ -37,15 +136,14 @@ session_start();
         
         <link rel="stylesheet" href="css/style.css" type="text/css"/>
         
-        <script type="text/javascript" src="js/timeChecks.js">  
-        </script>
+
      
         
     </head>
-    <body onload="checkDay()">
-        <?php  echo date('Y-m-d');?>
+    <body>
+        
         <div id="container">
-            <form method="post">
+          
             <div id="header">
                  <h1>Terminarz</h1>
                  <div id="loging">
@@ -53,42 +151,45 @@ session_start();
                  </div>
                 
             </div>
+            <div id="menu">
+                   <form method="post">
+                    <br/>
+                    <br/>
+                    <select>
+                        <?php    for($i=1; $i<=$count; $i++){
+                            echo '<option>opcja'.$vievs[$i].'</option>';
+                        }?>
+                        
+                         
+                    </select>
+                    
+                </form>
+            </div>
           
             <div id="table">
                 
-                <table id="trueTable" border="5" width="100%"  class="table-responsive">
+                <table id="trueTable" border="5" width="100%" height=40%"" class="table-responsive">
                    
                     <tr id="cols">
                         
                         
-                        <td rowspan="2">
+                        <td rowspan="2" colspan="2">
                             <div  id="textHour">
                                 Godzina
                             </div>
                             
                         </td>
-                        <td>
-                            <div id="date1" class="date"></div>
-                        </td>    
-                        <td>
-                           <div id="date2" class="date"></div>
-                        </td>
-                      
-                        <td>
-                            <div  id="date3" class="date"></div>
-                        </td>
-                        <td>
-                            <div id="date4" class="date"></div>
-                        </td>
-                        <td >
-                            <div id="date5" class="date"></div>
-                        </td>
-                        <td>
-                            <div id="date6" class="date"></div>
-                        </td>
-                        <td>
-                            <div id="date7" class="date"></div>
-                        </td>
+                       
+                       <?php 
+                            for($i=1; $i<=7; $i++){
+                             echo 
+                            '<td>
+                                    <div id="date'.$i.'" class="date">'.$tab[$i].'</div>
+                            </td>  ';
+                            }
+                       
+                       ?>
+                       
                     </tr>
                     <tr id="cols" class="table-active">
                         
@@ -111,50 +212,52 @@ session_start();
                         <td id="dayName"> Niedziela</td>
                     </tr>
                     <?php 
-                      
-                        $startTable = 0;
-                        $endTable = 12;
-                        $toSpan = $endTable;
-            
-                for($i=$startTable; $i<=$endTable; $i++){
-                          echo '<tr>';
-                             echo '<td>';
-                            echo'<div id="hour'.$i.'" class="hour">'.$i.'</div>
-                                
-                                   <table border="5" width="55%" height="100%" class="minutes">
-                                 <tr>
-                                     <td>00</td>
-                                 </tr>
-                                  <tr>
-                                     <td>15</td>
-                                 </tr>
-                                  <tr>
-                                     <td>30</td>
-                                 </tr>
-                                  <tr>
-                                     <td>45</td>
-                                </tr>
-                             </table>
-                         
-                            </td> ';
-                            //echo '<td rowspan="'.$toSpan.'"><td>';
-                          
-                            
-                            //echo '<td><td>';
-                           // echo '<td><td>';
-                           // echo '<td><td>';
-                           // echo '<td><td>';
-                            
-                          
-                            
-                           echo' </tr>';
-                    }
-                                
-                            
-            
-                         ?>
+                     
+                     
+                          for($i=$start; $i<$end; $i++){
+
+                           echo '<tr id="cols" class="table-active">';
+                           
+                           if($i%4==0 ){
+                               echo '<td rowspan="4">'.$h.'</td>';
+                               $h++;
+                              
+                           }
+                           if($i%2==0){
+                               if($check%2==0){
+                                    echo '<td rowspan="2">30</td>';
+                                    $check++;
+                               }else{
+                                   echo '<td rowspan="2">00</td>';
+                                   $check++;
+                               }
+                           }
+
+                           
+                           
+                 echo'<td> 1</td>
+                           
+                                <td> 2</td>
+                                <td> 3 </td>
+
+                                 <td> 4</td>
+
+                                <td> 5</td>
+                   
+                     
+                                <td> 6</td>
+                 
+                     
+                                 <td> 7</td>
+                       </tr>';
+                     
+                      }
+                        
+                    
+                    ?>
  
-                        </table> 
+               </table> 
+             
                     
             </div>
         
@@ -165,9 +268,9 @@ session_start();
                  <div id="contact">
                      pdrozdz@onet.eu
                  </div>
-                 <div id="dayOfWeek"></div>
+                 
             </div>    
-            </form>
+            
         </div>
        
     </body>

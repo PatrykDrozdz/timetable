@@ -61,7 +61,7 @@
                            placeholder="hasło"/>
                     <br/>
                     <br/>
-                    <input  class="btn btn-primary active" 
+                    <input class="btn btn-primary active" 
                            type="submit" value="Zaloguj się" id="button"/>
                     
                 </form>
