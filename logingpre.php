@@ -1,6 +1,20 @@
 
 <?php 
-    //session_start();
+    session_start();
+    
+  
+    
+    if((isset($_SESSION['loged'])) && ($_SESSION['loged']==TRUE)){
+        $flag = $_SESSION['flag'];
+        if($flag==0){
+                header('Location: Interface.php');
+                 exit();
+        }else if($flag==1){
+                header('Location: adminInterface.php');
+                exit();
+        }
+       
+    }
 ?>
 
 <!DOCTYPE html>
@@ -34,7 +48,7 @@
         
     </head>
     <body>
-        <div id="container">
+        <div id="container2">
             <div id="header">
                  <h1>Terminarz</h1>
                  <div id="mainPage">
@@ -75,12 +89,7 @@
                 ?>
                 
              </div>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    
+                   
                     <div id="rightInfo">
                         Witamy na stronie logowania. <br/>
                         W celu założenia konta skontakyuj się z jednym z administratorów:

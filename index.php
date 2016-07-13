@@ -1,57 +1,31 @@
 <?php 
 
-
-
 session_start();
+//sprawdzanie, czy u«ytkownik jest zalogowany
+if((isset($_SESSION['loged'])) && ($_SESSION['loged']==TRUE)){
+    $flag = $_SESSION['flag'];
+    if($flag==0){
+        eader('Location: Interface.php');
+        exit();
+    }else if($flag==1){
+        header('Location: adminInterface.php');
+       exit();
+    }
+}
+
+
 
 //stałe wartoßci domyslne
 ///////////////////////
 $start=0;//start petli
-$end=4*8;//koniec petli
+$end=4*3;//koniec petli
                       
-$h=6;//domyslna godzina poczætkowa
+$h=14;//domyslna godzina poczætkowa
 $check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
+$min = 0; //id minut
 ///////////////////////////////
 //wybør widokøw do panelu administratora
 require_once 'connection.php';
-
-try{
-   // $valid=true;
-     $connection = new mysqli($host, $dbUser, $dbPass, $dbName);
-            
-    if($connection->connect_errno!=0){
-        echo "Error: ".$connection->connect_errno;
-    } else {
-
-        if($valid==true){
-            $query = "SELECT * FROM view";
-            $result = $connection->query($query);
-      
-            
-            $row = $result->fetch_assoc();
-            $count = $result->num_rows;
-         
-            for($i=1; $i<=$count; $i++){
-                $res1 = $connection->query("SELECT * FROM view WHERE idview = '$i'");
-                $row12 = fetch_assoc();
-            
-                $vievs[$i] = $row12['nameOfView'];
-         
-            
-            }
-       
-        }else{
-            throw new Exception($connection->errno);
-        }
-        
-    }
-    
-        
-        
-     $connection->close();   
-}catch(Exception $e){
-    echo $e;
-}
 
 
 try{
@@ -59,20 +33,20 @@ try{
    $date = date('Y-m-d');
    $day = date('w');
 
-    $valid2=true;
+    $valid=true;
     
-    $connection2 = new mysqli($host, $dbUser, $dbPass, $dbName);
+    $connection = new mysqli($host, $dbUser, $dbPass, $dbName);
         
-    if($connection2->connect_errno!=0){
+    if($connection->connect_errno!=0){
        echo "Error: ".$connection2->connect_errno;
        
     } else {
            
-       if($valid2==true){
+       if($valid==true){
            $query2 = "SELECT DATE_ADD('$date', INTERVAL -'$day' DAY)";
-            $connection2->query($query2);
+            $connection->query($query2);
         
-            $result2 =  $connection2->query($query2);
+            $result2 =  $connection->query($query2);
             $row2 = $result2->fetch_assoc();
             
            
@@ -82,15 +56,14 @@ try{
            
            for($i=1; $i<=7; $i++){
              
-               $res = $connection2->query("SELECT DATE_ADD('$mon', INTERVAL +'$i' DAY)");
+               $res = $connection->query("SELECT DATE_ADD('$mon', INTERVAL +'$i' DAY)");
                
                $row22 = $res->fetch_assoc();
            
                $tab[$i] = $row22["DATE_ADD('$mon', INTERVAL +'$i' DAY)"];
 
            }
-           
-            
+      
          
         } else {
             throw new Exception($connection2->errno);
@@ -98,7 +71,7 @@ try{
    
    } 
     
-    $connection2->close();   
+    $connection->close();   
     
     
 }catch(Exceptine $e){
@@ -136,7 +109,7 @@ try{
         
         <link rel="stylesheet" href="css/style.css" type="text/css"/>
         
-
+       
      
         
     </head>
@@ -151,24 +124,10 @@ try{
                  </div>
                 
             </div>
-            <div id="menu">
-                   <form method="post">
-                    <br/>
-                    <br/>
-                    <select>
-                        <?php    for($i=1; $i<=$count; $i++){
-                            echo '<option>opcja'.$vievs[$i].'</option>';
-                        }?>
-                        
-                         
-                    </select>
-                    
-                </form>
-            </div>
-          
+      
             <div id="table">
                 
-                <table id="trueTable" border="5" width="100%" height=40%"" class="table-responsive">
+                <table id="trueTable" border="5" width="100%" height=40%"" class="table-active table-responsive">
                    
                     <tr id="cols">
                         
@@ -214,7 +173,7 @@ try{
                     <?php 
                      
                      
-                          for($i=$start; $i<$end; $i++){
+                    for($i=$start; $i<$end; $i++){
 
                            echo '<tr id="cols" class="table-active">';
                            
@@ -232,27 +191,34 @@ try{
                                    $check++;
                                }
                            }
-
+                        
                            
                            
-                 echo'<td> 1</td>
+                 echo''
+                           . ' <td id="'.($h-1).$min.'1" onclick=" click'.($h-1).$min.'1()"> '.($h-1).' '.$min.' 1</td>
                            
-                                <td> 2</td>
-                                <td> 3 </td>
+                                <td id="'.($h-1).$min.'2" onclick=" click'.($h-1).$min.'2()"> '.($h-1).' '.$min.' 2</td>
+                                <td id="'.($h-1).$min.'3" onclick=" click'.($h-1).$min.'3()"> '.($h-1).' '.$min.' 3</td>
 
-                                 <td> 4</td>
+                                 <td id="'.($h-1).$min.'4" onclick=" click'.($h-1).$min.'4()"> '.($h-1).' '.$min.' 4</td>
 
-                                <td> 5</td>
+                               <td id="'.($h-1).$min.'5" onclick=" click'.($h-1).$min.'5()"> '.($h-1).' '.$min.' 5</td>
                    
                      
-                                <td> 6</td>
+                                <td id="'.($h-1).$min.'6" onclick=" click'.($h-1).$min.'6()"> '.($h-1).' '.$min.' 6</td>
                  
                      
-                                 <td> 7</td>
+                                 <td id="'.($h-1).$min.'7" onclick=" click'.($h-1).$min.'7()"> '.($h-1).' '.$min.' 7</td>
                        </tr>';
+       
+                 
+                     $min++;
+                      if($min%4==0){
+                          $min=0;
+                      }
                      
                       }
-                        
+                      
                     
                     ?>
  

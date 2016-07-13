@@ -1,20 +1,17 @@
 <?php
-  //zabezpieczenie przed wejßciem z palca
+    //zabezpieczenie przed wejßciem z palca
     session_start();
-    
-    if(!isset($_SESSION['loged'])){
+
+     if(!isset($_SESSION['loged'])){
         header('Location: index.php');
         exit();
     }
-    
+
     //stałe wartoßci domyslne
 ///////////////////////
-$start=0;//start petli
-$end=4*3;//koniec petli
-                      
-$h=14;//domyslna godzina poczætkowa
+
 $check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
-$min = 0; //id minut
+$min = 0; //id minut - stała nie do zmiany
 ///////////////////////////////
 //wybør widokøw do panelu administratora
 require_once 'connection.php';
@@ -30,7 +27,7 @@ try{
     $connection = new mysqli($host, $dbUser, $dbPass, $dbName);
         
     if($connection->connect_errno!=0){
-       echo "Error: ".$connection2->connect_errno;
+       echo "Error: ".$connection->connect_errno;
        
     } else {
            
@@ -44,7 +41,7 @@ try{
            
             $mon = $row2["DATE_ADD('$date', INTERVAL -'$day' DAY)"];
           
-            
+           
            
            for($i=1; $i<=7; $i++){
              
@@ -56,27 +53,28 @@ try{
 
            }
            /////////////////////////////////////////////
-           /*
+           
            $query = "SELECT * FROM view";
            $result = $connection->query($query);
       
             
             $row = $result->fetch_assoc();
             $count = $result->num_rows;
-         
+          
             for($i=1; $i<=$count; $i++){
                 $res1 = $connection->query("SELECT * FROM view WHERE idview = '$i'");
-                $row12 = fetch_assoc();
+                $row12 = $res1->fetch_assoc();
             
                 $vievs[$i] = $row12['nameOfView'];
          
             
             }
-           */
+            
+         
            ////////////////////////////////////////// 
          
         } else {
-            throw new Exception($connection2->errno);
+            throw new Exception($connection->errno);
        }
    
    } 
@@ -84,21 +82,49 @@ try{
     $connection->close();   
     
     
-}catch(Exceptine $e){
+}catch(Exceptione $e){
     echo $e;
 }
-   
+if(isset($_POST['view'])){
+     $view = $_POST['view'];
+    
+try{
+ 
+
+    $connection2 = new mysqli($host, $dbUser, $dbPass, $dbName);
+        
+    if($connection2->connect_errno!=0){
+       echo "Error: ".$connection2->connect_errno;
+       
+    } else { 
+      if($connection2->query("SELECT * FROM view WHERE nameOfView = '$view'")){          
+            $viewResult = $connection2->query("SELECT * FROM view WHERE nameOfView = '$view'");
+                
+            $rowViews = $viewResult->fecth_assoc();
+                
+            $_SESSION['startOfView'] = $rowViews['startOfView'];
+            $_SESSION['endOfView'] = $rowViews['endOfView'];
+            
+            $a = $rowViews['startOfView'];
+            $b = $rowViews['endOfView'];
+            $h = $rowViews['endOfView'];
+      }    
+    }
+     $connection2->close();  
+
+}catch(Exceptione $e){
+    echo $e;
+}
+}
 ?>
-
-
 
 <!DOCTYPE html>
 
 <html lang="pl">
     <head>
-        <meta charset="UTF-8">
+    <meta charset="UTF-8">
         
-            <meta charset="utf-8">
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
@@ -120,15 +146,27 @@ try{
         
         <link rel="stylesheet" href="css/style.css" type="text/css"/>
         
-          <?php 
+       <?php 
          $start=0;//start petli
-         $interval = 10;
-          $end=4*$interval;//koniec petli
-                    
-                    $SpanCol = ($end/2)+1; 
-                    $h=14;//domyslna godzina poczætkowa
+         $a = $_SESSION['startOfView'];
+         $b = $_SESSION['endOfView'];
+         $interval = $b - $a;
+         $end=4*$interval;//koniec petli
+              
+        $SpanCol = ($end/2)+1; 
+        $h = $_SESSION['startofView'];//domyslna godzina poczætkowa
+        
+        echo $a;
+        echo '<br/>';
+        echo $b;
+        echo '<br/>';
+        echo $h;
+         echo '<br/>';
+         echo $_SESSION['endOfView'];
+        echo '<br/>';
+        echo $_SESSION['startOfView'];
+        
        ?>
-     
      
         
     </head>
@@ -137,19 +175,37 @@ try{
         <div id="container">
           
             <div id="header">
-                 <h1>Terminarz</h1>
-   
-            </div>
+                 <h1>Terminarz - panel administartora</h1>
+             
+                    
+                       </div>
+           
             <div id='menu'>
                 
                   <?php
                         echo 'Witaj '.$_SESSION['name'].'  '
                                 . ''.$_SESSION['surename'];
+                        
+                        
                          ?>
-                    
-                <a href='logout.php'>wylogowanie</a>
                     <br/>
-                
+                    <a href='logout.php'>Wyloguj sie</a>
+                     <br/>
+                    <br/>
+                    <form method="post">
+                    <select id="view" name="view">
+                        <?php 
+                        for($i=1; $i<=$count; $i++){
+                            echo '<option>'.$vievs[$i].'</option>';
+                        }
+                        
+                        ?>
+                   
+                    </select>
+                         <br/>
+                        <br/>
+                        <input type="submit" value="ustaw widok" id="buttonadmin"/>
+                    </form>
                 
             </div>
           
@@ -158,15 +214,27 @@ try{
                 <table id="trueTable" border="5" width="100%" 
                        height=40%"" class="table-active table-responsive">
                     <tr>
-                          <td> <input class="btn btn-primary active" 
-                           type="submit" value="<<" id="buttonDay"/></td>
-                             <td> <input class="btn btn-primary active" 
-                           type="submit" value="<" id="buttonDay"/></td>
+                          <td colspan="2"> <input class="btn btn-primary active" 
+                           type="submit" value="<<" id="buttonDay"/>
+                           <input class="btn btn-primary active" 
+                           type="submit" value="<" id="buttonDay"/>
+                          </td>
+                             
                             <td colspan="5">Pole z opisem najbliszego spotkania</td>
-                            <td> <input class="btn btn-primary active" 
-                                        type="submit" value=">" id="buttonDay"/></td>
-                             <td colspan="2"> <input class="btn btn-primary active" 
-                                         type="submit" value=">>" id="buttonDay"/></td>
+                            <td colspan="2"> <input class="btn btn-primary active" 
+                                        type="submit" value=">" id="buttonDay"/>
+                            <input class="btn btn-primary active" 
+                                         type="submit" value=">>" id="buttonDay"/>
+                            </td>
+                            
+                            <?php 
+                                       
+                    echo '<td rowspan="'. ($SpanCol+1).'"><input class="btn btn-primary active" 
+                           type="submit" value="<<" id="buttonHour"
+                           onclick="changeHoursInc()" STYLE=height: '.$SpanCol.'</td>';
+                            ?>
+                            
+                             
                     </tr>
                     <tr id="cols">
                         
@@ -186,10 +254,7 @@ try{
                             </td>  ';
                             }
                        
-                          
-                    echo '<td rowspan="'. $SpanCol.'"><input class="btn btn-primary active" 
-                           type="submit" value="<<" id="buttonHour"
-                           onclick="changeHoursInc()" STYLE=height: '.$SpanCol.'</td>';
+                   
                                 
                        ?>
                      
@@ -340,6 +405,7 @@ try{
             </div>    
             
         </div>
+    
        
     </body>
 </html>
