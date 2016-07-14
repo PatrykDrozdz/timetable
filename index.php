@@ -18,9 +18,9 @@ if((isset($_SESSION['loged'])) && ($_SESSION['loged']==TRUE)){
 //stałe wartoßci domyslne
 ///////////////////////
 $start=0;//start petli
-$end=4*3;//koniec petli
+$end=4*13;//koniec petli
                       
-$h=14;//domyslna godzina poczætkowa
+$h=6;//domyslna godzina poczætkowa
 $check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
 $min = 0; //id minut
 ///////////////////////////////
@@ -152,23 +152,23 @@ try{
                     </tr>
                     <tr id="cols" class="table-active">
                         
-                        <td id="dayName"> Poniedziałek</td>
+                        <td id="dayName"> Pon</td>
                            
-                        <td id="dayName"> Wtorek </td>
+                        <td id="dayName"> Wt </td>
                              
-                        <td id="dayName"> Środa </td>
+                        <td id="dayName"> Śr </td>
                         
                      
-                        <td id="dayName"> Czwartek</td>
+                        <td id="dayName"> Czw</td>
                         
                       
-                        <td id="dayName"> Piątek</td>
+                        <td id="dayName"> Pt</td>
                    
                      
-                        <td id="dayName"> Sobota </td>
+                        <td id="dayName"> Sob </td>
                  
                      
-                        <td id="dayName"> Niedziela</td>
+                        <td id="dayName"> Nd</td>
                     </tr>
                     <?php 
                      

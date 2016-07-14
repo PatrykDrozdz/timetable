@@ -124,10 +124,10 @@ try{
           <?php 
          $start=0;//start petli
          $interval = 10;
-          $end=4*$interval;//koniec petli
+         $end=4*$interval;//koniec petli
                     
-                    $SpanCol = ($end/2)+1; 
-                    $h=14;//domyslna godzina poczætkowa
+        $SpanCol = ($end/2)+1; 
+        $h=14;//domyslna godzina poczætkowa
        ?>
      
      
@@ -145,7 +145,7 @@ try{
                 
                   <?php
                         echo 'Witaj '.$_SESSION['name'].'  '
-                                . ''.$_SESSION['surename'];
+                                .$_SESSION['surname'];
                          ?>
                     
                 <a href='logout.php'>wylogowanie</a>
@@ -198,23 +198,23 @@ try{
                     </tr>
                     <tr id="cols" class="table-active">
                         
-                        <td id="dayName"> Poniedziałek</td>
+                        <td id="dayName"> Pon</td>
                            
-                        <td id="dayName"> Wtorek </td>
+                        <td id="dayName"> Wt </td>
                              
-                        <td id="dayName"> Środa </td>
+                        <td id="dayName"> Śr </td>
                         
                      
-                        <td id="dayName"> Czwartek</td>
+                        <td id="dayName"> Czw</td>
                         
                       
-                        <td id="dayName"> Piątek</td>
+                        <td id="dayName"> Pt</td>
                    
                      
-                        <td id="dayName"> Sobota </td>
+                        <td id="dayName"> Sob </td>
                  
                      
-                        <td id="dayName"> Niedziela</td>
+                        <td id="dayName"> Nd</td>
                         
                     </tr>
                     <?php 

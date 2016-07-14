@@ -12,16 +12,21 @@
 
 $check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
 $min = 0; //id minut - stała nie do zmiany
+
+$monthCount = 1;
+$weekCount = 1;
 ///////////////////////////////
 //wybør widokøw do panelu administratora
 require_once 'connection.php';
 
 
 try{
-    
+   //pobieranie daty
    $date = date('Y-m-d');
    $day = date('w');
+   
 
+   
     $valid=true;
     
     $connection = new mysqli($host, $dbUser, $dbPass, $dbName);
@@ -33,7 +38,7 @@ try{
            
        if($valid==true){
            $query2 = "SELECT DATE_ADD('$date', INTERVAL -'$day' DAY)";
-            $connection->query($query2);
+
         
             $result2 =  $connection->query($query2);
             $row2 = $result2->fetch_assoc();
@@ -41,7 +46,7 @@ try{
            
             $mon = $row2["DATE_ADD('$date', INTERVAL -'$day' DAY)"];
           
-           
+           $result2->free_result();
            
            for($i=1; $i<=7; $i++){
              
@@ -50,10 +55,13 @@ try{
                $row22 = $res->fetch_assoc();
            
                $tab[$i] = $row22["DATE_ADD('$mon', INTERVAL +'$i' DAY)"];
+               
+               $res->free_result();
 
            }
+         
            /////////////////////////////////////////////
-           
+           //selekcja widokøw
            $query = "SELECT * FROM view";
            $result = $connection->query($query);
       
@@ -66,11 +74,155 @@ try{
                 $row12 = $res1->fetch_assoc();
             
                 $vievs[$i] = $row12['nameOfView'];
-         
+                
+                if($vievs[$i]=='basic'){
+                    $_SESSION['startOfView'] = $row12['startOfView'];
+                    $_SESSION['endOfView'] = $row12['endOfView'];
+                }
+                
+                $res1->free_result();
+                
+            }
+            //ustawianie widokøw(godzin)
+            if(isset($_POST['view'])){
+                    
+                $view = $_POST['view'];
+                    
+                $viewResult= $connection->query("SELECT * FROM view WHERE nameOfView = '$view'");
             
+            
+                if($connection->query("SELECT * FROM view WHERE nameOfView = '$view'")){          
+                    
+                    
+                    $rowViews = $viewResult->fetch_assoc();
+                
+                    $_SESSION['startOfView'] = $rowViews['startOfView'];
+                    $_SESSION['endOfView'] = $rowViews['endOfView'];
+            
+
+                    $viewResult->free_result(); 
+                          
+                }
+                    
             }
             
-         
+            if(isset($_POST['decMonth'])){
+                
+            
+                $qDecMonth= "SELECT DATE_ADD('$date', INTERVAL -'$monthCount' MONTH)";
+                $decMonth = $connection->query($qDecMonth);
+                $rowDecMonth = $decMonth->fetch_assoc();
+                
+                $DM = $rowDecMonth["DATE_ADD('$date', INTERVAL -'$monthCount ' MONTH)"];
+                $date = $DM;
+               
+                $decMonth->free_result();
+                
+                $qDWD = "SELECT DAYOFWEEK('$DM')";
+                $resDW = $connection->query($qDWD );
+                $rowDWD = $resDW->fetch_assoc();
+                
+                $DW = $rowDWD["DAYOFWEEK('$DM')"]-1;
+                
+                if($DW==0){
+                    $DW = 7;
+                }
+                $resDW->free_result();
+                
+                $qMD = "SELECT DATE_ADD('$DM', INTERVAL -'$DW' DAY)";
+                $resMD =  $connection->query($qMD);
+                $rowMD = $resMD->fetch_assoc();
+            
+           
+                $monDEC = $rowMD["DATE_ADD('$DM', INTERVAL -'$DW' DAY)"];
+                $resMD->free_result();
+                
+                for($i=1; $i<=7; $i++){
+             
+                    $resUltDM= $connection->query("SELECT DATE_ADD('$monDEC', INTERVAL +'$i' DAY)");
+               
+                    $rowUltDM= $resUltDM->fetch_assoc();
+           
+                    $tab[$i] = $rowUltDM["DATE_ADD('$monDEC', INTERVAL +'$i' DAY)"];
+               
+                    $resUltDM->free_result();
+
+                }
+                
+                
+            }
+            
+            if(isset($_POST['incMonth'])){
+               
+                
+                $qIncMonth= "SELECT DATE_ADD('$date', INTERVAL '$monthCount' MONTH)";
+                $incMonth = $connection->query($qIncMonth);
+                $rowIncMonth = $incMonth->fetch_assoc();
+                
+                $IM = $rowIncMonth["DATE_ADD('$date', INTERVAL '$monthCount' MONTH)"];
+                $date = $IM;
+                $incMonth->free_result();
+               
+                $qIWI = "SELECT DAYOFWEEK('$IM')";
+                $resIW = $connection->query($qIWI);
+                $rowIW = $resIW->fetch_assoc();
+                
+                $IW = $rowIW["DAYOFWEEK('$IM')"]-1;
+                
+                if($IW==0){
+                    $IW = 7;
+                }
+              
+                $resIW->free_result();
+                
+                $qMI = "SELECT DATE_ADD('$IM', INTERVAL -'$IW' DAY)";
+                $resMI =  $connection->query($qMI);
+                $rowMI = $resMI->fetch_assoc();
+
+                $monINC = $rowMI["DATE_ADD('$IM', INTERVAL -'$IW' DAY)"];
+                $resMI->free_result();
+                
+                for($i=1; $i<=7; $i++){
+             
+                    $resUltIM= $connection->query("SELECT DATE_ADD('$monINC', "
+                            . "INTERVAL +'$i' DAY)");
+               
+                    $rowUltIM=  $resUltIM->fetch_assoc();
+           
+                    $tab[$i] = $rowUltIM["DATE_ADD('$monINC', INTERVAL +'$i' DAY)"];
+               
+                     $resUltIM->free_result();
+
+                }
+                $incMon++;
+            }
+            
+            if(isset($_POST['decWeek'])){
+               
+                
+                $qDM = "SELECT DATE_ADD('$mon', INTERVAL -'$weekCount' WEEK)";
+                $resDM = $connection->query($qDM);
+                $rowDM = $resDM->fetch_assoc();
+                
+                $monD = $rowDM["DATE_ADD('$mon', INTERVAL -'$weekCount' WEEK)"];
+                
+                echo $monD;
+                
+                $resDM->free_result();
+                
+                for($i=1; $i<=7; $i++){
+                    
+                    $resWD = $connection->query
+                            ("SELECT DATE_ADD('$monD', INTERVAL +'$i' DAY");
+                   
+                  // $rowWD = $resWD->fetch_assoc();
+                    
+                }
+                
+                
+            }
+            
+
            ////////////////////////////////////////// 
          
         } else {
@@ -85,37 +237,23 @@ try{
 }catch(Exceptione $e){
     echo $e;
 }
-if(isset($_POST['view'])){
-     $view = $_POST['view'];
+
+    $start=0;//start petli
+    $a = $_SESSION['startOfView'];
+    $b = $_SESSION['endOfView'] + 1;
+    $interval = $b - $a;
+    $end=4*$interval;//koniec petli
+              
+    $SpanCol = ($end/2)+1; 
+    $h = $a;//domyslna godzina poczætkowa
+
     
-try{
- 
-
-    $connection2 = new mysqli($host, $dbUser, $dbPass, $dbName);
-        
-    if($connection2->connect_errno!=0){
-       echo "Error: ".$connection2->connect_errno;
-       
-    } else { 
-      if($connection2->query("SELECT * FROM view WHERE nameOfView = '$view'")){          
-            $viewResult = $connection2->query("SELECT * FROM view WHERE nameOfView = '$view'");
-                
-            $rowViews = $viewResult->fecth_assoc();
-                
-            $_SESSION['startOfView'] = $rowViews['startOfView'];
-            $_SESSION['endOfView'] = $rowViews['endOfView'];
-            
-            $a = $rowViews['startOfView'];
-            $b = $rowViews['endOfView'];
-            $h = $rowViews['endOfView'];
-      }    
-    }
-     $connection2->close();  
-
-}catch(Exceptione $e){
-    echo $e;
-}
-}
+    //////////////////////////////////////////////////////
+    
+    
+    
+    
+    /////////////////////////////////////////////////////
 ?>
 
 <!DOCTYPE html>
@@ -147,28 +285,7 @@ try{
         
         <link rel="stylesheet" href="css/style.css" type="text/css"/>
         
-       <?php 
-         $start=0;//start petli
-         $a = $_SESSION['startOfView'];
-         $b = $_SESSION['endOfView'];
-         $interval = $b - $a;
-         $end=4*$interval;//koniec petli
-              
-        $SpanCol = ($end/2)+1; 
-        $h = $_SESSION['startofView'];//domyslna godzina poczætkowa
-        
-        echo $a;
-        echo '<br/>';
-        echo $b;
-        echo '<br/>';
-        echo $h;
-         echo '<br/>';
-         echo $_SESSION['endOfView'];
-        echo '<br/>';
-        echo $_SESSION['startOfView'];
-        
-       ?>
-     
+
         
     </head>
     <body>
@@ -185,7 +302,7 @@ try{
                 
                   <?php
                         echo 'Witaj '.$_SESSION['name'].'  '
-                                . ''.$_SESSION['surename'];
+                                .$_SESSION['surname'];
                         
                         
                          ?>
@@ -213,26 +330,44 @@ try{
             <div id="table">
                 
                 <table id="trueTable" border="5" width="100%" 
-                       height=40%"" class="table-active table-responsive">
+                       height="40%" class="table-active  table-responsive">
                     <tr>
-                          <td colspan="2"> <input class="btn btn-primary active" 
-                           type="submit" value="<<" id="buttonDay"/>
+                      <?php  //wrtzuci¢ do zwykłego u«ytkownika
+                        ///////////////////////////////////////////////// ?>
+                          <td colspan="2"> 
+                              <form method="post">
+                              <input class="btn btn-primary active" 
+                           type="submit" value="<<" id="buttonDay" name="decMonth"/>
+                              </form>
+                              <form method="post">
                            <input class="btn btn-primary active" 
-                           type="submit" value="<" id="buttonDay"/>
+                           type="submit" value="<" id="buttonDay" name="decWeek"/>
+                           </form>
+                         
                           </td>
                              
-                            <td colspan="5">Pole z opisem najbliszego spotkania</td>
-                            <td colspan="2"> <input class="btn btn-primary active" 
-                                        type="submit" value=">" id="buttonDay"/>
-                            <input class="btn btn-primary active" 
-                                         type="submit" value=">>" id="buttonDay"/>
+                            <td colspan="5">Pole z opisem najbliszego 
+                                spotkania</td>
+                    
+                            <td colspan="2"> 
+                                <form method="post"> 
+                                    <input class="btn btn-primary active" 
+                                         type="submit" value=">>" id="buttonDay" 
+                                         name="incMonth"/>
+                                </form>
+                                <form method="post"> 
+                                    <input class="btn btn-primary active" 
+                                        type="submit" value=">" id="buttonDay" 
+                                        name="incWeek"/>
+                                </form>
                             </td>
-                            
+                        <?php  //////////////////////////////////////////////////// ?>      
                             <?php 
                                        
-                    echo '<td rowspan="'. ($SpanCol+1).'"><input class="btn btn-primary active" 
+                    echo '<td rowspan="'. ($SpanCol+1).'"><input 
+                            class="btn btn-primary active" 
                            type="submit" value="<<" id="buttonHour"
-                           onclick="changeHoursInc()" STYLE=height: '.$SpanCol.'</td>';
+                        </td>';
                             ?>
                             
                              
@@ -251,7 +386,8 @@ try{
                             for($i=1; $i<=7; $i++){
                              echo 
                             '<td>
-                                    <div id="date'.$i.'" class="date">'.$tab[$i].'</div>
+                                    <div id="date'.$i.'" '
+                                     . 'class="date">'.$tab[$i].'</div>
                             </td>  ';
                             }
                        
@@ -263,23 +399,23 @@ try{
                     </tr>
                     <tr id="cols" class="table-active">
                         
-                        <td id="dayName"> Poniedziałek</td>
+                        <td id="dayName"> Pon</td>
                            
-                        <td id="dayName"> Wtorek </td>
+                        <td id="dayName"> Wt </td>
                              
-                        <td id="dayName"> Środa </td>
+                        <td id="dayName"> Śr </td>
                         
                      
-                        <td id="dayName"> Czwartek</td>
+                        <td id="dayName"> Czw</td>
                         
                       
-                        <td id="dayName"> Piątek</td>
+                        <td id="dayName"> Pt</td>
                    
                      
-                        <td id="dayName"> Sobota </td>
+                        <td id="dayName"> Sob </td>
                  
                      
-                        <td id="dayName"> Niedziela</td>
+                        <td id="dayName"> Nd</td>
                         
                     </tr>
                     <?php 
@@ -323,23 +459,35 @@ try{
                            }
                            
                  echo''
-                     . ' <td id="'.$tabH[$i] .$min.'1" onclick=" click'.$tabH[$i] .$min.'1()"> '.($h-1).' '.$min.' 1</td>
+                     . ' <td id="'.$tabH[$i] .$min.'1" '
+                         . 'onclick=" click'.$tabH[$i] .$min.'1()"> '.($h-1).' '.$min.' 1</td>
                            
-                      <td id="'.$tabH[$i] .$min.'2" onclick=" click'.$tabH[$i] .$min.'2()"> '.($h-1).' '.$min.' 2</td>
-                       <td id="'.$tabH[$i] .$min.'3" onclick=" click'.$tabH[$i] .$min.'3()"> '.($h-1).' '.$min.' 3</td>
+                      <td id="'.$tabH[$i] .$min.'2" '
+                         . 'onclick=" click'.$tabH[$i] .$min.'2()"> '.($h-1).' '.$min.' 2</td>
+                       <td id="'.$tabH[$i] .$min.'3" '
+                         
+                         . 'onclick=" click'.$tabH[$i] .$min.'3()"> '.($h-1).' '.$min.' 3</td>
 
-                       <td id="'.$tabH[$i] .$min.'4" onclick=" click'.$tabH[$i] .$min.'4()"> '.($h-1).' '.$min.' 4</td>
+                       <td id="'.$tabH[$i] .$min.'4" '
+                         . 'onclick=" click'.$tabH[$i] .$min.'4()"> '.($h-1).' '.$min.' 4</td>
 
-                        <td id="'.$tabH[$i] .$min.'5" onclick=" click'.$tabH[$i] .$min.'5()"> '.($h-1).' '.$min.' 5</td>
+                        <td id="'.$tabH[$i] .$min.'5" onclick=" '
+                         . 'click'.$tabH[$i] .$min.'5()"> '.($h-1).' '.$min.' 5</td>
                    
                      
-                         <td id="'.$tabH[$i] .$min.'6" onclick=" click'.$tabH[$i] .$min.'6()"> '.($h-1).' '.$min.' 6</td>
-                        <td id="'.$tabH[$i] .$min.'7" onclick=" click'.$tabH[$i] .$min.'7()"> '.($h-1).' '.$min.' 7</td>';
+                         <td id="'.$tabH[$i] .$min.'6" '
+                         . 'onclick=" click'.$tabH[$i] .$min.'6()"> '.($h-1).' '.$min.' 6</td>
+                             
+                        <td id="'.$tabH[$i] .$min.'7" '
+                         . 'onclick=" click'.$tabH[$i] .$min.'7()"> '.($h-1).' '.$min.' 7</td>';
                                   
                         if($i==$SpanCol-2){
-                            echo '<td rowspan="'. $SpanCol.'"><input class="btn btn-primary active" 
+                            
+                            echo '<td rowspan="'. $SpanCol.'">
+                                <input class="btn btn-primary active" 
                            type="submit" value="<<" id="buttonHour"
                            onclick="changeHoursInc()" STYLE=height: '.$SpanCol.'</td>';
+                            
                                     }
                  
                echo       ' </tr>';
@@ -390,7 +538,7 @@ try{
                     
                     ?>
  
-               </table> 
+     </table> 
              
                     
             </div>

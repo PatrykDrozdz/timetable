@@ -42,7 +42,7 @@ if($connection->connect_errno!=0){
             $_SESSION['user'] = $row['userLogin'];
             $_SESSION['idusers'] = $row['idusers'];
             $_SESSION['name'] = $row['name'];
-            $_SESSION['suername'] = $row['suername'];
+            $_SESSION['surname'] = $row['surname'];
             $_SESSION['flag'] = $row['flag'];
             $flag = $row['flag'];
             $result->free_result();

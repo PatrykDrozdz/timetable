@@ -60,13 +60,13 @@
     font-size: 20px;
     text-align: center;
     background-color:  #1c1c1c;
+    padding: 20px;
 
 }
 
 #table2{
     height: 2700px;
     font-size: 20px;
-   
     text-align: center;
     background-color:  #1c1c1c;
     float: left;
@@ -86,7 +86,7 @@
 #trueTable{
     border: 10px;
     text-align: center;
-    padding: 50px;
+    padding: 5px;
     color: whitesmoke;
 }
 
@@ -145,8 +145,8 @@
 }
 
 #buttonDay{
-    width: 40px;
-    height: 50px;
+    width: 100px;
+    height: 30px;
 }
 #view{
    color: black;
@@ -172,6 +172,5 @@
 #buttonadmin{
     color: black;
 }
-
 
 

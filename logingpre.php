@@ -92,6 +92,8 @@
              </div>
                    
                     <div id="rightInfo">
+                           <br/>
+                        
                         Witamy na stronie logowania. <br/>
                         W celu założenia konta skontakyuj się z jednym z administratorów:
                         <br/>
