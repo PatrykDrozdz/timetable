@@ -251,13 +251,7 @@ try{
                                         . '</td>';
                              
                                 
-                                echo '<script> 
-                                     $(document).ready(function(){
-                                        $("#F'.$tabH[$i].$tabMin[$i].$j.'").click(function(){
-                                            $("#Meet'.$tabH[$i].$tabMin[$i].$j.'").slideToggle("slow");
-                                        });
-                                      });
-                                         </script>';
+                               
                                 
                                 if($info[$a]!=NULL){
                                     echo'<style>
@@ -265,6 +259,15 @@ try{
                                             background-Color: #AA0000;
                                         }
                                         </style>';
+                                    
+                                     echo '<script> 
+                                     $(document).ready(function(){
+                                        $("#F'.$tabH[$i].$tabMin[$i].$j.'").click(function(){
+                                            $("#Meet'.$tabH[$i].$tabMin[$i].$j.'").slideToggle("slow");
+                                        });
+                                      });
+                                         </script>';
+                                    
                                 }
                                 
                                 echo'<style>

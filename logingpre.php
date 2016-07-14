@@ -1,9 +1,7 @@
 
 <?php 
     session_start();
-    
   
-    
     if((isset($_SESSION['loged'])) && ($_SESSION['loged']==TRUE)){
         $flag = $_SESSION['flag'];
         if($flag==0){

@@ -15,6 +15,12 @@ $min = 0; //id minut - stała nie do zmiany
 
 $monthCount = 1;
 $weekCount = 1;
+
+$start=0;//start petli
+$end=4*13;//koniec petli
+                      
+$h=6;//domyslna godzina poczætkowa
+
 ///////////////////////////////
 //wybør widokøw do panelu administratora
 require_once 'connection.php';
@@ -224,6 +230,40 @@ try{
             
 
            ////////////////////////////////////////// 
+            
+            
+            
+            //wczytywanie spotkan na tablice głøwnæł
+           /////////////////////////////////////////
+           
+           $a=0;
+           for($i=$start; $i<$end; $i++){
+        
+               for($j=1; $j<=7; $j++){
+                   $POM = $h.$min.$j; 
+                    $resMeeting = $connection->query("SELECT * FROM meetings WHERE "
+                        . "idStart = '$POM '");
+               
+                    $rowMeeting = $resMeeting->fetch_assoc();
+                    $info[$a] = $rowMeeting['info'];
+                    $moreInfo = $rowMeeting['moreInfo'];
+
+                    $resMeeting->free_result();
+               
+                   $a++; 
+               }
+            
+                 if($i%4==0 ){     
+                        $h++;       
+                    }
+               
+            $min++;
+             if($min%4==0){
+             $min=0;
+                }
+           }
+           
+            
          
         } else {
             throw new Exception($connection->errno);
@@ -309,6 +349,7 @@ try{
                     <br/>
                     <a href='logout.php'>Wyloguj sie</a>
                      <br/>
+                     <a  href="makeAccount.php">załóż konto</a>
                     <br/>
                     <form method="post">
                     <select id="view" name="view">
