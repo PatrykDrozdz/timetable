@@ -25,6 +25,8 @@ $check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
 $min = 0; //id minut
 ///////////////////////////////
 //wybør widokøw do panelu administratora
+
+
 require_once 'connection.php';
 
 
@@ -38,7 +40,7 @@ try{
     $connection = new mysqli($host, $dbUser, $dbPass, $dbName);
         
     if($connection->connect_errno!=0){
-       echo "Error: ".$connection2->connect_errno;
+       echo "Error: ".$connection->connect_errno;
        
     } else {
            
@@ -52,7 +54,7 @@ try{
            
             $mon = $row2["DATE_ADD('$date', INTERVAL -'$day' DAY)"];
           
-            
+            $result2->free_result();
            
            for($i=1; $i<=7; $i++){
              
@@ -61,12 +63,46 @@ try{
                $row22 = $res->fetch_assoc();
            
                $tab[$i] = $row22["DATE_ADD('$mon', INTERVAL +'$i' DAY)"];
+               $res->free_result();
 
            }
       
+           //wczytywanie spotkan na tablice głøwnæł
+           /////////////////////////////////////////
+           
+           $a=0;
+           for($i=$start; $i<$end; $i++){
+        
+               for($j=1; $j<=7; $j++){
+                   $POM = $h.$min.$j; 
+                    $resMeeting = $connection->query("SELECT * FROM meetings WHERE "
+                        . "idStart = '$POM '");
+               
+                    $rowMeeting = $resMeeting->fetch_assoc();
+                    $info[$a] = $rowMeeting['info'];
+                    $moreInfo = $rowMeeting['moreInfo'];
+
+                    $resMeeting->free_result();
+               
+                   $a++; 
+               }
+            
+                 if($i%4==0 ){     
+                        $h++;       
+                    }
+               
+            $min++;
+             if($min%4==0){
+             $min=0;
+                }
+           }
+           
+           
+          
+           
          
         } else {
-            throw new Exception($connection2->errno);
+            throw new Exception($connection->errno);
        }
    
    } 
@@ -127,7 +163,8 @@ try{
       
             <div id="table">
                 
-                <table id="trueTable" border="5" width="100%" height=40%"" class="table-active table-responsive">
+                <table id="trueTable" border="5" width="100%" height="70%" 
+                    class="table-active table-responsive">
                    
                     <tr id="cols">
                         
@@ -171,10 +208,17 @@ try{
                         <td id="dayName"> Nd</td>
                     </tr>
                     <?php 
-                     
+                    
+                    $start=0;//start petli
+                    $end=4*13;//koniec petli
+                      
+                    $h=6;//domyslna godzina poczætkowa
+                    $check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
+                    $min = 0; //id minut
+                    $a=0;
                      
                     for($i=$start; $i<$end; $i++){
-
+                          
                            echo '<tr id="cols" class="table-active">';
                            
                            if($i%4==0 ){
@@ -192,25 +236,54 @@ try{
                                }
                            }
                         
-                           
-                           
-                 echo''
-                           . ' <td id="'.($h-1).$min.'1" onclick=" click'.($h-1).$min.'1()"> '.($h-1).' '.$min.' 1</td>
-                           
-                                <td id="'.($h-1).$min.'2" onclick=" click'.($h-1).$min.'2()"> '.($h-1).' '.$min.' 2</td>
-                                <td id="'.($h-1).$min.'3" onclick=" click'.($h-1).$min.'3()"> '.($h-1).' '.$min.' 3</td>
+                            $tabH[$i]=$h-1;
+                            $tabMin[$i]=$min;
+                            
+                            for($j=1; $j<=7; $j++){
+                                $tabId[$a] = $tabH[$i].$tabMin[$i].$j;//id wygenerowanych wierszy
+                                echo ' <td class="row"> '
+                                        . '<div  id="F'.$tabH[$i].$tabMin[$i].$j.'">'.$tabH[$i].$tabMin[$i].$j.'aaaaaaaaaaaaaaaa</div>'
+                                        . '<div  id="Meet'.$tabH[$i].$tabMin[$i].$j.'">
+                                            '.$info[$a].
+                                            '<br/>'.
+                                            $moreInfo[$a].'
+                                        </div>'
+                                        . '</td>';
+                             
+                                
+                                echo '<script> 
+                                     $(document).ready(function(){
+                                        $("#F'.$tabH[$i].$tabMin[$i].$j.'").click(function(){
+                                            $("#Meet'.$tabH[$i].$tabMin[$i].$j.'").slideToggle("slow");
+                                        });
+                                      });
+                                         </script>';
+                                
+                                if($info[$a]!=NULL){
+                                    echo'<style>
+                                     #F'.$tabH[$i].$tabMin[$i].$j.'{
+                                            background-Color: #AA0000;
+                                        }
+                                        </style>';
+                                }
+                                
+                                echo'<style>
+                                       
+                                        
+                                        #Meet'.$tabH[$i].$tabMin[$i].$j.'{
+                                            display: none;
+                                            color: black;
+                                            background-color: #e5eecc;
+                                        }
+                                    </style>';
+                                
+                                $a++;
+                            }
+                            
+                  
+     
+                   echo'    </tr>';
 
-                                 <td id="'.($h-1).$min.'4" onclick=" click'.($h-1).$min.'4()"> '.($h-1).' '.$min.' 4</td>
-
-                               <td id="'.($h-1).$min.'5" onclick=" click'.($h-1).$min.'5()"> '.($h-1).' '.$min.' 5</td>
-                   
-                     
-                                <td id="'.($h-1).$min.'6" onclick=" click'.($h-1).$min.'6()"> '.($h-1).' '.$min.' 6</td>
-                 
-                     
-                                 <td id="'.($h-1).$min.'7" onclick=" click'.($h-1).$min.'7()"> '.($h-1).' '.$min.' 7</td>
-                       </tr>';
-       
                  
                      $min++;
                       if($min%4==0){
@@ -219,11 +292,11 @@ try{
                      
                       }
                       
-                    
+               
                     ?>
  
                </table> 
-             
+          
                     
             </div>
         

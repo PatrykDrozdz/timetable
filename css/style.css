@@ -9,7 +9,7 @@
 
     background:  url("broken_noise.png");/*(from http://subtlepatterns.com/) */
     font-family: "Lucida Console", Monaco, monospace;
-    height: 3000px;
+    height: 4000px;
     color: #white
    
     
@@ -56,11 +56,11 @@
 }
 
 #table{
-    height: 2700px;
+    height: 3500px;
     font-size: 20px;
     text-align: center;
     background-color:  #1c1c1c;
-    padding: 20px;
+    padding: 10px;
 
 }
 
@@ -173,4 +173,8 @@
     color: black;
 }
 
-
+.row{
+    padding: 5px;
+    font-size: 15px;
+    text-align: left;
+}

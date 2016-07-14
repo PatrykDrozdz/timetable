@@ -156,8 +156,8 @@ try{
           
             <div id="table">
                 
-                <table id="trueTable" border="5" width="100%" 
-                       height=40%"" class="table-active table-responsive">
+             <table id="trueTable" border="5" width="100%" height="50%" 
+                    class="table-active table-responsive">
                     <tr>
                           <td> <input class="btn btn-primary active" 
                            type="submit" value="<<" id="buttonDay"/></td>
@@ -218,22 +218,17 @@ try{
                         
                     </tr>
                     <?php 
-                    
-                   
+
+                    $start=0;//start petli
+                    $end=4*13;//koniec petli
+                      
+                    $h=6;//domyslna godzina poczætkowa
+                    $check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
+                    $min = 0; //id minut
+                    $a=0;
                      
-                    function changeHoursInc(){
-                        for($i=start; $i<$end; $i++){
-                            $tabH[$i] = $tabH[$i] + $interval;
-                            echo $tabH[$i];
-                        }
-                        
-                    }
-
-
-
-
                     for($i=$start; $i<$end; $i++){
-
+                          
                            echo '<tr id="cols" class="table-active">';
                            
                            if($i%4==0 ){
@@ -251,69 +246,54 @@ try{
                                }
                            }
                         
-                           $tabH[$i] = $h-1;
-                           
-                           if($tabH[$i]>23){
-                               $tabH[$i]=0;
-                           }
-                           
-                 echo''
-                     . ' <td id="'.$tabH[$i] .$min.'1" onclick=" click'.$tabH[$i] .$min.'1()"> '.($h-1).' '.$min.' 1</td>
-                           
-                      <td id="'.$tabH[$i] .$min.'2" onclick=" click'.$tabH[$i] .$min.'2()"> '.($h-1).' '.$min.' 2</td>
-                       <td id="'.$tabH[$i] .$min.'3" onclick=" click'.$tabH[$i] .$min.'3()"> '.($h-1).' '.$min.' 3</td>
+                            $tabH[$i]=$h-1;
+                            $tabMin[$i]=$min;
+                            
+                            for($j=1; $j<=7; $j++){
+                                $tabId[$a] = $tabH[$i].$tabMin[$i].$j;//id wygenerowanych wierszy
+                                echo ' <td class="row"> '
+                                        . '<div  id="F'.$tabH[$i].$tabMin[$i].$j.'">'.$tabH[$i].$tabMin[$i].$j.'aaaaaaaaaaaaaaaa</div>'
+                                        . '<div  id="Meet'.$tabH[$i].$tabMin[$i].$j.'">
+                                            '.$info[$a].
+                                            '<br/>'.
+                                            $moreInfo[$a].'
+                                        </div>'
+                                        . '</td>';
+                             
+                                
+                                echo '<script> 
+                                     $(document).ready(function(){
+                                        $("#F'.$tabH[$i].$tabMin[$i].$j.'").click(function(){
+                                            $("#Meet'.$tabH[$i].$tabMin[$i].$j.'").slideToggle("slow");
+                                        });
+                                      });
+                                         </script>';
+                                
+                                if($info[$a]!=NULL){
+                                    echo'<style>
+                                     #F'.$tabH[$i].$tabMin[$i].$j.'{
+                                            background-Color: #AA0000;
+                                        }
+                                        </style>';
+                                }
+                                
+                                echo'<style>
+                                       
+                                        
+                                        #Meet'.$tabH[$i].$tabMin[$i].$j.'{
+                                            display: none;
+                                            color: black;
+                                            background-color: #e5eecc;
+                                        }
+                                    </style>';
+                                
+                                $a++;
+                            }
+                            
+                  
+     
+                   echo'    </tr>';
 
-                       <td id="'.$tabH[$i] .$min.'4" onclick=" click'.$tabH[$i] .$min.'4()"> '.($h-1).' '.$min.' 4</td>
-
-                        <td id="'.$tabH[$i] .$min.'5" onclick=" click'.$tabH[$i] .$min.'5()"> '.($h-1).' '.$min.' 5</td>
-                   
-                     
-                         <td id="'.$tabH[$i] .$min.'6" onclick=" click'.$tabH[$i] .$min.'6()"> '.($h-1).' '.$min.' 6</td>
-                        <td id="'.$tabH[$i] .$min.'7" onclick=" click'.$tabH[$i] .$min.'7()"> '.($h-1).' '.$min.' 7</td>';
-                                  
-                        if($i==$SpanCol-2){
-                            echo '<td rowspan="'. $SpanCol.'"><input class="btn btn-primary active" 
-                           type="submit" value="<<" id="buttonHour"
-                           onclick="changeHoursInc()" STYLE=height: '.$SpanCol.'</td>';
-                                    }
-                 
-               echo       ' </tr>';
-            //poni«sze skrypty przydadzæ sie przy dodawaniu wydarzen     
-            echo ' <script>
-            function click'.$tabH[$i] .$min.'1(){
-                document.getElementById("'.$tabH[$i] .$min.'1").innerHTML="click";
-            }
-            </script>';
-            echo ' <script>
-            function click'.$tabH[$i] .$min.'2(){
-                document.getElementById("'.$tabH[$i] .$min.'2").innerHTML="click";
-            }
-            </script>';
-            echo ' <script>
-            function click'.$tabH[$i] .$min.'3(){
-                document.getElementById("'.$tabH[$i] .$min.'3").innerHTML="click";
-            }
-            </script>';
-            echo ' <script>
-            function click'.$tabH[$i] .$min.'4(){
-                document.getElementById("'.$tabH[$i] .$min.'4").innerHTML="click";
-            }
-            </script>';
-             echo ' <script>
-            function click'.($h-1).$min.'5(){
-                document.getElementById("'.$tabH[$i].$min.'5").innerHTML="click";
-            }
-            </script>';
-            echo ' <script>
-            function click'.$tabH[$i] .$min.'6(){
-                document.getElementById("'.$tabH[$i] .$min.'6").innerHTML="click";
-            }
-            </script>';
-             echo ' <script>
-            function click'.$tabH[$i] .$min.'7(){
-                document.getElementById("'.$tabH[$i] .$min.'7").innerHTML="click";
-            }
-            </script>';
                  
                      $min++;
                       if($min%4==0){
@@ -321,9 +301,7 @@ try{
                       }
                      
                       }
-                      
-                    
-                    ?>
+                      ?>
  
                </table> 
              
