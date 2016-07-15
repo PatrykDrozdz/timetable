@@ -14,7 +14,7 @@ if((isset($_SESSION['loged'])) && ($_SESSION['loged']==TRUE)){
 }
 
 
-
+   
 //stałe wartoßci domyslne
 ///////////////////////
 $start=0;//start petli
@@ -23,6 +23,7 @@ $end=4*13;//koniec petli
 $h=6;//domyslna godzina poczætkowa
 $check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
 $min = 0; //id minut
+
 ///////////////////////////////
 //wybør widokøw do panelu administratora
 
@@ -76,15 +77,18 @@ try{
                for($j=1; $j<=7; $j++){
                    $POM = $h.$min.$j; 
                     $resMeeting = $connection->query("SELECT * FROM meetings WHERE "
-                        . "idStart = '$POM '");
+                        . "idStart = '$POM ' AND day='$tab[$j]'");
                
                     $rowMeeting = $resMeeting->fetch_assoc();
                     $info[$a] = $rowMeeting['info'];
-                    $moreInfo = $rowMeeting['moreInfo'];
-
-                    $resMeeting->free_result();
+                    $moreInfo[$a] = $rowMeeting['moreInfo'];
+                    $finiszColor[$a] = $rowMeeting['idEnd'];
+                    $timeLast[$a] = $rowMeeting['timeLast'];
+                    
+                   
                
-                   $a++; 
+                    $resMeeting->free_result(); 
+                    $a++; 
                }
             
                  if($i%4==0 ){     
@@ -126,7 +130,7 @@ try{
             <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+    <meta http-equiv="Refresh" content="60"/>
     
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <!-- Bootstrap -->
@@ -216,6 +220,10 @@ try{
                     $check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
                     $min = 0; //id minut
                     $a=0;
+                    
+                    $checking=0;
+                    $adding=0;
+                    $s=0;
                      
                     for($i=$start; $i<$end; $i++){
                           
@@ -240,20 +248,23 @@ try{
                             $tabMin[$i]=$min;
                             
                             for($j=1; $j<=7; $j++){
-                                $tabId[$a] = $tabH[$i].$tabMin[$i].$j;//id wygenerowanych wierszy
-                                echo ' <td class="row"> '
-                                        . '<div  id="F'.$tabH[$i].$tabMin[$i].$j.'">'.$tabH[$i].$tabMin[$i].$j.'aaaaaaaaaaaaaaaa</div>'
-                                        . '<div  id="Meet'.$tabH[$i].$tabMin[$i].$j.'">
-                                            '.$info[$a].
-                                            '<br/>'.
-                                            $moreInfo[$a].'
-                                        </div>'
-                                        . '</td>';
-                             
-                                
-                               
-                                
+                                $tabId[$a] = 
+                               $tabH[$i].$tabMin[$i].$j;//id wygenerowanych wierszy
                                 if($info[$a]!=NULL){
+                                echo ' <td class="row '.$tabH[$i].$tabMin[$i].$j.'" '
+                                        . 'rowspan="'.(4*$timeLast[$a]).'"'
+                                        . 'id="F'.$tabH[$i].$tabMin[$i].$j.'"> '
+                                        . '<div  id="F'.$tabH[$i].$tabMin[$i].$j.'"  '
+                                        . 'class="head">'.
+                                        $info[$a].$tabId[$a] .'</div>'
+                                        . '<div  id="Meet'.$tabH[$i].$tabMin[$i].$j.'" 
+                                        >
+                                            <br/>'.
+                                            $moreInfo[$a].'
+                                        </div>
+                                        </td>';
+
+                                    
                                     echo'<style>
                                      #F'.$tabH[$i].$tabMin[$i].$j.'{
                                             background-Color: #AA0000;
@@ -266,13 +277,11 @@ try{
                                             $("#Meet'.$tabH[$i].$tabMin[$i].$j.'").slideToggle("slow");
                                         });
                                       });
-                                         </script>';
-                                    
-                                }
+                                   
                                 
+                                      
+                                         </script>';
                                 echo'<style>
-                                       
-                                        
                                         #Meet'.$tabH[$i].$tabMin[$i].$j.'{
                                             display: none;
                                             color: black;
@@ -280,7 +289,39 @@ try{
                                         }
                                     </style>';
                                 
-                                $a++;
+                                
+                                        $checking++;
+                                        
+                                } else  {
+                                    if($checking>0){
+                                        echo ' <td >'.$tabId[$a].'</td>';
+                                        
+                                       /* if($adding){
+                                            break;
+                                        }
+                                        /*if($adding==7){
+                                            continue;
+                                            $adding=0;
+                                        }*/
+                                        $adding++;
+                                    } else if($checking==0) {
+                                         echo ' <td >'.$tabId[$a].'</td>';
+                                    }
+                                   
+                                   
+                                   //do duzego dopracowania
+                                   ////////////////////////////////////////////
+                                   
+                                   while($s<(4*$timeLast[$a])){
+                                     
+                                       $s++;
+                                   }
+                                 if($s==(4*$timeLast[$a])-1){
+                                     $s=0;
+                                 }
+                               ////////////////////////////////////////////////  
+                                }
+                                 $a++;
                             }
                             
                   
