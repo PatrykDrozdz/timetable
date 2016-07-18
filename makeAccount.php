@@ -86,7 +86,75 @@
                 
                 $surname = $_POST['surname'];
              
+             
+                if(ctype_alnum($surname)==FALSE){
+                    $valid = FALSE;
+                    $_SESSION['error_name'] = "Imie nie moze miec polskich znakow";
+                }
+             
+                if(strlen($surname)<2 || strlen($surname)>20){
+                    $valid = FALSE;
+                    $_SESSION['error_name'] = "Imiemoze miec od 3 do 20 znakow";
+               
+                }
                 
+                $email = $_POST['email'];
+                
+                $email_san = filter_var($email, FILTER_VALIDATE_EMAIL);
+                
+                if((filter_var($email_san, FILTER_VALIDATE_EMAIL)==FALSE) ||
+                        $email_san!=$email){
+                            $valid = FALSE;
+                            $_SESSION['error_email'] = "Podaj własciwy adres e-mail";
+                        }
+                        
+                 $flagStat=$_POST['flagStatus'];    
+                
+                 if($flagStat=='admin'){
+                     $flag = 1;
+                 }else if($flagStat=='user'){
+                     $flag=0;
+                 }
+                 
+                 $section = $_POST['section'];
+                 
+                 $sectionResult = $connection->query("SELECT * FROM sections WHERE"
+                         . "name='$section'");
+                 
+                 $rowSections = $sectionResult->fetch_assoc();
+                 
+                 $idsections = $rowSections['idsections'];
+                 
+                 $sectionResult->free_result();
+                 
+                 $checkRes = $connection->query("SELECT * FROM users WHERE email='$email' "
+                         . "AND userLogin='$login'");
+                 
+                 if(!$checkRes){
+                     throw new Exception($connection->errno());
+                 }
+                 
+                 $usersCount = $checkRes = num_rows;
+                 
+                 if($usersCount>0){
+                     $valid = FALSE;
+                     $_SESSION['error_login'] = "Uzytkownik o  podanym emailu "
+                             . "lub hasle jest juz w bazie";
+                 }
+                 
+                 if($valid==TRUE){
+                     if($connection->query("INSERT INTO users(idusers, sections_idsections, "
+                             . "userLogin,usersPass, name, surname, email, flag) "
+                             . "VALUES (NULL, (SELECT * FROM sections WHERE"
+                         . "name='$section'), "
+                             . "'$login', '$pass_hash', '$name', '$surname', '$email', '$flag'")){
+                         $_SESSION['made'] = "Konto zostało dodane do bazy";
+                         header('Location: adminInterface.php');
+                     }else{
+                         echo 'blad';
+                     }
+                 }
+                 
             }
         }
         $connection->close();
@@ -102,7 +170,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-     <meta http-equiv="Refresh" content="60"/>
+   
     
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <!-- Bootstrap -->
@@ -146,22 +214,54 @@
                 
             </div>
           
-            <div id="make">
+             <div id="make">
                 <form method="post">
                     <br/>
                   login: <br/> <input type="text" name="login" id="textfield"/>
+                  
+                  <?php 
+                    if(isset($_SESSION['error_login'])){
+                        echo '<div class="error">'.$_SESSION['error_login'].'</div>';
+                        unset($_SESSION['error_login']);
+                    }
+                  ?>
+                  
                   <br/>
                     <br/>
                  hasło:<br/> <input type="password" name="pass" id="textfield"/>
+                  <?php 
+                    if(isset($_SESSION['error_pass'])){
+                        echo '<div class="error">'.$_SESSION['error_pass'].'</div>';
+                        unset($_SESSION['error_pass']);
+                    }
+                  ?>
                       <br/>
                     <br/>
                     imię:<br/> <input type="text" name="name" id="textfield"/>
+                     <?php 
+                    if(isset($_SESSION['error_name'])){
+                        echo '<div class="error">'.$_SESSION['error_name'].'</div>';
+                        unset($_SESSION['error_name']);
+                    }
+                  ?>
                        <br/>
                     <br/>
                 nazwisko: <br/><input type="text" name="surname" id="textfield"/>
+                 <?php 
+                    if(isset($_SESSION['error_surname'])){
+                        echo '<div class="error">'.$_SESSION['error_surname'].'</div>';
+                        unset($_SESSION['error_surname']);
+                    }
+                  ?>
                        <br/>
                     <br/>
                     e-mail: <br/><input type="text" name="email" id="textfield"/>
+                    <?php 
+                    if(isset($_SESSION['error_email'])){
+                        echo '<div class="error">'.$_SESSION['error_email'].'</div>';
+                        unset($_SESSION['error_email']);
+                    }
+                  ?>
                        <br/>
                     <br/>
                     status: <br/> <select name="flagStatus" id="textfield">
@@ -170,7 +270,7 @@
                             </select>
                        <br/>
                     <br/>
-                    sekcja: <br/> <select name="name" id="textfield">
+                    sekcja: <br/> <select name="section" id="textfield">
                         
                         <?php 
                         for($i=1; $i<=$count; $i++){
@@ -180,6 +280,13 @@
                         ?>
 
                             </select>
+                      <?php 
+                    if(isset($_SESSION['made'])){
+                        echo '<div class="possitive">'.$_SESSION['made'].'</div>';
+                        unset($_SESSION['made']);
+                    }
+                  ?>
+                  
                        <br/>
                     <br/>
                     <input type="submit" value="dodaj użytkownika" id="buttonadmin"/>

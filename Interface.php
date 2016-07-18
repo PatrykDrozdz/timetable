@@ -101,7 +101,7 @@ try{
             <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-     <meta http-equiv="Refresh" content="60"/>
+ 
     
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <!-- Bootstrap -->
@@ -185,6 +185,14 @@ try{
                             '<td>
                                     <div id="date'.$i.'" class="date">'.$tab[$i].'</div>
                             </td>  ';
+                             
+                               echo '
+                                  <style> 
+                                  #date'.$day.'{
+                                       background-Color: #AA0000;
+                                   }
+                                   </style>';
+                             
                             }
                        
                           
@@ -198,23 +206,75 @@ try{
                     </tr>
                     <tr id="cols" class="table-active">
                         
-                        <td id="dayName"> Pon</td>
+                          <td class="dayName" id="pn"> Pon</td>
                            
-                        <td id="dayName"> Wt </td>
+                        <td class="dayName" id="wt"> Wt </td>
                              
-                        <td id="dayName"> Śr </td>
+                        <td class="dayName" id="sr"> Śr </td>
                         
                      
-                        <td id="dayName"> Czw</td>
+                        <td class="dayName" id="czw"> Czw</td>
                         
                       
-                        <td id="dayName"> Pt</td>
+                        <td class="dayName" id="pt"> Pt</td>
                    
                      
-                        <td id="dayName"> Sob </td>
+                        <td class="dayName" id="sob"> Sob </td>
                  
                      
-                        <td id="dayName"> Nd</td>
+                        <td class="dayName" id="nd"> Nd</td>
+                        
+                        <?php 
+                        if($day==1){
+                            echo' <style> 
+                            #pn{
+                                background-Color: #AA0000;
+                               }
+                                  </style> ';
+                            }
+                              if($day==2){
+                            echo' <style> 
+                            #wt{
+                                background-Color: #AA0000;
+                               }
+                                  </style> ';
+                            }
+                              if($day==3){
+                            echo' <style> 
+                            #sr{
+                                background-Color: #AA0000;
+                               }
+                                  </style> ';
+                            }
+                              if($day==4){
+                            echo' <style> 
+                            #czw{
+                                background-Color: #AA0000;
+                               }
+                                  </style> ';
+                            }
+                              if($day==5){
+                            echo' <style> 
+                            #pt{
+                                background-Color: #AA0000;
+                               }
+                                  </style> ';
+                            }
+                              if($day==6){
+                            echo' <style> 
+                            #sob{
+                                background-Color: #AA0000;
+                               }
+                                  </style> ';
+                            }
+                              if($day==7){
+                            echo' <style> 
+                            #nd{
+                                background-Color: #AA0000;
+                               }
+                                  </style> ';
+                            }
+                          ?>
                         
                     </tr>
                     <?php 

@@ -73,36 +73,51 @@ try{
            
            $a=0;
            for($i=$start; $i<$end; $i++){
+               if($i%4==0 ){     
+                        $h++;       
+                    }
+              
+                        
+                $tabH[$i]=$h-1;
+                $tabMin[$i]=$min;
         
                for($j=1; $j<=7; $j++){
-                   $POM = $h.$min.$j; 
+                   $POM = $tabH[$i].$tabMin[$i].$j;//$h.$min.$j; 
                     $resMeeting = $connection->query("SELECT * FROM meetings WHERE "
                         . "idStart = '$POM ' AND day='$tab[$j]'");
                
                     $rowMeeting = $resMeeting->fetch_assoc();
                     $info[$a] = $rowMeeting['info'];
                     $moreInfo[$a] = $rowMeeting['moreInfo'];
-                    $finiszColor[$a] = $rowMeeting['idEnd'];
+                    $idStart[$a] = $rowMeeting['idStart'];
+                    $idEnd[$a] = $rowMeeting['idEnd'];
                     $timeLast[$a] = $rowMeeting['timeLast'];
                     
-                   
+                    $tabId[$a] = $tabH[$i].$tabMin[$i].$j;//id wygenerowanych komørek
+                    
+                    settype($tabId[$a], 'integer');
+                    settype($idStart[$a], 'integer');
+                    settype($idEnd[$a], 'integer');
                
+                    
+                    if($tabId[$a]>$idStart[$a] && $tabId[$a]<$idEnd[$a]){
+                      echo $tabId[$a];
+                      echo '<br/>';
+                    }
                     $resMeeting->free_result(); 
                     $a++; 
                }
             
-                 if($i%4==0 ){     
-                        $h++;       
-                    }
+                 
                
-            $min++;
-             if($min%4==0){
-             $min=0;
+                $min++;
+                if($min%4==0){
+                    $min=0;
                 }
            }
            
+
            
-          
            
          
         } else {
@@ -118,6 +133,9 @@ try{
     echo $e;
 }
    
+
+
+
 ?>
 
 
@@ -130,7 +148,7 @@ try{
             <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Refresh" content="60"/>
+   <?php  //<meta http-equiv="Refresh" content="60"/> ?>
     
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <!-- Bootstrap -->
@@ -186,6 +204,14 @@ try{
                             '<td>
                                     <div id="date'.$i.'" class="date">'.$tab[$i].'</div>
                             </td>  ';
+               
+                             echo '
+                                  <style> 
+                                  #date'.$day.'{
+                                       background-Color: #AA0000;
+                                   }
+                                   </style>';
+                            
                             }
                        
                        ?>
@@ -193,23 +219,78 @@ try{
                     </tr>
                     <tr id="cols" class="table-active">
                         
-                        <td id="dayName"> Pon</td>
+                        <td class="dayName" id="pn"> Pon</td>
                            
-                        <td id="dayName"> Wt </td>
+                        <td class="dayName" id="wt"> Wt </td>
                              
-                        <td id="dayName"> Śr </td>
+                        <td class="dayName" id="sr"> Śr </td>
                         
                      
-                        <td id="dayName"> Czw</td>
+                        <td class="dayName" id="czw"> Czw</td>
                         
                       
-                        <td id="dayName"> Pt</td>
+                        <td class="dayName" id="pt"> Pt</td>
                    
                      
-                        <td id="dayName"> Sob </td>
+                        <td class="dayName" id="sob"> Sob </td>
                  
                      
-                        <td id="dayName"> Nd</td>
+                        <td class="dayName" id="nd"> Nd</td>
+                        
+                        <?php 
+                        if($day==1){
+                            echo' <style> 
+                            #pn{
+                                background-Color: #AA0000;
+                               }
+                                  </style> ';
+                            }
+                              if($day==2){
+                            echo' <style> 
+                            #wt{
+                                background-Color: #AA0000;
+                               }
+                                  </style> ';
+                            }
+                              if($day==3){
+                            echo' <style> 
+                            #sr{
+                                background-Color: #AA0000;
+                               }
+                                  </style> ';
+                            }
+                              if($day==4){
+                            echo' <style> 
+                            #czw{
+                                background-Color: #AA0000;
+                               }
+                                  </style> ';
+                            }
+                              if($day==5){
+                            echo' <style> 
+                            #pt{
+                                background-Color: #AA0000;
+                               }
+                                  </style> ';
+                            }
+                              if($day==6){
+                            echo' <style> 
+                            #sob{
+                                background-Color: #AA0000;
+                               }
+                                  </style> ';
+                            }
+                              if($day==7){
+                            echo' <style> 
+                            #nd{
+                                background-Color: #AA0000;
+                               }
+                                  </style> ';
+                            }
+                          
+                            
+                        ?>
+                        
                     </tr>
                     <?php 
                     
@@ -218,12 +299,7 @@ try{
                       
                     $h=6;//domyslna godzina poczætkowa
                     $check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
-                    $min = 0; //id minut
                     $a=0;
-                    
-                    $checking=0;
-                    $adding=0;
-                    $s=0;
                      
                     for($i=$start; $i<$end; $i++){
                           
@@ -244,20 +320,22 @@ try{
                                }
                            }
                         
-                            $tabH[$i]=$h-1;
-                            $tabMin[$i]=$min;
-                            
-                            for($j=1; $j<=7; $j++){
-                                $tabId[$a] = 
-                               $tabH[$i].$tabMin[$i].$j;//id wygenerowanych wierszy
+                           
+                     
+                        
+                           
+                                for($j=1; $j<=7; $j++){
+
+                                
                                 if($info[$a]!=NULL){
-                                echo ' <td class="row '.$tabH[$i].$tabMin[$i].$j.'" '
-                                        . 'rowspan="'.(4*$timeLast[$a]).'"'
-                                        . 'id="F'.$tabH[$i].$tabMin[$i].$j.'"> '
-                                        . '<div  id="F'.$tabH[$i].$tabMin[$i].$j.'"  '
+                                   
+                                echo ' <td class="row"'
+                                       .'rowspan="'.(4*$timeLast[$a]). '"'
+                                        . 'id="F'.$tabId[$a].'"> '
+                                        . '<div  id="F'.$tabId[$a].'"  '
                                         . 'class="head">'.
                                         $info[$a].$tabId[$a] .'</div>'
-                                        . '<div  id="Meet'.$tabH[$i].$tabMin[$i].$j.'" 
+                                        . '<div  id="Meet'.$tabId[$a].'" 
                                         >
                                             <br/>'.
                                             $moreInfo[$a].'
@@ -266,73 +344,48 @@ try{
 
                                     
                                     echo'<style>
-                                     #F'.$tabH[$i].$tabMin[$i].$j.'{
+                                     #F'.$tabId[$a].'{
                                             background-Color: #AA0000;
+                                        }
+                                        
+
+                                    #Meet'.$tabId[$a].'{
+                                            display: none;
+                                            color: black;
+                                            background-color: #e5eecc;
                                         }
                                         </style>';
                                     
                                      echo '<script> 
                                      $(document).ready(function(){
-                                        $("#F'.$tabH[$i].$tabMin[$i].$j.'").click(function(){
-                                            $("#Meet'.$tabH[$i].$tabMin[$i].$j.'").slideToggle("slow");
+                                        $("#F'.$tabId[$a].'").click(function(){
+                                            $("#Meet'.$tabId[$a].'").slideToggle("slow");
                                         });
                                       });
-                                   
-                                
-                                      
+
                                          </script>';
-                                echo'<style>
-                                        #Meet'.$tabH[$i].$tabMin[$i].$j.'{
-                                            display: none;
-                                            color: black;
-                                            background-color: #e5eecc;
-                                        }
-                                    </style>';
-                                
-                                
-                                        $checking++;
+                                    
+
+                                } else { 
+                                   
+                                        echo ' <td id="F'.$tabId[$a].'" >'.$tabId[$a].'</td>';
                                         
-                                } else  {
-                                    if($checking>0){
-                                        echo ' <td >'.$tabId[$a].'</td>';
-                                        
-                                       /* if($adding){
-                                            break;
+                                        if($idEnd[$a]==$tabId[$a]){
+                                             echo'<style>
+                                     #F'.$idEnd[$a].'{
+                                            background-Color: #AA0000;
+                                        }</style>';
                                         }
-                                        /*if($adding==7){
-                                            continue;
-                                            $adding=0;
-                                        }*/
-                                        $adding++;
-                                    } else if($checking==0) {
-                                         echo ' <td >'.$tabId[$a].'</td>';
-                                    }
-                                   
-                                   
-                                   //do duzego dopracowania
-                                   ////////////////////////////////////////////
-                                   
-                                   while($s<(4*$timeLast[$a])){
-                                     
-                                       $s++;
-                                   }
-                                 if($s==(4*$timeLast[$a])-1){
-                                     $s=0;
-                                 }
-                               ////////////////////////////////////////////////  
+                                    
                                 }
+                              
                                  $a++;
-                            }
                             
+                            }
                   
      
-                   echo'    </tr>';
+                             echo'    </tr>';
 
-                 
-                     $min++;
-                      if($min%4==0){
-                          $min=0;
-                      }
                      
                       }
                       
