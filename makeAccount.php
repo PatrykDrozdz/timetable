@@ -59,12 +59,12 @@
             
                 if(strlen($pass)<5 || strlen($pass)>10){
                     $valid=FALSE;
-                    $_SESSION['error_pass'] = "Login musi miec od 5 do 10 znakow";
+                    $_SESSION['error_pass'] = "Hasło musi miec od 5 do 10 znakow";
                 }
             
                 if(ctype_alnum($pass)==FALSE){
                     $valid = FALSE;
-                    $_SESSION['error_pass'] = "Login nie moze miec polskich znakow";
+                    $_SESSION['error_pass'] = "Hasło nie moze miec polskich znakow";
                 }
                 
                 //hashowanie hasła
@@ -124,7 +124,7 @@
                  $rowSections = $sectionResult->fetch_assoc();
                  
                  $idsections = $rowSections['idsections'];
-                 
+                 echo $idsections ;
                  $sectionResult->free_result();
                  
                  $checkRes = $connection->query("SELECT * FROM users WHERE email='$email' "
@@ -141,18 +141,21 @@
                      $_SESSION['error_login'] = "Uzytkownik o  podanym emailu "
                              . "lub hasle jest juz w bazie";
                  }
+       
+                 
+                 $insertQuery = "INSERT INTO users(idusers, sections_idsections"
+                             . "userLogin,usersPass, name, surname, email, flag) "
+                             . "VALUES (NULL,'$idsections' ,'$login', '$pass_hash', "
+                             . "'$name', '$surname', '$email', '$flag'";
                  
                  if($valid==TRUE){
-                     if($connection->query("INSERT INTO users(idusers, sections_idsections, "
-                             . "userLogin,usersPass, name, surname, email, flag) "
-                             . "VALUES (NULL, (SELECT * FROM sections WHERE"
-                         . "name='$section'), "
-                             . "'$login', '$pass_hash', '$name', '$surname', '$email', '$flag'")){
+                     echo $idsections;
+                     /*if($connection->query($insertQuery)){
                          $_SESSION['made'] = "Konto zostało dodane do bazy";
-                         header('Location: adminInterface.php');
-                     }else{
+                         
+                     } else {
                          echo 'blad';
-                     }
+                     }*/
                  }
                  
             }
