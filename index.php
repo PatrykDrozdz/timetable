@@ -34,8 +34,9 @@ require_once 'connection.php';
 try{
     
    $date = date('Y-m-d');
-   $day = date('w');
+   $day = date('w');//wczytanie dnia tygodnia
 
+   
     $valid=true;
     
     $connection = new mysqli($host, $dbUser, $dbPass, $dbName);
@@ -98,12 +99,84 @@ try{
                     settype($tabId[$a], 'integer');
                     settype($idStart[$a], 'integer');
                     settype($idEnd[$a], 'integer');
-               
-                    
-                    if($tabId[$a]>$idStart[$a] && $tabId[$a]<$idEnd[$a]){
-                      echo $tabId[$a];
-                      echo '<br/>';
+                 if($info[$a]!=NULL){   
+             
+                    $s = 0;
+                    $f=0;
+                     $h2 = $tabH[$i];
+                        $min2 = $tabMin[$i];
+                        $day2 = $j;
+               /*       echo'<br/>';
+             echo'<br/>';
+             echo 'Start = '.$a.' '.$idStart[$a];
+              echo'<br/>';
+              echo 'End = '.$a.' '.$idEnd[$a];
+            echo'<br/>';
+            echo 'Time Last = '.$a.' '.$timeLast[$a];
+            echo'<br/>';
+             echo'<br/>';*/
+                    for($k=$start; $k<$end; $k++){
+                         if($k%4==0 && $k!=0){     
+                            $h2++;       
+                        }
+
+                         for($l=1; $l<=7; $l++){
+                            
+                             $unused[$s] = $h2.$min2.$day2;
+                              
+                             $day2++;
+                             if($day2>7){
+                                 $day2=1;
+                             }
+                             if($s%7==0){
+                                 $trueUnused[$f] = $unused[$s];
+                               /*  echo $f.' '. $trueUnused[$f];
+                             echo'<br/>'; */
+                                                  
+                             $f++;
+                             }
+                                //$trueUnused[$g]==$unused[($a-6)]
+                                //$g==((4*$timeLast[$a]) - 1)
+                                for($g=1; $g<(4*$timeLast[$a]); $g++){
+                                      if($g==((4*$timeLast[$a]) - 1)){
+                                        
+                                         echo'<style>
+                                                 #F'.$trueUnused[$g].'{
+                                                  background-Color: #AA0000;
+                                                   border-color: #AA0000 white white;
+                                                   padding: 1px;
+                                                }
+                                                </style>';
+                                                //$timeLast[$a]=0;
+                                     }else{
+                                         echo'<style>
+                                                 #F'.$trueUnused[$g].'{
+                                                  background-Color: #AA0000;
+                                                   border-bottom-color: #AA0000;
+                                                   padding: 1px;
+                                                }
+                                                </style>';
+                                   }
+                                 }
+                                
+                                
+                             
+                             $s++; 
+                             
+                         }
+                         
+                        $min2++;
+                        if($min2%4==0){
+                            $min2=0;
+                        }
+                       
+                      
                     }
+                                       
+                    
+                 }
+
+               
                     $resMeeting->free_result(); 
                     $a++; 
                }
@@ -115,8 +188,8 @@ try{
                     $min=0;
                 }
            }
-           
-
+        
+               
            
            
          
@@ -184,6 +257,10 @@ try{
             </div>
       
             <div id="table">
+                
+                <?php 
+                     
+                ?>
                 
                 <table id="trueTable" border="5" width="100%" height="70%" 
                     class="table-active table-responsive">
@@ -306,16 +383,16 @@ try{
                            echo '<tr id="cols" class="table-active">';
                            
                            if($i%4==0 ){
-                               echo '<td rowspan="4">'.$h.'</td>';
+                               echo '<td class="hour" rowspan="4">'.$h.'</td>';
                                $h++;
                               
                            }
                            if($i%2==0){
                                if($check%2==0){
-                                    echo '<td rowspan="2">30</td>';
+                                    echo '<td class="min" rowspan="2">30</td>';
                                     $check++;
                                }else{
-                                   echo '<td rowspan="2">00</td>';
+                                   echo '<td class="min" rowspan="2">00</td>';
                                    $check++;
                                }
                            }
@@ -330,11 +407,12 @@ try{
                                 if($info[$a]!=NULL){
                                    
                                 echo ' <td class="row"'
-                                       .'rowspan="'.(4*$timeLast[$a]). '"'
-                                        . 'id="F'.$tabId[$a].'"> '
+                                      // .'rowspan="'.(4*$timeLast[$a]). '"'
+                                        . 'id="F'.$tabId[$a].'"'
+                                        . '> '
                                         . '<div  id="F'.$tabId[$a].'"  '
                                         . 'class="head">'.
-                                        $info[$a].$tabId[$a] .'</div>'
+                                        $info[$a] .'</div>'
                                         . '<div  id="Meet'.$tabId[$a].'" 
                                         >
                                             <br/>'.
@@ -346,6 +424,9 @@ try{
                                     echo'<style>
                                      #F'.$tabId[$a].'{
                                             background-Color: #AA0000;
+                                            border-color: #AA0000;
+                                            border-right-color: white;
+                                             padding: 1px;
                                         }
                                         
 
@@ -368,15 +449,11 @@ try{
 
                                 } else { 
                                    
-                                        echo ' <td id="F'.$tabId[$a].'" >'.$tabId[$a].'</td>';
+                                        echo ' <td class="row" '
+                                    . 'id="F'.$tabId[$a].'" >'.$tabId[$a].'</td>';
                                         
-                                        if($idEnd[$a]==$tabId[$a]){
-                                             echo'<style>
-                                     #F'.$idEnd[$a].'{
-                                            background-Color: #AA0000;
-                                        }</style>';
-                                        }
-                                    
+                                         
+
                                 }
                               
                                  $a++;
@@ -389,7 +466,7 @@ try{
                      
                       }
                       
-               
+                        
                     ?>
  
                </table> 
@@ -398,7 +475,7 @@ try{
             </div>
         
             <div id="footer">
-                <h2>LessFuel &copy; Prawa zastrzeżone</h2>
+                <h2>Terminarz &copy; Prawa zastrzeżone</h2>
                  Developed by Patryk Dróżdż
                  <br/>
                  <div id="contact">

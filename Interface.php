@@ -74,6 +74,127 @@ try{
             }
            */
            ////////////////////////////////////////// 
+           
+            //wczytywanie spotkan na tablice głøwnæł
+           /////////////////////////////////////////
+           
+           $a=0;
+           for($i=$start; $i<$end; $i++){
+               if($i%4==0 ){     
+                        $h++;       
+                    }
+              
+                        
+                $tabH[$i]=$h-1;
+                $tabMin[$i]=$min;
+        
+               for($j=1; $j<=7; $j++){
+                   $POM = $tabH[$i].$tabMin[$i].$j;//$h.$min.$j; 
+                    $resMeeting = $connection->query("SELECT * FROM meetings WHERE "
+                        . "idStart = '$POM ' AND day='$tab[$j]'");
+               
+                    $rowMeeting = $resMeeting->fetch_assoc();
+                    $info[$a] = $rowMeeting['info'];
+                    $moreInfo[$a] = $rowMeeting['moreInfo'];
+                    $idStart[$a] = $rowMeeting['idStart'];
+                    $idEnd[$a] = $rowMeeting['idEnd'];
+                    $timeLast[$a] = $rowMeeting['timeLast'];
+                    
+                    $tabId[$a] = $tabH[$i].$tabMin[$i].$j;//id wygenerowanych komørek
+                    
+                    settype($tabId[$a], 'integer');
+                    settype($idStart[$a], 'integer');
+                    settype($idEnd[$a], 'integer');
+                 if($info[$a]!=NULL){   
+             
+                    $s = 0;
+                    $f=0;
+                     $h2 = $tabH[$i];
+                        $min2 = $tabMin[$i];
+                        $day2 = $j;
+               /*       echo'<br/>';
+             echo'<br/>';
+             echo 'Start = '.$a.' '.$idStart[$a];
+              echo'<br/>';
+              echo 'End = '.$a.' '.$idEnd[$a];
+            echo'<br/>';
+            echo 'Time Last = '.$a.' '.$timeLast[$a];
+            echo'<br/>';
+             echo'<br/>';*/
+                    for($k=$start; $k<$end; $k++){
+                         if($k%4==0 && $k!=0){     
+                            $h2++;       
+                        }
+
+                         for($l=1; $l<=7; $l++){
+                            
+                             $unused[$s] = $h2.$min2.$day2;
+                              
+                             $day2++;
+                             if($day2>7){
+                                 $day2=1;
+                             }
+                             if($s%7==0){
+                                 $trueUnused[$f] = $unused[$s];
+                               /*  echo $f.' '. $trueUnused[$f];
+                             echo'<br/>'; */
+                                                  
+                             $f++;
+                             }
+                                //$trueUnused[$g]==$unused[($a-6)]
+                                //$g==((4*$timeLast[$a]) - 1)
+                                for($g=1; $g<(4*$timeLast[$a]); $g++){
+                                      if($g==((4*$timeLast[$a]) - 1)){
+                                        
+                                         echo'<style>
+                                                 #F'.$trueUnused[$g].'{
+                                                  background-Color: #AA0000;
+                                                   border-color: #AA0000 white white;
+                                                   padding: 1px;
+                                                }
+                                                </style>';
+                                                //$timeLast[$a]=0;
+                                     }else{
+                                         echo'<style>
+                                                 #F'.$trueUnused[$g].'{
+                                                  background-Color: #AA0000;
+                                                   border-bottom-color: #AA0000;
+                                                   padding: 1px;
+                                                }
+                                                </style>';
+                                   }
+                                 }
+                                
+                                
+                             
+                             $s++; 
+                             
+                         }
+                         
+                        $min2++;
+                        if($min2%4==0){
+                            $min2=0;
+                        }
+                       
+                      
+                    }
+                                       
+                    
+                 }
+
+               
+                    $resMeeting->free_result(); 
+                    $a++; 
+               }
+            
+                 
+               
+                $min++;
+                if($min%4==0){
+                    $min=0;
+                }
+           }
+        
          
         } else {
             throw new Exception($connection2->errno);
@@ -369,7 +490,7 @@ try{
             </div>
         
             <div id="footer">
-                <h2>LessFuel &copy; Prawa zastrzeżone</h2>
+                <h2>Terminarz &copy; Prawa zastrzeżone</h2>
                  Developed by Patryk Dróżdż
                  <br/>
                  <div id="contact">

@@ -298,7 +298,7 @@
              
         
             <div id="footer">
-                <h2>LessFuel &copy; Prawa zastrzeżone</h2>
+                <h2>Terminarz &copy; Prawa zastrzeżone</h2>
                  Developed by Patryk Dróżdż
                  <br/>
                  <div id="contact">
