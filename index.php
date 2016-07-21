@@ -103,18 +103,21 @@ try{
              
                     $s = 0;
                     $f=0;
-                     $h2 = $tabH[$i];
-                        $min2 = $tabMin[$i];
-                        $day2 = $j;
-               /*       echo'<br/>';
-             echo'<br/>';
-             echo 'Start = '.$a.' '.$idStart[$a];
-              echo'<br/>';
-              echo 'End = '.$a.' '.$idEnd[$a];
-            echo'<br/>';
-            echo 'Time Last = '.$a.' '.$timeLast[$a];
-            echo'<br/>';
-             echo'<br/>';*/
+                    $h2 = $tabH[$i];
+                    $min2 = $tabMin[$i];
+                    $day2 = $j;
+               ////////////////////////////////////////////////////////     
+               ///przydatne
+                        echo'<br/>';
+                        echo'<br/>';
+                        echo 'Start = '.$a.' '.$idStart[$a];
+                        echo'<br/>';
+                        echo 'End = '.$a.' '.$idEnd[$a];
+                        echo'<br/>';
+                        echo 'Time Last = '.$a.' '.$timeLast[$a];
+                        echo'<br/>';
+                        echo'<br/>';
+             ///////////////////////////////////////////////////////
                     for($k=$start; $k<$end; $k++){
                          if($k%4==0 && $k!=0){     
                             $h2++;       
@@ -128,17 +131,20 @@ try{
                              if($day2>7){
                                  $day2=1;
                              }
-                             if($s%7==0){
+                             if($s%7==0 && $unused[$s]<$idEnd[$a] && 
+                                     $unused[$s]>$idStart[$a]){
                                  $trueUnused[$f] = $unused[$s];
-                               /*  echo $f.' '. $trueUnused[$f];
-                             echo'<br/>'; */
+                     ////////////////////////////////////////////////////////     
+                    ///przydatne
+                                echo $f.' '. $trueUnused[$f];
+                                echo'<br/>';
+                    ///////////////////////////////////////////////////////
                                                   
-                             $f++;
-                             }
-                                //$trueUnused[$g]==$unused[($a-6)]
-                                //$g==((4*$timeLast[$a]) - 1)
-                                for($g=1; $g<(4*$timeLast[$a]); $g++){
-                                      if($g==((4*$timeLast[$a]) - 1)){
+                            $f++;
+                             }      //do poprawy - zbyt długo oblicza
+                                    
+                                /*for($g=0; $g<$f; $g++){
+                                       if($g==$f){
                                         
                                          echo'<style>
                                                  #F'.$trueUnused[$g].'{
@@ -147,7 +153,7 @@ try{
                                                    padding: 1px;
                                                 }
                                                 </style>';
-                                                //$timeLast[$a]=0;
+                                        
                                      }else{
                                          echo'<style>
                                                  #F'.$trueUnused[$g].'{
@@ -157,12 +163,10 @@ try{
                                                 }
                                                 </style>';
                                    }
-                                 }
-                                
-                                
-                             
+                                 } */
+                                 
+                                 
                              $s++; 
-                             
                          }
                          
                         $min2++;
@@ -202,7 +206,7 @@ try{
     $connection->close();   
     
     
-}catch(Exceptine $e){
+}catch(Exception $e){
     echo $e;
 }
    
@@ -377,6 +381,8 @@ try{
                     $h=6;//domyslna godzina poczætkowa
                     $check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
                     $a=0;
+                    
+                    $f = 0;
                      
                     for($i=$start; $i<$end; $i++){
                           
@@ -402,12 +408,12 @@ try{
                         
                            
                                 for($j=1; $j<=7; $j++){
-
+                                    if($tabId[$a]!=$trueUnused[$f]){
                                 
                                 if($info[$a]!=NULL){
                                    
                                 echo ' <td class="row"'
-                                      // .'rowspan="'.(4*$timeLast[$a]). '"'
+                                       //.'rowspan="'.(4*$timeLast[$a]). '"'
                                         . 'id="F'.$tabId[$a].'"'
                                         . '> '
                                         . '<div  id="F'.$tabId[$a].'"  '
@@ -448,18 +454,28 @@ try{
                                     
 
                                 } else { 
-                                   
+                                  
+                                    
                                         echo ' <td class="row" '
                                     . 'id="F'.$tabId[$a].'" >'.$tabId[$a].'</td>';
-                                        
-                                         
-
+                                    
+                                    
                                 }
                               
-                                 $a++;
-                            
+                                $a++;
+                                
+                               }
+                               $f++;
+                               if($f==((4*$timeLast[$a])-1)){
+                                        $f=0;
+                                    }
+                               
                             }
-                  
+                 
+                                
+                            
+                                    
+                                    
      
                              echo'    </tr>';
 

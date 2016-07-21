@@ -112,15 +112,7 @@ try{
                      $h2 = $tabH[$i];
                         $min2 = $tabMin[$i];
                         $day2 = $j;
-               /*       echo'<br/>';
-             echo'<br/>';
-             echo 'Start = '.$a.' '.$idStart[$a];
-              echo'<br/>';
-              echo 'End = '.$a.' '.$idEnd[$a];
-            echo'<br/>';
-            echo 'Time Last = '.$a.' '.$timeLast[$a];
-            echo'<br/>';
-             echo'<br/>';*/
+         
                     for($k=$start; $k<$end; $k++){
                          if($k%4==0 && $k!=0){     
                             $h2++;       
@@ -134,16 +126,16 @@ try{
                              if($day2>7){
                                  $day2=1;
                              }
-                             if($s%7==0){
+                                 if($s%7==0 && $unused[$s]<$idEnd[$a] && 
+                                         $unused[$s]>$idStart[$a]){
                                  $trueUnused[$f] = $unused[$s];
-                               /*  echo $f.' '. $trueUnused[$f];
-                             echo'<br/>'; */
+                          
                                                   
                              $f++;
                              }
                                 //$trueUnused[$g]==$unused[($a-6)]
                                 //$g==((4*$timeLast[$a]) - 1)
-                                for($g=1; $g<(4*$timeLast[$a]); $g++){
+                               /* for($g=0; $g<(4*$timeLast[$a]); $g++){
                                       if($g==((4*$timeLast[$a]) - 1)){
                                         
                                          echo'<style>
@@ -163,7 +155,7 @@ try{
                                                 }
                                                 </style>';
                                    }
-                                 }
+                                 }*/
                                 
                                 
                              
@@ -205,7 +197,7 @@ try{
     $connection->close();   
     
     
-}catch(Exceptine $e){
+}catch(Exception $e){
     echo $e;
 }
    
@@ -242,14 +234,7 @@ try{
         
         <link rel="stylesheet" href="css/style.css" type="text/css"/>
         
-          <?php 
-         $start=0;//start petli
-         $interval = 10;
-         $end=4*$interval;//koniec petli
-                    
-        $SpanCol = ($end/2)+1; 
-        $h=14;//domyslna godzina poczætkowa
-       ?>
+  
      
      
         
@@ -317,7 +302,8 @@ try{
                             }
                        
                           
-                    echo '<td rowspan="'. $SpanCol.'"><input class="btn btn-primary active" 
+                    echo '<td rowspan="'. $SpanCol.'" class="changeHour">
+                        <input class="btn btn-primary active" 
                            type="submit" value="<<" id="buttonHour"
                            onclick="changeHoursInc()" STYLE=height: '.$SpanCol.'</td>';
                                 
@@ -345,6 +331,7 @@ try{
                      
                         <td class="dayName" id="nd"> Nd</td>
                         
+                         
                         <?php 
                         if($day==1){
                             echo' <style> 
@@ -395,95 +382,125 @@ try{
                                }
                                   </style> ';
                             }
-                          ?>
-                        
+                          
+                            
+                        ?>
+                            
                     </tr>
                     <?php 
-
-                    $start=0;//start petli
-                    $end=4*13;//koniec petli
-                      
+                    
+                       $start=0;//start petli
+                        $allHours = 13;
+                       $end=4*$allHours;//koniec petli
+                      $SpanCol = ($end/2)+1; 
                     $h=6;//domyslna godzina poczætkowa
                     $check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
-                    $min = 0; //id minut
                     $a=0;
+                    
+                    $f = 1;
                      
                     for($i=$start; $i<$end; $i++){
                           
                            echo '<tr id="cols" class="table-active">';
                            
                            if($i%4==0 ){
-                               echo '<td rowspan="4">'.$h.'</td>';
+                               echo '<td class="hour" rowspan="4">'.$h.'</td>';
                                $h++;
                               
                            }
                            if($i%2==0){
                                if($check%2==0){
-                                    echo '<td rowspan="2">30</td>';
+                                    echo '<td class="min" rowspan="2">30</td>';
                                     $check++;
                                }else{
-                                   echo '<td rowspan="2">00</td>';
+                                   echo '<td class="min" rowspan="2">00</td>';
                                    $check++;
                                }
                            }
                         
-                            $tabH[$i]=$h-1;
-                            $tabMin[$i]=$min;
-                            
-                            for($j=1; $j<=7; $j++){
-                                $tabId[$a] = $tabH[$i].$tabMin[$i].$j;//id wygenerowanych wierszy
-                                echo ' <td class="row"> '
-                                        . '<div  id="F'.$tabH[$i].$tabMin[$i].$j.'">'.$tabH[$i].$tabMin[$i].$j.'aaaaaaaaaaaaaaaa</div>'
-                                        . '<div  id="Meet'.$tabH[$i].$tabMin[$i].$j.'">
-                                            '.$info[$a].
-                                            '<br/>'.
-                                            $moreInfo[$a].'
-                                        </div>'
-                                        . '</td>';
-                             
-                                
-                                echo '<script> 
-                                     $(document).ready(function(){
-                                        $("#F'.$tabH[$i].$tabMin[$i].$j.'").click(function(){
-                                            $("#Meet'.$tabH[$i].$tabMin[$i].$j.'").slideToggle("slow");
-                                        });
-                                      });
-                                         </script>';
+                           
+                     
+                        
+                           
+                                for($j=1; $j<=7; $j++){
+
                                 
                                 if($info[$a]!=NULL){
+                                   
+                                echo ' <td class="row"'
+                                       //.'rowspan="'.(4*$timeLast[$a]). '"'
+                                        . 'id="F'.$tabId[$a].'"'
+                                        . '> '
+                                        . '<div  id="F'.$tabId[$a].'"  '
+                                        . 'class="head">'.
+                                        $info[$a] .'</div>'
+                                        . '<div  id="Meet'.$tabId[$a].'" 
+                                        >
+                                            <br/>'.
+                                            $moreInfo[$a].'
+                                        </div>
+                                        </td>';
+
+                                    
                                     echo'<style>
-                                     #F'.$tabH[$i].$tabMin[$i].$j.'{
+                                     #F'.$tabId[$a].'{
                                             background-Color: #AA0000;
+                                            border-color: #AA0000;
+                                            border-right-color: white;
+                                             padding: 1px;
                                         }
-                                        </style>';
-                                }
-                                
-                                echo'<style>
-                                       
                                         
-                                        #Meet'.$tabH[$i].$tabMin[$i].$j.'{
+
+                                    #Meet'.$tabId[$a].'{
                                             display: none;
                                             color: black;
                                             background-color: #e5eecc;
                                         }
-                                    </style>';
-                                
-                                $a++;
-                            }
+                                        </style>';
+                                    
+                                     echo '<script> 
+                                     $(document).ready(function(){
+                                        $("#F'.$tabId[$a].'").click(function(){
+                                            $("#Meet'.$tabId[$a].'").slideToggle("slow");
+                                        });
+                                      });
+
+                                         </script>';
+                                    
+
+                                } else { 
+                                   
+                                    //if($tabId[$a]!=$trueUnused[$f]){
+                                    
+                                        echo ' <td class="row" '
+                                    . 'id="F'.$tabId[$a].'" >'.$tabId[$a].'</td>';
+                                        
+                                    //}  
+                                    $f++;
+                                    
+                                    if($f==((4*$timeLast[$a])-1)){
+                                        $f=1;
+                                    }
+                                }
+                              
+                                 $a++;
                             
+                            }
+                           if(((2*$allHours)-1)==$i){
+                                echo '<td rowspan="'. ($SpanCol).'" class="changeHour"><input 
+                                        class="btn btn-primary active" 
+                                        type="submit" value="<<" id="buttonHour"
+                                    </td>';
+                            }
                   
      
-                   echo'    </tr>';
+                             echo'    </tr>';
 
-                 
-                     $min++;
-                      if($min%4==0){
-                          $min=0;
-                      }
                      
                       }
-                      ?>
- 
+                      
+                        
+                    ?>
                </table> 
              
                     

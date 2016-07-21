@@ -1,7 +1,7 @@
 .body{
     background:  url("broken_noise.png");/*(from http://subtlepatterns.com/) */
     font-family: "Lucida Console", Monaco, monospace;
-    color: #white
+    color: white
    
 }
 
@@ -10,7 +10,7 @@
     background:  url("broken_noise.png");/*(from http://subtlepatterns.com/) */
     font-family: "Lucida Console", Monaco, monospace;
     height: 4000px;
-    color: #white
+    color: white
    
     
 }     
@@ -19,7 +19,7 @@
     background: url("broken_noise.png");/*(from http://subtlepatterns.com/) */ 
     font-family: "Lucida Console", Monaco, monospace;
     height: 2000px;
-    color: #white
+    color: white
 }
 
 #header{
@@ -205,4 +205,8 @@
 
 .min{
     width:1%;
+}
+
+.changeHour{
+    width: 3%;
 }
