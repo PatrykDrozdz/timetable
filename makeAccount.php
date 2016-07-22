@@ -39,7 +39,7 @@
                 
             }
             
-            if(isset($_POST['login'])){
+            if(isset($_POST['login']) && isset($_POST['section'])){
                 
                 $valid = TRUE;
                 $login = $_POST['login'];
@@ -118,23 +118,21 @@
                  
                  $section = $_POST['section'];
                  
-                 $sectionResult = $connection->query("SELECT * FROM sections WHERE"
-                         . "name='$section'");
-                 
+                 $sectionResult = $connection->query("SELECT * FROM sections WHERE name='$section'");
+
                  $rowSections = $sectionResult->fetch_assoc();
                  
                  $idsections = $rowSections['idsections'];
-                 echo $idsections ;
+
                  $sectionResult->free_result();
                  
-                 $checkRes = $connection->query("SELECT * FROM users WHERE email='$email' "
-                         . "AND userLogin='$login'");
+                 $checkRes = $connection->query("SELECT * FROM users WHERE email='$email' AND userLogin='$login'");
                  
                  if(!$checkRes){
                      throw new Exception($connection->errno());
                  }
                  
-                 $usersCount = $checkRes = num_rows;
+                 $usersCount = $checkRes->num_rows;
                  
                  if($usersCount>0){
                      $valid = FALSE;
@@ -143,19 +141,19 @@
                  }
        
                  
-                 $insertQuery = "INSERT INTO users(idusers, sections_idsections"
-                             . "userLogin,usersPass, name, surname, email, flag) "
-                             . "VALUES (NULL,'$idsections' ,'$login', '$pass_hash', "
-                             . "'$name', '$surname', '$email', '$flag'";
+                 $insertQuery = "INSERT INTO users(idusers, sections_idsections, "
+                             . "userLogin, usersPass, name, surname, email, flag) "
+                             . "VALUES (NULL, '$idsections', '$login', '$pass_hashed', "
+                             . "'$name', '$surname', '$email', '$flag')";
                  
                  if($valid==TRUE){
-                     echo $idsections;
-                     /*if($connection->query($insertQuery)){
+                     
+                     if($connection->query($insertQuery)){
                          $_SESSION['made'] = "Konto zostało dodane do bazy";
                          
                      } else {
-                         echo 'blad';
-                     }*/
+                        throw new Exception($connection->errno);
+                     }
                  }
                  
             }

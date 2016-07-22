@@ -108,7 +108,7 @@ try{
                     $day2 = $j;
                ////////////////////////////////////////////////////////     
                ///przydatne
-                        echo'<br/>';
+                       /* echo'<br/>';
                         echo'<br/>';
                         echo 'Start = '.$a.' '.$idStart[$a];
                         echo'<br/>';
@@ -116,7 +116,7 @@ try{
                         echo'<br/>';
                         echo 'Time Last = '.$a.' '.$timeLast[$a];
                         echo'<br/>';
-                        echo'<br/>';
+                        echo'<br/>';*/
              ///////////////////////////////////////////////////////
                     for($k=$start; $k<$end; $k++){
                          if($k%4==0 && $k!=0){     
@@ -134,20 +134,11 @@ try{
                              if($s%7==0 && $unused[$s]<$idEnd[$a] && 
                                      $unused[$s]>$idStart[$a]){
                                  $trueUnused[$f] = $unused[$s];
-                     ////////////////////////////////////////////////////////     
-                    ///przydatne
-                                echo $f.' '. $trueUnused[$f];
-                                echo'<br/>';
-                    ///////////////////////////////////////////////////////
-                                                  
-                            $f++;
-                             }      //do poprawy - zbyt długo oblicza
-                                    
-                                /*for($g=0; $g<$f; $g++){
-                                       if($g==$f){
-                                        
+
+                                      if($f==$idEnd[$a]){
+                                  
                                          echo'<style>
-                                                 #F'.$trueUnused[$g].'{
+                                                 #F'.$trueUnused[$f].'{
                                                   background-Color: #AA0000;
                                                    border-color: #AA0000 white white;
                                                    padding: 1px;
@@ -155,15 +146,24 @@ try{
                                                 </style>';
                                         
                                      }else{
-                                         echo'<style>
-                                                 #F'.$trueUnused[$g].'{
+                                         echo '<style>
+                                                 #F'.$trueUnused[$f].'{
                                                   background-Color: #AA0000;
                                                    border-bottom-color: #AA0000;
                                                    padding: 1px;
                                                 }
                                                 </style>';
                                    }
-                                 } */
+                                  
+                                 
+                     ////////////////////////////////////////////////////////     
+                    ///przydatne
+                               /* echo $f.' '. $trueUnused[$f];
+                                echo'<br/>';*/
+                    ///////////////////////////////////////////////////////
+                                                  
+                            $f++;
+                             } 
                                  
                                  
                              $s++; 
@@ -408,7 +408,7 @@ try{
                         
                            
                                 for($j=1; $j<=7; $j++){
-                                    if($tabId[$a]!=$trueUnused[$f]){
+                                    //if($tabId[$a]!=$trueUnused[$f]){
                                 
                                 if($info[$a]!=NULL){
                                    
@@ -458,28 +458,19 @@ try{
                                     
                                         echo ' <td class="row" '
                                     . 'id="F'.$tabId[$a].'" >'.$tabId[$a].'</td>';
-                                    
-                                    
+ 
                                 }
                               
                                 $a++;
                                 
-                               }
-                               $f++;
+                               //}
+                               /*$f++;
                                if($f==((4*$timeLast[$a])-1)){
                                         $f=0;
-                                    }
+                                    }*/
                                
                             }
-                 
-                                
-                            
-                                    
-                                    
-     
                              echo'    </tr>';
-
-                     
                       }
                       
                         

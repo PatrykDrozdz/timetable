@@ -287,32 +287,44 @@ try{
                                  if($s%7==0 && $unused[$s]<$idEnd[$a] && 
                                          $unused[$s]>$idStart[$a]){
                                  $trueUnused[$f] = $unused[$s];
-           
-                             $f++;
-                             }
-                                //$trueUnused[$g]==$unused[($a-6)]
-                                //$g==((4*$timeLast[$a]) - 1)
-                              /*for($g=0; $g<(4*$timeLast[$a]); $g++){
-                                      if($g==((4*$timeLast[$a]) - 1)){
-                                        
+                                    
+                                         if($s%7==0 && $unused[$s]<$idEnd[$a] && 
+                                     $unused[$s]>$idStart[$a]){
+                                 $trueUnused[$f] = $unused[$s];
+
+                                      if($f==$idEnd[$a]){
+                                  
                                          echo'<style>
-                                                 #F'.$trueUnused[$g].'{
+                                                 #F'.$trueUnused[$f].'{
                                                   background-Color: #AA0000;
                                                    border-color: #AA0000 white white;
                                                    padding: 1px;
                                                 }
                                                 </style>';
-                                                //$timeLast[$a]=0;
+                                        
                                      }else{
-                                         echo'<style>
-                                                 #F'.$trueUnused[$g].'{
+                                         echo '<style>
+                                                 #F'.$trueUnused[$f].'{
                                                   background-Color: #AA0000;
                                                    border-bottom-color: #AA0000;
                                                    padding: 1px;
                                                 }
                                                 </style>';
                                    }
-                                 }*/
+                                  
+                                 
+                     ////////////////////////////////////////////////////////     
+                    ///przydatne
+                               /* echo $f.' '. $trueUnused[$f];
+                                echo'<br/>';*/
+                    ///////////////////////////////////////////////////////
+                                                  
+                            $f++;
+                             } 
+                                 
+                             $f++;
+                             }
+                               
                                 
                                 
                              
