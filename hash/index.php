@@ -1,18 +1,6 @@
 
 <?php 
 
-require_once 'connection.php';
-
-$connection = new mysqli($host, $dbUser, $dbPass, $dbName);
-
- if($connection->connect_errno!=0){
-       echo "Error: ".$connection->connect_errno;
-       
-    } else {
-	echo '<br/>';
-	echo 'works';
-	echo '<br/>';
-    }
 
 
     if(isset($_POST['pass'])){

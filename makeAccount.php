@@ -146,11 +146,20 @@
                              . "VALUES (NULL, '$idsections', '$login', '$pass_hashed', "
                              . "'$name', '$surname', '$email', '$flag')";
                  
+                 $alterQuery = "ALTER TABLE `invited` ADD '$login' "
+                         . "INT NOT NULL AFTER `meetings_users_idusers`";
+                 
                  if($valid==TRUE){
-                     
+
                      if($connection->query($insertQuery)){
-                         $_SESSION['made'] = "Konto zostało dodane do bazy";
                          
+                         if($connection->query($alterQuery)){
+                         
+                            $_SESSION['made'] = "Konto zostało dodane do bazy";
+                            
+                         } else {
+                            throw new Exception($connection->errno);
+                         }
                      } else {
                         throw new Exception($connection->errno);
                      }

@@ -35,7 +35,11 @@ try{
     
    $date = date('Y-m-d');
    $day = date('w');//wczytanie dnia tygodnia
-
+   
+   
+   if($day==0){
+       $day=7;
+   }
    
     $valid=true;
     
@@ -153,20 +157,15 @@ try{
                                                    padding: 1px;
                                                 }
                                                 </style>';
-                                   }
-                                  
-                                 
+                                   }  
                      ////////////////////////////////////////////////////////     
                     ///przydatne
-                               /* echo $f.' '. $trueUnused[$f];
+                                /*echo $f.' '. $trueUnused[$f];
                                 echo'<br/>';*/
-                    ///////////////////////////////////////////////////////
-                                                  
+                    ///////////////////////////////////////////////////////                     
                             $f++;
-                             } 
-                                 
-                                 
-                             $s++; 
+                             }   
+                          $s++; 
                          }
                          
                         $min2++;
@@ -233,7 +232,10 @@ try{
     <script src="js/jquery.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
-    <script src="fonts//bootstrap.js"></script> 
+    <script src="fonts/bootstrap.js"></script> 
+    
+
+    
         <title>Organizator</title>
         
         
@@ -262,9 +264,7 @@ try{
       
             <div id="table">
                 
-                <?php 
-                     
-                ?>
+
                 
                 <table id="trueTable" border="5" width="100%" height="70%" 
                     class="table-active table-responsive">

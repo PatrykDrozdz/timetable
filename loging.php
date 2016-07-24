@@ -26,18 +26,17 @@ if($connection->connect_errno!=0){
     $login = htmlentities($login, ENT_QUOTES, "UTF-8");
     $password = htmlentities($password, ENT_QUOTES, "UTF-8");
     
-    
-    if($result = $connection->query(sprintf(
-            "SELECT * FROM users WHERE "
-            . "userLogin='%s'", 
-            mysqli_real_escape_string($connection, $login)))){
+    if($result = $connection->query(
+            sprintf( "SELECT * FROM users WHERE userLogin='%s' AND usersPass='%s'", 
+            mysqli_real_escape_string($connection, $login), 
+                    mysqli_real_escape_string($connection, $password)))){
        ////////////////////////////////////////////////////////////// 
         $usersCount = $result->num_rows;
         if($usersCount>0){
             
             $row = $result->fetch_assoc();
             
-            if(password_verify($password, $row['usersPass'])){
+            //if(password_verify($password, $row['usersPass'])){
             
                 $_SESSION['loged']=TRUE;
             
@@ -59,11 +58,11 @@ if($connection->connect_errno!=0){
                     header('Location: adminInterface.php');
                 }
             
-            }else{
+           /* }else{
                 $_SESSION['error'] = '<span style="color:red">Nieprawidłowy '
                         . 'e-mail lub hasło!</span>';
                 header('Location: loginpre.php');
-            }
+            }*/
         } else {
             $_SESSION['error'] = '<span class="error">Błæd loginu lub hasła!</span>';
             header('Location: logingpre.php');

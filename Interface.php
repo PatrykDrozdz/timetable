@@ -25,6 +25,10 @@ try{
    $date = date('Y-m-d');
    $day = date('w');
 
+   if($day==0){
+       $day=7;
+   }
+   
     $valid=true;
     
     $connection = new mysqli($host, $dbUser, $dbPass, $dbName);
