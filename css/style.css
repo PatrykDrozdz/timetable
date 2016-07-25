@@ -224,5 +224,11 @@
     color: white;
 }
 
-
+#numbers{
+    width: 10%;
+    color: black;
+}
     
+.moduloWin{
+    color: black;
+}

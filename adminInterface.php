@@ -297,14 +297,11 @@ try{
                                  if($s%7==0 && $unused[$s]<$idEnd[$a] && 
                                          $unused[$s]>$idStart[$a]){
                                  $trueUnused[$f] = $unused[$s];
-                                    
-                                         if($s%7==0 && $unused[$s]<$idEnd[$a] && 
-                                     $unused[$s]>$idStart[$a]){
-                                 $trueUnused[$f] = $unused[$s];
-                                 $reserved[$r] = $trueUnused[$f];
+                                   
+                                   
                                  /////////////////////////////////////////////
-                                 /*echo $f.' '. $trueUnused[$f];
-                                echo'<br/>';*/
+                                 echo $f.' '. $trueUnused[$f];
+                                echo'<br/>';
                                 //////////////////////////////////////////////////////////
 
                                       if($f==$idEnd[$a]){
@@ -339,13 +336,12 @@ try{
                     ///////////////////////////////////////////////////////
                                                   
                            
-                             } 
+                   
                                  
                              
                           }
                           $f++;
                             $s++;  
-                            
                             $r++;    
                              
                              
@@ -411,15 +407,16 @@ try{
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
   
-    
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+ 
+       <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">     
     <script src="js/jquery.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
-    <script src="fonts//bootstrap.js"></script>     
+
     
+
         <title>Organizator</title>
         
         
@@ -515,8 +512,7 @@ try{
             </form>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-default" 
-                    data-dissmiss="modal">Anuluj</button>
+<button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
         </div>
       </div>
       
@@ -597,8 +593,8 @@ try{
                              
                             }
                        
-                   
-                             $d=0;   
+                            
+                             $f=0;   
                        ?>
                      
                         
@@ -690,7 +686,7 @@ try{
                     $check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
                     $a=0;
                     
-                    $f = 1;
+                    $f = 0;
                      
                     for($i=$start; $i<$end; $i++){
                           
@@ -739,9 +735,9 @@ try{
                                         </td>';
                                   
                                   echo ' <td class="row"'
-                                     
-                                        . 'id="F'.$tabId[($a+1)].'"  href="Add.php"'
-                                        . '><a href="Add.php" target="_blank">'.$tabId[($a+1)].' </a>
+                                        . 'id="F'.$tabId[($a+1)].'"'
+                                        . 'data-toggle="modal" data-target="#F'.$tabId[($a+1)].'">'
+                                          .$tabId[($a+1)].' 
                                         </td>';
                                   
                                   echo '<style> 
@@ -750,19 +746,50 @@ try{
                                             }
                                         </style>';
                                         
-                                        if($reserved[$d] != $tabId[($a+1)]){
-                                            
-                                            echo '<script> 
-                                     
-                                                function Reserve'.$tabId[($a+1)].'(){
-                                                    document.getElementById("F'.$tabId[($a+1)].'").
-                                                    innerHTML = "Reserved";    
-                                               }
-
-                                            </script>'; 
-                     
-                                        }
+                                   //if($trueUnused[$f] != $tabId[($a+1)]){ 
                                     
+  echo '                                               
+  
+  <div class="modal fade moduloWin" id="F'.$tabId[($a+1)].'" role="dialog">
+    <div class="modal-dialog">
+    
+   
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Dodaj spotkanie</h4>
+        </div>
+        <div class="modal-body">
+            <form method="post">
+           <input type="text" name="info" id="textfield" 
+            placeholder="temat" class="form-control"/>
+           <br/>
+           <br/>
+           <input type="text" name="moreInfo" id="textfield" 
+            placeholder="wiecej informacji" class="form-control"/>
+           <br/>
+           <br/>
+           <p>Czas spotkania</p>
+            <br/>
+           godziny:
+            <input type="number" name="hours" min="00" max="23"/>
+           minuty:
+           <input type="number" name="minutes" min="00" max="45" step="15"/>
+           <br/>
+           <br/>
+            <input class="btn btn-primary active" 
+                           type="submit" value="Dodaj" id="button"/>
+            </form>
+        </div>
+        <div class="modal-footer">
+<button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+        </div>
+      </div>
+      
+    </div>
+  </div> ';
+     // }                            
+                                  
                                     echo'<style>
                                      #F'.$tabId[$a].'{
                                             background-Color: #AA0000;
@@ -776,54 +803,68 @@ try{
                                     
 
                                 } else { 
-                              //onclick="Reserve'.$tabId[$a].'()"
-                                    echo ' <td class="row" '
-                                    . 'id="F'.$tabId[$a].'">
-                                     <a href="Add.php" target="_blank">'.$tabId[($a+1)].' </a></td>';
+                           
+                                    echo ' <td class="row" id="F'.$tabId[$a].'"
+                                        onclick="Reserve'.$tabId[$a].'()"
+                                            data-toggle="modal" data-target="#F'.$tabId[$a].'"">
+                                     '.$tabId[$a].'</td>';
                                      echo '<style> 
                                              #F'.$tabId[$a].'{
                                                 color: white;
                                             }
                                         </style>';
-                                        
-                                        if($reserved[$d] != $tabId[$a]){
-                                            
-                                            echo '<script> 
-                                     
-                                                function Reserve'.$tabId[$a].'(){
-                                                    document.getElementById("F'.$tabId[$a].'").
-                                                    innerHTML = "Reserved";    
-                                               }
-
-                                            </script>'; 
-                     
-                                        }
-                                         /*if($reserved[$d] == $tabId[$a]){
-                                            echo '<script> 
-                                     $(document).ready(function(){
-                                        $("#F'.$reserved[$d].'").click(function(){
-                                            $("#Meet'.$reserved[$d].'").slideToggle("slow");
-                                        });
-                                      });
-
-                                         </script>';
-                                            
-                                            /*echo ' function Reserve'.$tabId[$a].'(){
-                                                    document.getElementById("F'.$tabId[$a].'").
-                                                    innerHTML = "1";    
-                                               }';
-                                    
-                                        }*/
+                                  //if($trueUnused[$f] != $tabId[($a+1)]){        
+                                      
+                                      echo '                                               
+ 
+  <div class="modal fade moduloWin" id="F'.$tabId[$a].'" role="dialog">
+    <div class="modal-dialog">
+    
+      
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Dodaj spotkanie</h4>
+        </div>
+        <div class="modal-body">
+            <form method="post">
+           <input type="text" name="info" id="textfield" 
+            placeholder="temat" class="form-control"/>
+           <br/>
+           <br/>
+           <input type="text" name="moreInfo" id="textfield" 
+            placeholder="wiecej informacji" class="form-control"/>
+           <br/>
+           <br/>
+           <p>Czas spotkania</p>
+            <br/>
+           godziny:
+            <input type="number" name="hours" min="00" max="23"/>
+           minuty:
+           <input type="number" name="minutes" min="00" max="45" step="15"/>
+           <br/>
+           <br/>
+            <input class="btn btn-primary active" 
+                           type="submit" value="Dodaj" id="button"/>
+            </form>
+        </div>
+        <div class="modal-footer">
+<button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+        </div>
+      </div>
+      
+    </div>
+  </div> ';
                                   
-                                  
+                                  //}                           
                                 }
                               
                                 $a++;
                                  
-                                $d++;
+                                $f++;
                                    
-                                if($d==$r){
-                                    $d=0;
+                                if($f==$r){
+                                    $f=0;
                                 }
                             }
                             
