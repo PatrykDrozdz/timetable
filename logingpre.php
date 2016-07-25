@@ -33,7 +33,7 @@
     <script src="js/jquery.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
-    <script src="fonts//bootstrap.js"></script> 
+    <script src="fonts/bootstrap.js"></script> 
         
         <title>Organizator</title>
         
@@ -49,6 +49,7 @@
     </head>
     <body>
         <div id="container2">
+
             <div id="header">
                  <h1>Terminarz</h1>
                  <div id="mainPage">
@@ -59,20 +60,21 @@
             </div>
             
             <div id="leftLog">
+      
                 <form action="loging.php" method="post" name="form_name">
                     
               
                     login:
                     <br/>
                     <input type="text" name="login" id="textfield" 
-                           placeholder="login"/>
+                           placeholder="login" class="form-control"/>
                     <br/>
                      <br/>
-                      <br/>
+               
                     hasło:
                     <br/>
                     <input type="password" name="pass" id="textfield" 
-                           placeholder="hasło"/>
+                           placeholder="hasło" class="form-control"/>
                     <br/>
                     <br/>
                     <input class="btn btn-primary active" 

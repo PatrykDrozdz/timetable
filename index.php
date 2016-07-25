@@ -94,6 +94,11 @@ try{
                     $rowMeeting = $resMeeting->fetch_assoc();
                     $info[$a] = $rowMeeting['info'];
                     $moreInfo[$a] = $rowMeeting['moreInfo'];
+                    ///////////////////////
+                    ////nowe
+                    $hourStart[$a] = $rowMeeting['hourStart'];
+                    $hourEnd[$a] = $rowMeeting['hourEnd'];
+                    ////////////////////////////
                     $idStart[$a] = $rowMeeting['idStart'];
                     $idEnd[$a] = $rowMeeting['idEnd'];
                     $timeLast[$a] = $rowMeeting['timeLast'];
@@ -263,7 +268,7 @@ try{
             </div>
       
             <div id="table">
-                
+           
 
                 
                 <table id="trueTable" border="5" width="100%" height="70%" 
@@ -284,14 +289,17 @@ try{
                              echo 
                             '<td>
                                     <div id="date'.$i.'" class="date">'.$tab[$i].'</div>
+                                        
+                                    <style> 
+                                        
+                                        #date'.$i.'{
+                                            color: white;
+                                        }
+                                    
+                                    </style>
+                                    
                             </td>  ';
                
-                             echo '
-                                  <style> 
-                                  #date'.$day.'{
-                                       background-Color: #AA0000;
-                                   }
-                                   </style>';
                             
                             }
                        
@@ -323,6 +331,7 @@ try{
                             echo' <style> 
                             #pn{
                                 background-Color: #AA0000;
+                                
                                }
                                   </style> ';
                             }
@@ -330,6 +339,7 @@ try{
                             echo' <style> 
                             #wt{
                                 background-Color: #AA0000;
+                                
                                }
                                   </style> ';
                             }
@@ -337,6 +347,7 @@ try{
                             echo' <style> 
                             #sr{
                                 background-Color: #AA0000;
+                                color: white;
                                }
                                   </style> ';
                             }
@@ -396,6 +407,7 @@ try{
                            if($i%2==0){
                                if($check%2==0){
                                     echo '<td class="min" rowspan="2">30</td>';
+                                   
                                     $check++;
                                }else{
                                    echo '<td class="min" rowspan="2">00</td>';
@@ -411,21 +423,34 @@ try{
                                     //if($tabId[$a]!=$trueUnused[$f]){
                                 
                                 if($info[$a]!=NULL){
+                                    
+                                    $title = $moreInfo[$a];
+                                    $content = $moreInfo[$a];
+                                            
+                                    
                                    
                                 echo ' <td class="row"'
-                                       //.'rowspan="'.(4*$timeLast[$a]). '"'
                                         . 'id="F'.$tabId[$a].'"'
                                         . '> '
                                         . '<div  id="F'.$tabId[$a].'"  '
-                                        . 'class="head">'.
-                                        $info[$a] .'</div>'
-                                        . '<div  id="Meet'.$tabId[$a].'" 
-                                        >
-                                            <br/>'.
-                                            $moreInfo[$a].'
+                                        . 'class="head P'.$tabId[$a].'" 
+                                        data-toggle="popover"
+                                        data-placement="right" 
+                                        data-content="'.$content.'"'
+                                        . ' title="'.$title .'">'
+                                        .$info[$a].'
                                         </div>
+                                        
+                                        <script> 
+                                            $(".P'.$tabId[$a].'").popover();
+                                        </script>
                                         </td>';
-
+                                         echo ' <td class="row"'
+                                     
+                                        . 'id="F'.$tabId[($a+1)].'"'
+                                        . '>
+                                        </td>';
+                                    
                                     
                                     echo'<style>
                                      #F'.$tabId[$a].'{
@@ -433,34 +458,24 @@ try{
                                             border-color: #AA0000;
                                             border-right-color: white;
                                              padding: 1px;
-                                        }
-                                        
-
-                                    #Meet'.$tabId[$a].'{
-                                            display: none;
-                                            color: black;
-                                            background-color: #e5eecc;
-                                        }
-                                        </style>';
-                                    
-                                     echo '<script> 
-                                     $(document).ready(function(){
-                                        $("#F'.$tabId[$a].'").click(function(){
-                                            $("#Meet'.$tabId[$a].'").slideToggle("slow");
-                                        });
-                                      });
-
-                                         </script>';
-                                    
+                                        }';
+ 
 
                                 } else { 
                                   
                                     
                                         echo ' <td class="row" '
-                                    . 'id="F'.$tabId[$a].'" >'.$tabId[$a].'</td>';
+                                    . 'id="F'.$tabId[$a].'" ></td>';
+                                        
+                                        echo '<style> 
+                                             #F'.$tabId[$a].'{
+                                                color: white;
+                                            }
+                                        </style>';
+                                        
  
                                 }
-                              
+                         
                                 $a++;
                                 
                                //}

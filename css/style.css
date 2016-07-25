@@ -1,7 +1,7 @@
 .body{
     background:  url("broken_noise.png");/*(from http://subtlepatterns.com/) */
     font-family: "Lucida Console", Monaco, monospace;
-    color: white
+    color: black;
    
 }
 
@@ -10,7 +10,7 @@
     background:  url("broken_noise.png");/*(from http://subtlepatterns.com/) */
     font-family: "Lucida Console", Monaco, monospace;
     height: 4000px;
-    color: white
+    color: black;
    
     
 }     
@@ -61,7 +61,7 @@
     text-align: center;
     background-color:  #1c1c1c;
     padding: 10px;
-
+    color: black;
 }
 
 #table2{
@@ -87,24 +87,28 @@
     border: 10px;
     text-align: center;
     padding: 5px;
-    color: whitesmoke;
+    
+        color: black;
 }
 
 .dayName{
      height: 50px;
     padding: 10px;
     text-align: center;
+    color: whitesmoke;
 }
 
 #textHour{
     height: 50px;
     padding: 10px;
     text-align: center;
+    color: whitesmoke;
 }
 
 #cols{
     width: 500px;
     padding: 10px;
+   
 }
 #menu{
 
@@ -147,6 +151,7 @@
 #buttonDay{
     width: 100px;
     height: 30px;
+    color: black;
 }
 #view{
    color: black;
@@ -154,8 +159,7 @@
 
 
 #textfield{
-    width: 400px;
-    color: black;
+    width: 300px;
 }
 
 .cells{
@@ -197,6 +201,8 @@
 .head{
     padding: 6px;
     height: 50px;
+
+    color: white;
 }
 
 .hour{
@@ -210,3 +216,13 @@
 .changeHour{
     width: 3%;
 }
+
+.min{
+    color: white;
+}
+.hour{
+    color: white;
+}
+
+
+    

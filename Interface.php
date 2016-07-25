@@ -283,7 +283,7 @@ try{
                            type="submit" value="<<" id="buttonDay"/></td>
                              <td> <input class="btn btn-primary active" 
                            type="submit" value="<" id="buttonDay"/></td>
-                            <td colspan="5">Pole z opisem najbliszego spotkania</td>
+                            <td colspan="5" class="head">Pole z opisem najbliszego spotkania</td>
                             <td> <input class="btn btn-primary active" 
                                         type="submit" value=">" id="buttonDay"/></td>
                              <td colspan="2"> <input class="btn btn-primary active" 
@@ -304,15 +304,16 @@ try{
                              echo 
                             '<td>
                                     <div id="date'.$i.'" class="date">'.$tab[$i].'</div>
+                                        
+                                    <style> 
+                                        
+                                        #date'.$i.'{
+                                            color: white;
+                                        }
+                                    
+                                    </style>
                             </td>  ';
-                             
-                               echo '
-                                  <style> 
-                                  #date'.$day.'{
-                                       background-Color: #AA0000;
-                                   }
-                                   </style>';
-                             
+  
                             }
                        
                           
@@ -441,20 +442,29 @@ try{
                                 
                                 if($info[$a]!=NULL){
                                    
-                                echo ' <td class="row"'
+                                 echo ' <td class="row"'
                                        //.'rowspan="'.(4*$timeLast[$a]). '"'
                                         . 'id="F'.$tabId[$a].'"'
                                         . '> '
                                         . '<div  id="F'.$tabId[$a].'"  '
-                                        . 'class="head">'.
-                                        $info[$a] .'</div>'
-                                        . '<div  id="Meet'.$tabId[$a].'" 
-                                        >
-                                            <br/>'.
-                                            $moreInfo[$a].'
+                                        . 'class="head P'.$tabId[$a].'" 
+                                        data-toggle="popover"
+                                        data-placement="right" 
+                                        data-content="'.$moreInfo[$a].'"'
+                                        . ' title="tytułerhytbdfgynbgufvfdbtghv">'
+                                        .$info[$a].'
                                         </div>
+                                        
+                                        <script> 
+                                            $(".P'.$tabId[$a].'").popover();
+                                        </script>
                                         </td>';
-
+                                   echo ' <td class="row"'
+                                     
+                                        . 'id="F'.$tabId[($a+1)].'"'
+                                        . '>'.$tabId[($a+1)].' 
+                                        </td>';
+                                    
                                     
                                     echo'<style>
                                      #F'.$tabId[$a].'{
@@ -462,24 +472,8 @@ try{
                                             border-color: #AA0000;
                                             border-right-color: white;
                                              padding: 1px;
-                                        }
-                                        
-
-                                    #Meet'.$tabId[$a].'{
-                                            display: none;
-                                            color: black;
-                                            background-color: #e5eecc;
-                                        }
-                                        </style>';
+                                        }';
                                     
-                                     echo '<script> 
-                                     $(document).ready(function(){
-                                        $("#F'.$tabId[$a].'").click(function(){
-                                            $("#Meet'.$tabId[$a].'").slideToggle("slow");
-                                        });
-                                      });
-
-                                         </script>';
                                     
 
                                 } else { 
@@ -488,7 +482,11 @@ try{
                                     
                                         echo ' <td class="row" '
                                     . 'id="F'.$tabId[$a].'" >'.$tabId[$a].'</td>';
-                                        
+                                         echo '<style> 
+                                             #F'.$tabId[$a].'{
+                                                color: white;
+                                            }
+                                        </style>';
                                     //}  
                                     $f++;
                                     

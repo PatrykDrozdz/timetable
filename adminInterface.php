@@ -21,6 +21,7 @@ $end=4*13;//koniec petli
                       
 $h=6;//domyslna godzina poczætkowa
 
+$r = 0;//zmienna do zarezerwowanych(indeksy)
 ///////////////////////////////
 //wybør widokøw do panelu administratora
 require_once 'connection.php';
@@ -234,6 +235,13 @@ try{
            ////////////////////////////////////////// 
             
             
+            //////////////////////////////////////////////////////
+            
+            if(isset($_POST['info'])){
+                
+            }
+            
+            //////////////////////////////////////////////////////
             
             //wczytywanie spotkan na tablice głøwnæł
            /////////////////////////////////////////
@@ -293,6 +301,11 @@ try{
                                          if($s%7==0 && $unused[$s]<$idEnd[$a] && 
                                      $unused[$s]>$idStart[$a]){
                                  $trueUnused[$f] = $unused[$s];
+                                 $reserved[$r] = $trueUnused[$f];
+                                 /////////////////////////////////////////////
+                                 /*echo $f.' '. $trueUnused[$f];
+                                echo'<br/>';*/
+                                //////////////////////////////////////////////////////////
 
                                       if($f==$idEnd[$a]){
                                   
@@ -312,25 +325,29 @@ try{
                                                    padding: 1px;
                                                 }
                                                 </style>';
+                                          
                                    }
                                   
                                  
                      ////////////////////////////////////////////////////////     
                     ///przydatne
-                               /* echo $f.' '. $trueUnused[$f];
-                                echo'<br/>';*/
+                                
+                                
+                                 /*  echo $r.' '.$reserved[$r];
+                                   echo'<br/>'; */
+                                   
                     ///////////////////////////////////////////////////////
                                                   
-                            $f++;
+                           
                              } 
                                  
-                             $f++;
-                             }
-                               
-                                
-                                
                              
-                             $s++; 
+                          }
+                          $f++;
+                            $s++;  
+                            
+                            $r++;    
+                             
                              
                          }
                          
@@ -382,13 +399,6 @@ try{
     $SpanCol = ($end/2)+1; 
     $h = $a;//domyslna godzina poczætkowa
 
-    
-    //////////////////////////////////////////////////////
-    
-    
-    
-    
-    /////////////////////////////////////////////////////
 ?>
 
 <!DOCTYPE html>
@@ -419,14 +429,13 @@ try{
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrom=1"/>
         
         <link rel="stylesheet" href="css/style.css" type="text/css"/>
-        
-
+       
         
     </head>
     <body>
         
         <div id="container">
-          
+        
             <div id="header">
                  <h1>Terminarz - panel administartora</h1>
              
@@ -464,12 +473,15 @@ try{
             </div>
           
             <div id="table">
-                
+              
                 
                  <!-- Trigger the modal with a button -->
-  <button type="button" class="btn btn-info btn-lg" 
+  <button type="button" class="btn btn-info btn-lg active" 
   data-toggle="modal" data-target="#myModal">Open Modal</button>
-
+ 
+                 
+               
+                 
   <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -478,13 +490,33 @@ try{
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
+          <h4 class="modal-title">Dodaj spotkanie</h4>
         </div>
         <div class="modal-body">
-          <p>Some text in the modal.</p>
+            <form method="post">
+           <input type="text" name="info" id="textfield" 
+            placeholder="temat" class="form-control"/>
+           <br/>
+           <br/>
+           <input type="text" name="moreInfo" id="textfield" 
+            placeholder="wiecej informacji" class="form-control"/>
+           <br/>
+           <br/>
+           <p>Czas spotkania</p>
+            <br/>
+           godziny:
+            <input type="number" name="hours" min="00" max="23"/>
+           minuty:
+           <input type="number" name="minutes" min="00" max="45" step="15"/>
+           <br/>
+           <br/>
+            <input class="btn btn-primary active" 
+                           type="submit" value="Dodaj" id="button"/>
+            </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" 
+                    data-dissmiss="modal">Anuluj</button>
         </div>
       </div>
       
@@ -509,7 +541,7 @@ try{
                          
                           </td>
                              
-                            <td colspan="5">Pole z opisem najbliszego 
+                            <td colspan="5" class="head">Pole z opisem najbliszego 
                                 spotkania</td>
                     
                             <td colspan="2"> 
@@ -552,18 +584,21 @@ try{
                             '<td>
                                     <div id="date'.$i.'" '
                                      . 'class="date">'.$tab[$i].'</div>
+                                         
+
+                                     <style> 
+                                        
+                                        #date'.$i.'{
+                                            color: white;
+                                        }
+                                    
+                                    </style>
                             </td>  ';
                              
-                               echo '
-                                  <style> 
-                                  #date'.$day.'{
-                                       background-Color: #AA0000;
-                                   }
-                                   </style>';
                             }
                        
                    
-                                
+                             $d=0;   
                        ?>
                      
                         
@@ -685,20 +720,48 @@ try{
                                 
                                 if($info[$a]!=NULL){
                                    
-                                echo ' <td class="row"'
+                                  echo ' <td class="row"'
                                        //.'rowspan="'.(4*$timeLast[$a]). '"'
                                         . 'id="F'.$tabId[$a].'"'
                                         . '> '
                                         . '<div  id="F'.$tabId[$a].'"  '
-                                        . 'class="head">'.
-                                        $info[$a] .'</div>'
-                                        . '<div  id="Meet'.$tabId[$a].'" 
-                                        >
-                                            <br/>'.
-                                            $moreInfo[$a].'
+                                        . 'class="head P'.$tabId[$a].'" 
+                                        data-toggle="popover"
+                                        data-placement="right" 
+                                        data-content="'.$moreInfo[$a].'"'
+                                        . ' title="tytułerhytbdfgynbgufvfdbtghv">'
+                                        .$info[$a].'
                                         </div>
+                                        
+                                        <script> 
+                                            $(".P'.$tabId[$a].'").popover();
+                                        </script>
                                         </td>';
+                                  
+                                  echo ' <td class="row"'
+                                     
+                                        . 'id="F'.$tabId[($a+1)].'"  href="Add.php"'
+                                        . '><a href="Add.php" target="_blank">'.$tabId[($a+1)].' </a>
+                                        </td>';
+                                  
+                                  echo '<style> 
+                                             #F'.$tabId[($a+1)].'{
+                                                color: white;
+                                            }
+                                        </style>';
+                                        
+                                        if($reserved[$d] != $tabId[($a+1)]){
+                                            
+                                            echo '<script> 
+                                     
+                                                function Reserve'.$tabId[($a+1)].'(){
+                                                    document.getElementById("F'.$tabId[($a+1)].'").
+                                                    innerHTML = "Reserved";    
+                                               }
 
+                                            </script>'; 
+                     
+                                        }
                                     
                                     echo'<style>
                                      #F'.$tabId[$a].'{
@@ -706,43 +769,62 @@ try{
                                             border-color: #AA0000;
                                             border-right-color: white;
                                              padding: 1px;
-                                        }
+                                        } ';
                                         
 
-                                    #Meet'.$tabId[$a].'{
-                                            display: none;
-                                            color: black;
-                                            background-color: #e5eecc;
-                                        }
-                                        </style>';
                                     
-                                     echo '<script> 
+                                    
+
+                                } else { 
+                              //onclick="Reserve'.$tabId[$a].'()"
+                                    echo ' <td class="row" '
+                                    . 'id="F'.$tabId[$a].'">
+                                     <a href="Add.php" target="_blank">'.$tabId[($a+1)].' </a></td>';
+                                     echo '<style> 
+                                             #F'.$tabId[$a].'{
+                                                color: white;
+                                            }
+                                        </style>';
+                                        
+                                        if($reserved[$d] != $tabId[$a]){
+                                            
+                                            echo '<script> 
+                                     
+                                                function Reserve'.$tabId[$a].'(){
+                                                    document.getElementById("F'.$tabId[$a].'").
+                                                    innerHTML = "Reserved";    
+                                               }
+
+                                            </script>'; 
+                     
+                                        }
+                                         /*if($reserved[$d] == $tabId[$a]){
+                                            echo '<script> 
                                      $(document).ready(function(){
-                                        $("#F'.$tabId[$a].'").click(function(){
-                                            $("#Meet'.$tabId[$a].'").slideToggle("slow");
+                                        $("#F'.$reserved[$d].'").click(function(){
+                                            $("#Meet'.$reserved[$d].'").slideToggle("slow");
                                         });
                                       });
 
                                          </script>';
+                                            
+                                            /*echo ' function Reserve'.$tabId[$a].'(){
+                                                    document.getElementById("F'.$tabId[$a].'").
+                                                    innerHTML = "1";    
+                                               }';
                                     
-
-                                } else { 
-                                   
-                                    //if($tabId[$a]!=$trueUnused[$f]){
-                                    
-                                        echo ' <td class="row" '
-                                    . 'id="F'.$tabId[$a].'" >'.$tabId[$a].'</td>';
-                                        
-                                    //}  
-                                    $f++;
-                                    
-                                    if($f==((4*$timeLast[$a])-1)){
-                                        $f=1;
-                                    }
+                                        }*/
+                                  
+                                  
                                 }
                               
-                                 $a++;
-                            
+                                $a++;
+                                 
+                                $d++;
+                                   
+                                if($d==$r){
+                                    $d=0;
+                                }
                             }
                             
                             if(((2*$allHours)-1)==$i){
