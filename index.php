@@ -257,17 +257,71 @@ try{
     <body>
         
         <div id="container">
-          
+          <?php 
+                
+                if(isset($_SESSION['error'])){
+                    echo $_SESSION['error'];
+                }
+                
+                ?>
             <div id="header">
                  <h1>Terminarz</h1>
                  <div id="loging">
-                     <a href="logingpre.php" class="btn-link">Zaloguj się</a>
+                                          <!-- Trigger the modal with a button -->
+  <button type="button" class="btn btn-link btn-lg active" 
+  data-toggle="modal" data-target="#log">Zaloguj sie</button>
+                                          <br/>
                  </div>
                 
             </div>
       
             <div id="table">
-           
+ 
+ 
+                 
+               
+                 
+  <!-- Modal -->
+  <div class="modal fade" id="log" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Logowanie</h4>
+        </div>
+        <div class="modal-body">
+           <form action="loging.php" method="post" name="form_name">
+                    
+              
+                    login:
+                    <br/>
+                    <input type="text" name="login" id="textfield" 
+                           placeholder="login" class="form-control"/>
+                    <br/>
+                     <br/>
+               
+                    hasło:
+                    <br/>
+                    <input type="password" name="pass" id="textfield" 
+                           placeholder="hasło" class="form-control"/>
+                    <br/>
+                    <br/>
+                    <input class="btn btn-primary active" 
+                           type="submit" value="Zaloguj się" id="button"/>
+                    
+                </form>
+                
+                
+        </div>
+        <div class="modal-footer">
+<button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 
                 
                 <table id="trueTable" border="5" width="100%" height="70%" 

@@ -236,10 +236,7 @@ try{
             
             
             //////////////////////////////////////////////////////
-            
-            if(isset($_POST['info'])){
-                
-            }
+        
             
             //////////////////////////////////////////////////////
             
@@ -275,9 +272,9 @@ try{
                     settype($idEnd[$a], 'integer');
                  if($info[$a]!=NULL){   
              
-                    $s = 0;
-                    $f=0;
-                     $h2 = $tabH[$i];
+                        $s = 0;
+                        $f=0;
+                        $h2 = $tabH[$i];
                         $min2 = $tabMin[$i];
                         $day2 = $j;
         
@@ -289,7 +286,8 @@ try{
                          for($l=1; $l<=7; $l++){
                             
                              $unused[$s] = $h2.$min2.$day2;
-                              
+                              /*echo $s.' '.$unused[$s];
+                              echo '<br/>';*/
                              $day2++;
                              if($day2>7){
                                  $day2=1;
@@ -297,11 +295,11 @@ try{
                                  if($s%7==0 && $unused[$s]<$idEnd[$a] && 
                                          $unused[$s]>$idStart[$a]){
                                  $trueUnused[$f] = $unused[$s];
-                                   
+                                   $reserved[$r] = $trueUnused[$f];
                                    
                                  /////////////////////////////////////////////
-                                 echo $f.' '. $trueUnused[$f];
-                                echo'<br/>';
+                                 /*echo $r.' '. $reserved[$r];
+                                echo'<br/>';*/
                                 //////////////////////////////////////////////////////////
 
                                       if($f==$idEnd[$a]){
@@ -324,26 +322,17 @@ try{
                                                 </style>';
                                           
                                    }
-                                  
-                                 
-                     ////////////////////////////////////////////////////////     
-                    ///przydatne
-                                
-                                
-                                 /*  echo $r.' '.$reserved[$r];
-                                   echo'<br/>'; */
                                    
-                    ///////////////////////////////////////////////////////
-                                                  
-                           
-                   
-                                 
-                             
+                                   
+                                          
+                          
+                          $r++;
+            
                           }
-                          $f++;
-                            $s++;  
-                            $r++;    
-                             
+
+                              $f++;
+                              $s++;  
+
                              
                          }
                          
@@ -370,7 +359,137 @@ try{
                     $min=0;
                 }
            }
-        
+        if(isset($_POST['date'])){
+            
+            $dateMeet = $_POST['date'];  
+    
+            $dayOfWeek = date('N', strtotime($dateMeet));//sprawdzanie dnia tygodnia z konkretnej daty
+ 
+            $begHours = $_POST['begHours'];
+            $begMinutes = $_POST['begMinutes'];
+            
+            $idBegHour = $begHours ;
+           if($begHours==NULL){
+                $begHours=0;
+            }
+            
+            if($begMinutes==NULL){
+                $begMinutes=0;
+            }
+            
+            if($begHours<10){
+                $begHours = '0'.$begHours;
+            }
+            
+            if($begMinutes<10){
+                $begMinutes = '0'.$begMinutes;
+            }
+            
+            $FullHourStart = $begHours.':'.$begMinutes.':'.'00';
+             
+            /*echo $FullHourStart;
+            echo '<br/>';*/
+            
+            $hours = $_POST['hours'];
+            $minutes = $_POST['minutes'];
+            
+            if($hours==NULL){
+                $hours=0;
+            }
+            
+            if($minutes==NULL){
+                $minutes=0;
+            }
+          
+            $timeOfMeeting = $hours.':'.$minutes;
+            
+            /*echo $timeOfMeeting;
+            echo '<br/>';*/
+            
+            $hourEnd = $begHours + $hours;
+           
+            $minuteEnd = $begMinutes + $minutes;
+              
+            if($minuteEnd>=60){
+                $minuteEnd = $minuteEnd - 60;
+                $hourEnd = $hourEnd+1;
+            }
+             $idEndHour = $hourEnd;
+            
+            if($hourEnd<10){
+                $hourEnd = '0'.$hourEnd;
+            }
+            
+            if($minuteEnd<10){
+                $minuteEnd = '0'.$minuteEnd;
+            }
+            
+            $FullHourEnd = $hourEnd.':'.$minuteEnd.':'.'00';
+            
+            /*echo $FullHourEnd;
+            echo'<br/>';*/
+            
+           
+            
+            if($minuteEnd==0){
+                $minEndId=0;
+            }
+            
+            if($minuteEnd==15){
+                $minEndId=1;
+            }
+            
+            if($minuteEnd==30){
+                $minEndId=2;
+            }
+            
+            if($minuteEnd==45){
+                $minEndId=3;
+            }
+            
+            
+            if($begMinutes==0){
+                $minBegId=0;
+            }
+            
+            if($begMinutes==15){
+                $minBegId=1;
+            }
+            
+            if($begMinutes==30){
+                $minBegId=2;
+            }
+            
+            if($begMinutes==45){
+                $minBegId=3;
+            }
+   
+            $StartId = $idBegHour.$minBegId.$dayOfWeek;
+            $EndId =  $idEndHour.$minEndId.$dayOfWeek;
+            
+            /*echo $StartId;
+            echo '<br/>';
+              echo $EndId;
+            echo '<br/>';*/
+            
+             $infoRead = $_POST['info'];
+            
+            $moreInfoRead = $_POST['moreInfo'];
+            
+            $usersId = $_SESSION['idusers'];
+            /*echo $usersId;
+            echo '<br/>';*/
+            
+            $addMeetingQuerry = "INSERT INTO `meetings` (idmeetings, users_idusers, info, moreInfo,day, hourStart, hourEnd, timeLast, idStart, idEnd) VALUES (NULL, '$usersId', '$infoRead', '$moreInfoRead', '$dateMeet', '$FullHourStart', '$FullHourEnd', '$timeOfMeeting', '$StartId', '$EndId')";
+            if($connection->query($addMeetingQuerry)){
+                $_SESSION['added'] = '<span class="list-group-item list-group-item-success">
+                       Dodano wydazenie do terminarza</span>';
+            } else{
+                echo 'Error no. '.$connection->errno;
+            }
+            
+            
+        }
             
          
         } else {
@@ -378,7 +497,7 @@ try{
        }
    
    } 
-    
+   
     $connection->close();   
     
     
@@ -397,6 +516,25 @@ try{
 
 ?>
 
+<?php 
+            for($i=0; $i<=$r; $i++){
+                for($j=0; $j<$r; $j++){
+                    if($reserved[$j]>$reserved[$j + 1]){
+                        $add = $reserved[$j];
+                        $reserved[$j] = $reserved[$j+1];
+                        $reserved[$j+1]=$add;
+                    }
+                }
+            }
+            
+           /* for($i=0; $i<=$r; $i++){
+                echo $i.' '.$reserved[$i].'<br/>';
+            }*/
+            
+            $r1 = 1;
+          ?>
+             
+
 <!DOCTYPE html>
 
 <html lang="pl">
@@ -412,10 +550,12 @@ try{
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">     
     <script src="js/jquery.js"></script>
+    <script src="js/jquery_1.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
-
+    <script src="js/jquery-ui.js"></script>
     
+    <link href="css/jquery-ui.css" rel="stylesheet">
 
         <title>Organizator</title>
         
@@ -426,12 +566,26 @@ try{
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrom=1"/>
         
         <link rel="stylesheet" href="css/style.css" type="text/css"/>
-       
+        
+    
+     
+        <script>
+            $( function() {
+                $( "#datepicker" ).datepicker({dateFormat: 'yy-mm-dd'});
+            } );
+        </script>
         
     </head>
     <body>
         
         <div id="container">
+             <?php 
+                if(isset($_SESSION['added'])){
+                    echo $_SESSION['added'];
+                }
+             
+             ?>
+             
         
             <div id="header">
                  <h1>Terminarz - panel administartora</h1>
@@ -470,56 +624,7 @@ try{
             </div>
           
             <div id="table">
-              
-                
-                 <!-- Trigger the modal with a button -->
-  <button type="button" class="btn btn-info btn-lg active" 
-  data-toggle="modal" data-target="#myModal">Open Modal</button>
- 
-                 
-               
-                 
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Dodaj spotkanie</h4>
-        </div>
-        <div class="modal-body">
-            <form method="post">
-           <input type="text" name="info" id="textfield" 
-            placeholder="temat" class="form-control"/>
-           <br/>
-           <br/>
-           <input type="text" name="moreInfo" id="textfield" 
-            placeholder="wiecej informacji" class="form-control"/>
-           <br/>
-           <br/>
-           <p>Czas spotkania</p>
-            <br/>
-           godziny:
-            <input type="number" name="hours" min="00" max="23"/>
-           minuty:
-           <input type="number" name="minutes" min="00" max="45" step="15"/>
-           <br/>
-           <br/>
-            <input class="btn btn-primary active" 
-                           type="submit" value="Dodaj" id="button"/>
-            </form>
-        </div>
-        <div class="modal-footer">
-<button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-                
-                
+   
              <table id="trueTable" border="5" width="100%" height="50%" 
                     class="table-active table-responsive">
                     <tr>
@@ -677,7 +782,7 @@ try{
                         
                     </tr>
                     <?php 
-                    
+                    $a2=$a;
                     $start=0;//start petli
                     $allHours = 13;
                     $end=4*$allHours;//koniec petli
@@ -717,7 +822,6 @@ try{
                                 if($info[$a]!=NULL){
                                    
                                   echo ' <td class="row"'
-                                       //.'rowspan="'.(4*$timeLast[$a]). '"'
                                         . 'id="F'.$tabId[$a].'"'
                                         . '> '
                                         . '<div  id="F'.$tabId[$a].'"  '
@@ -736,7 +840,9 @@ try{
                                   
                                   echo ' <td class="row"'
                                         . 'id="F'.$tabId[($a+1)].'"'
-                                        . 'data-toggle="modal" data-target="#F'.$tabId[($a+1)].'">'
+                                        . 'data-toggle="modal" '
+                                          . 'data-target="#F'
+                                          .$tabId[($a+1)].'">'
                                           .$tabId[($a+1)].' 
                                         </td>';
                                   
@@ -745,50 +851,7 @@ try{
                                                 color: white;
                                             }
                                         </style>';
-                                        
-                                   //if($trueUnused[$f] != $tabId[($a+1)]){ 
-                                    
-  echo '                                               
-  
-  <div class="modal fade moduloWin" id="F'.$tabId[($a+1)].'" role="dialog">
-    <div class="modal-dialog">
-    
-   
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Dodaj spotkanie</h4>
-        </div>
-        <div class="modal-body">
-            <form method="post">
-           <input type="text" name="info" id="textfield" 
-            placeholder="temat" class="form-control"/>
-           <br/>
-           <br/>
-           <input type="text" name="moreInfo" id="textfield" 
-            placeholder="wiecej informacji" class="form-control"/>
-           <br/>
-           <br/>
-           <p>Czas spotkania</p>
-            <br/>
-           godziny:
-            <input type="number" name="hours" min="00" max="23"/>
-           minuty:
-           <input type="number" name="minutes" min="00" max="45" step="15"/>
-           <br/>
-           <br/>
-            <input class="btn btn-primary active" 
-                           type="submit" value="Dodaj" id="button"/>
-            </form>
-        </div>
-        <div class="modal-footer">
-<button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
-        </div>
-      </div>
-      
-    </div>
-  </div> ';
-     // }                            
+                    
                                   
                                     echo'<style>
                                      #F'.$tabId[$a].'{
@@ -800,72 +863,89 @@ try{
                                         
 
                                     
-                                    
+                                  
 
                                 } else { 
-                           
+                                   if($tabId[$a]!=$reserved[$r1]){
+                                    
                                     echo ' <td class="row" id="F'.$tabId[$a].'"
-                                        onclick="Reserve'.$tabId[$a].'()"
-                                            data-toggle="modal" data-target="#F'.$tabId[$a].'"">
+                                            data-toggle="modal" data-target="#M'.$tabId[$a].'">
                                      '.$tabId[$a].'</td>';
                                      echo '<style> 
                                              #F'.$tabId[$a].'{
                                                 color: white;
                                             }
                                         </style>';
-                                  //if($trueUnused[$f] != $tabId[($a+1)]){        
-                                      
-                                      echo '                                               
- 
-  <div class="modal fade moduloWin" id="F'.$tabId[$a].'" role="dialog">
-    <div class="modal-dialog">
-    
-      
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Dodaj spotkanie</h4>
-        </div>
-        <div class="modal-body">
-            <form method="post">
-           <input type="text" name="info" id="textfield" 
-            placeholder="temat" class="form-control"/>
-           <br/>
-           <br/>
-           <input type="text" name="moreInfo" id="textfield" 
-            placeholder="wiecej informacji" class="form-control"/>
-           <br/>
-           <br/>
-           <p>Czas spotkania</p>
-            <br/>
-           godziny:
-            <input type="number" name="hours" min="00" max="23"/>
-           minuty:
-           <input type="number" name="minutes" min="00" max="45" step="15"/>
-           <br/>
-           <br/>
-            <input class="btn btn-primary active" 
-                           type="submit" value="Dodaj" id="button"/>
-            </form>
-        </div>
-        <div class="modal-footer">
-<button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
-        </div>
-      </div>
-      
-    </div>
-  </div> ';
-                                  
-                                  //}                           
+                                     
+ echo       '<div class="modal fade" id="M'.$tabId[$a].'" role="dialog">
+                                   <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                    <button type="button" class="close" 
+                                    data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Dodaj spotkanie</h4>
+                                     </div>
+                                    <div class="modal-body">
+                                    <form method="post" >
+                                        <p>Data spotkania</p>
+                                        <br/>
+                                        <input type="text" id="datepicker'.$a.'" name="date"/>
+                                         <br/>
+                                        <br/>
+                                        <p>Godzina rozpoczecia</p>
+                                        <br/>
+                                         godzina:
+                                        <input type="number" name="begHours" min="0" max="23"/>
+                                         minuta:
+                                        <input type="number" name="begMinutes" min="0" max="45" step="15"/>
+                                        <br/>
+                                        <br/>
+                                        
+                                        <p>Czas spotkania</p>
+                                         <br/>
+                                        godziny:
+                                        <input type="number" name="hours" min="0" max="7"/>
+                                         minuty:
+                                        <input type="number" name="minutes" min="0" max="45" step="15"/>
+                                        <br/>
+                                        <br/>
+                                        <input type="text" name="info" id="textfield" 
+                                            placeholder="temat" class="form-control"/>
+                                            <br/>
+                                            <br/>
+                                        <input type="text" name="moreInfo" id="textfield" 
+                                         placeholder="wiecej informacji" class="form-control"/>
+                                            <br/>
+                                            <br/>
+                                        
+                                    <input class="btn btn-primary active" 
+                                        type="submit" value="Dodaj" id="button"/>
+                                    </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                <button type="button" class="btn btn-default" 
+                                data-dismiss="modal">Anuluj</button>
+                                    </div>
+                                    </div>
+                                    </div>
+</div>';  
+                                     echo '<script>
+            $( function() {
+                $( "#datepicker'.$a.'" ).datepicker({dateFormat: "yy-mm-dd"});
+            } );
+        </script>';
+                                     
+                                     
+                                   } 
                                 }
                               
                                 $a++;
-                                 
                                 $f++;
-                                   
-                                if($f==$r){
-                                    $f=0;
-                                }
+                                 $r1++;
+                                 if($r1==$r){
+                                     $r1=1;
+                                 }
+
                             }
                             
                             if(((2*$allHours)-1)==$i){

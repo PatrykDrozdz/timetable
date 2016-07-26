@@ -64,8 +64,9 @@ if($connection->connect_errno!=0){
                 header('Location: loginpre.php');
             }*/
         } else {
-            $_SESSION['error'] = '<span class="error">Błæd loginu lub hasła!</span>';
-            header('Location: logingpre.php');
+            $_SESSION['error'] = '<span class="list-group-item list-group-item-danger">'
+                    . 'Bład loginu lub hasła!</span>';
+            header('Location: index.php');
         }
         
     }
