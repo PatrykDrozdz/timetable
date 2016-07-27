@@ -265,6 +265,10 @@ try{
                     $idEnd[$a] = $rowMeeting['idEnd'];
                     $timeLast[$a] = $rowMeeting['timeLast'];
                     
+                    $dateOfMeeting[$a] = $rowMeeting['day'];
+                    $hourMeetingStarts[$a] = $rowMeeting['hourStart'];
+                    $hourMeetingEnds[$a] = $rowMeeting['hourEnd'];
+                    
                     $tabId[$a] = $tabH[$i].$tabMin[$i].$j;//id wygenerowanych komørek
                     
                     settype($tabId[$a], 'integer');
@@ -479,18 +483,53 @@ try{
             $usersId = $_SESSION['idusers'];
             /*echo $usersId;
             echo '<br/>';*/
+            $validAdd = TRUE;
+            //////////////////////////////////////////
+            //zabezpieczenie
+            $resChechAdd = $connection->query("SELECT * FROM meetings WHERE day='$dateMeet' "
+                    . "AND hourStart BETWEEN '$FullHourStart' AND '$FullHourEnd' "
+                    . "AND hourEnd BETWEEN '$FullHourStart' AND '$FullHourEnd'");
             
-            $addMeetingQuerry = "INSERT INTO `meetings` (idmeetings, users_idusers, info, moreInfo,day, hourStart, hourEnd, timeLast, idStart, idEnd) VALUES (NULL, '$usersId', '$infoRead', '$moreInfoRead', '$dateMeet', '$FullHourStart', '$FullHourEnd', '$timeOfMeeting', '$StartId', '$EndId')";
-            if($connection->query($addMeetingQuerry)){
-                $_SESSION['added'] = '<span class="list-group-item list-group-item-success">
-                       Dodano wydazenie do terminarza</span>';
-            } else{
-                echo 'Error no. '.$connection->errno;
+            if(!$resChechAdd){
+                throw new Exception(mysqli_connect_errno());
             }
             
+            $countEvents = $resChechAdd->num_rows;
+            
+            if($countEvents>0){
+                $validAdd=FALSE;
+                $_SESSION['error_add'] = '<span class="list-group-item list-group-item-danger">'
+                    . 'Wydarzenie w tym terminie zostało ju« dodane do bazy danych!</span>';
+            }
+            
+            if($validAdd==TRUE){
+                $addMeetingQuerry = "INSERT INTO `meetings` (idmeetings, users_idusers, "
+                        . "info, moreInfo,day, hourStart, hourEnd, timeLast, idStart, idEnd) "
+                        . "VALUES (NULL, '$usersId', '$infoRead', '$moreInfoRead', '$dateMeet', "
+                        . "'$FullHourStart', '$FullHourEnd', '$timeOfMeeting', '$StartId', "
+                        . "'$EndId')";
+                if($connection->query($addMeetingQuerry)){
+                    $_SESSION['added'] = '<span class="list-group-item list-group-item-success">
+                       Dodano wydazenie do terminarza</span>';
+                } else{
+                    echo 'Error no. '.$connection->errno;
+                }
+            }
             
         }
-            
+         if(isset($_POST['delete'])){
+             
+             $dle1 = '2501';
+             $del2 = '2601';
+             echo 'works';
+             /*if($connection->query("")){
+                  $_SESSION['delete'] = '<span class="list-group-item list-group-item-success">
+                       Usunieto wydazenie z terminarza</span>';
+             } else{
+                 echo 'Error no. '.$connection->errno;
+             }*/
+             
+         }   
          
         } else {
             throw new Exception($connection->errno);
@@ -527,7 +566,7 @@ try{
                 }
             }
             
-           /* for($i=0; $i<=$r; $i++){
+            /*for($i=0; $i<=$r; $i++){
                 echo $i.' '.$reserved[$i].'<br/>';
             }*/
             
@@ -566,14 +605,7 @@ try{
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrom=1"/>
         
         <link rel="stylesheet" href="css/style.css" type="text/css"/>
-        
-    
-     
-        <script>
-            $( function() {
-                $( "#datepicker" ).datepicker({dateFormat: 'yy-mm-dd'});
-            } );
-        </script>
+  
         
     </head>
     <body>
@@ -585,6 +617,14 @@ try{
                 }
              
              ?>
+            
+            <?php 
+                
+                if(isset($_SESSION['error_add'])){
+                    echo $_SESSION['error_add'];
+                }
+                
+                ?>
              
         
             <div id="header">
@@ -811,59 +851,152 @@ try{
                                    $check++;
                                }
                            }
-                        
+
                            
-                     
-                        
-                           
-                                for($j=1; $j<=7; $j++){
+                            for($j=1; $j<=7; $j++){
 
                                 
                                 if($info[$a]!=NULL){
                                    
-                                  echo ' <td class="row"'
-                                        . 'id="F'.$tabId[$a].'"'
-                                        . '> '
-                                        . '<div  id="F'.$tabId[$a].'"  '
-                                        . 'class="head P'.$tabId[$a].'" 
-                                        data-toggle="popover"
-                                        data-placement="right" 
-                                        data-content="'.$moreInfo[$a].'"'
-                                        . ' title="tytułerhytbdfgynbgufvfdbtghv">'
-                                        .$info[$a].'
-                                        </div>
+                                       echo ' <td class="row" id="F'.$tabId[$a].'"
+                                            data-toggle="modal" data-target="#MA'.$tabId[$a].'">
+                                     '.$info[$a].'</td>';  
+                                    
+echo       '<div class="modal fade" id="MA'.$tabId[$a].'" role="dialog">
+                                   <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                    <button type="button" class="close" 
+                                    data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Informacje o spotkaniu</h4>
+                                     </div>
+                                    <div class="modal-body">
+                                    Spotkanie odbedzie sie dnia: '.$dateOfMeeting[$a].'
+                                        <br/>
+                                        W godzinach: '.$hourMeetingStarts[$a].' - '
+                                        .$hourMeetingEnds[$a].'
+                                                 <br/>
+                                    '.$info[$a].'
+                                        <br/>
+                                        '.$moreInfo[$a].'
+                                            <br/>
+                                            <br/>
+                                            
+
+                                    </div>
+                                    <div class="modal-footer">
+                                    <input type="submit" value="Edytuj"
+                                                class="btn btn-link"
+                                                data-toggle="modal" data-target="#Edit'.$tabId[$a].'"/>
+                                    <form method="post">
+                                            <input type="submit" value="usun wydarzenie"
+                                                class="btn btn-danger" name="delete"/>
+                                            </form>
+                                <button type="button" class="btn btn-default" 
+                                data-dismiss="modal">Zamknij</button>
+                                    </div>
+                                    </div>
+                                    </div>
+</div>';  
+
+echo       '<div class="modal fade" id="Edit'.$tabId[$a].'" role="dialog">
+                                   <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                    <button type="button" class="close" 
+                                    data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Edytuj spotkanie</h4>
+                                     </div>
+                                    <div class="modal-body">
+                                    <form method="post" >
+                                        <p>Data spotkania</p>
+                                        <br/>
+                                       
+                                            
+                                      <input type="text" id="datepicker'.$a.'" name="dateEdit"
+                                          value="'.$dateOfMeeting[$a].'"/>
+                                         <br/>
+                                        <br/>
+                                        <p>Godzina rozpoczecia</p>
+                                        <br/>
+                                         godzina:
+                                        <input type="number" name="begHoursEdit" min="0" max="23"
+                                        value="'.($h-1).'"/>';
                                         
-                                        <script> 
-                                            $(".P'.$tabId[$a].'").popover();
-                                        </script>
-                                        </td>';
-                                  
-                                  echo ' <td class="row"'
-                                        . 'id="F'.$tabId[($a+1)].'"'
-                                        . 'data-toggle="modal" '
-                                          . 'data-target="#F'
-                                          .$tabId[($a+1)].'">'
-                                          .$tabId[($a+1)].' 
-                                        </td>';
-                                  
-                                  echo '<style> 
-                                             #F'.$tabId[($a+1)].'{
-                                                color: white;
-                                            }
-                                        </style>';
-                    
-                                  
+                                         if($tabMin[$i]==0){
+                                           $minut=0;
+                                       } 
+                                         if($tabMin[$i]==1){
+                                           $minut=15;
+                                       } 
+                                         if($tabMin[$i]==2){
+                                           $minut=30;
+                                       } 
+                                         if($tabMin[$i]==3){
+                                           $minut=45;
+                                       }
+                                        
+
+                  echo'                 minuta:
+                                        <input type="number" name="begMinutesEdit" min="0" max="45" step="15"
+                                        value="'.$minut.'"/>
+                                        <br/>
+                                        <br/>
+                               
+                                        <p>Czas spotkania</p>
+                                         <br/>
+                                        godziny:
+                                        <input type="number" name="hoursEdit" min="0" max="7"/>
+                                         minuty:
+                                        <input type="number" name="minutesEdit" min="0" max="45" step="15"/>
+                                        <br/>
+                                        <br/>
+                                        <input type="text" name="infoEdit" id="textfield" 
+                                            value="'.$info[$a].'" class="form-control"/>
+                                            <br/>
+                                            <br/>
+                                            <textarea type="text" name="moreInfoEdit" id="textfield" 
+                                                " class="form-control" cols="30" rows="10">
+                                                '.$moreInfo[$a].'</textarea>
+                                     
+                                            <br/>
+                                            <br/>
+                                        
+                                    <input class="btn btn-primary active" 
+                                        type="submit" value="Dodaj" id="button"/>
+                                    </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                <button type="button" class="btn btn-default" 
+                                data-dismiss="modal">Anuluj</button>
+                                    </div>
+                                    </div>
+                                    </div>
+</div>';  
+                                     echo '<script>
+            $( function() {
+                $( "#datepicker'.$a.'" ).datepicker({dateFormat: "yy-mm-dd"});
+            } );
+        </script>';
+
+
+
+
+
+
+
                                     echo'<style>
-                                     #F'.$tabId[$a].'{
+                                        #F'.$tabId[$a].'{
                                             background-Color: #AA0000;
                                             border-color: #AA0000;
                                             border-right-color: white;
-                                             padding: 1px;
-                                        } ';
-                                        
+                                             padding: 1%;
+                                              color: white; 
+                                              font-size: 70%;
+                                             
+                                            }
+                                        </style>';
 
-                                    
-                                  
 
                                 } else { 
                                    if($tabId[$a]!=$reserved[$r1]){
@@ -889,15 +1022,33 @@ try{
                                     <form method="post" >
                                         <p>Data spotkania</p>
                                         <br/>
-                                        <input type="text" id="datepicker'.$a.'" name="date"/>
+                                        <input type="text" id="datepicker'.$a.'" name="date"
+                                            value="'.$tab[$j].'"/>
                                          <br/>
                                         <br/>
                                         <p>Godzina rozpoczecia</p>
                                         <br/>
                                          godzina:
-                                        <input type="number" name="begHours" min="0" max="23"/>
-                                         minuta:
-                                        <input type="number" name="begMinutes" min="0" max="45" step="15"/>
+                                        <input type="number" name="begHours" min="0" max="23"
+                                        value="'.($h-1).'"/>';
+ 
+                                       if($tabMin[$i]==0){
+                                           $minut=0;
+                                       } 
+                                         if($tabMin[$i]==1){
+                                           $minut=15;
+                                       } 
+                                         if($tabMin[$i]==2){
+                                           $minut=30;
+                                       } 
+                                         if($tabMin[$i]==3){
+                                           $minut=45;
+                                       } 
+ 
+ 
+                                echo'minuta:
+                                        <input type="number" name="begMinutes" min="0" max="45" step="15"
+                                        value="'.$minut.'"/>
                                         <br/>
                                         <br/>
                                         
@@ -913,8 +1064,10 @@ try{
                                             placeholder="temat" class="form-control"/>
                                             <br/>
                                             <br/>
-                                        <input type="text" name="moreInfo" id="textfield" 
-                                         placeholder="wiecej informacji" class="form-control"/>
+                                      
+                                         <textarea type="text" name="moreInf" id="textfield" 
+                                                " class="form-control" placeholder="wiecej informacji" 
+                                                cols="30" rows="10"></textarea>
                                             <br/>
                                             <br/>
                                         
@@ -936,11 +1089,17 @@ try{
         </script>';
                                      
                                      
-                                   } 
+                                   } else if($tabId[$a]==$reserved[$r1]){
+                                       echo ' <td class="row" id="F'.$tabId[$a].'"></td>';
+                                     echo '<style> 
+                                             #F'.$tabId[$a].'{
+                                                color: white;
+                                            }
+                                        </style>';
+                                   }
                                 }
                               
                                 $a++;
-                                $f++;
                                  $r1++;
                                  if($r1==$r){
                                      $r1=1;

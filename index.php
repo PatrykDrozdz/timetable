@@ -96,8 +96,9 @@ try{
                     $moreInfo[$a] = $rowMeeting['moreInfo'];
                     ///////////////////////
                     ////nowe
-                    $hourStart[$a] = $rowMeeting['hourStart'];
-                    $hourEnd[$a] = $rowMeeting['hourEnd'];
+                    $dateOfMeeting[$a] = $rowMeeting['day'];
+                    $hourMeetingStarts[$a] = $rowMeeting['hourStart'];
+                    $hourMeetingEnds[$a] = $rowMeeting['hourEnd'];
                     ////////////////////////////
                     $idStart[$a] = $rowMeeting['idStart'];
                     $idEnd[$a] = $rowMeeting['idEnd'];
@@ -292,6 +293,7 @@ try{
           <h4 class="modal-title">Logowanie</h4>
         </div>
         <div class="modal-body">
+            
            <form action="loging.php" method="post" name="form_name">
                     
               
@@ -477,41 +479,62 @@ try{
                                 
                                 if($info[$a]!=NULL){
                                     
-                                    $title = $moreInfo[$a];
-                                    $content = $moreInfo[$a];
+                                        echo ' <td class="row" id="F'.$tabId[$a].'"
+                                            data-toggle="modal" data-target="#MA'.$tabId[$a].'">
+                                     '.$info[$a].'</td>';
+                                    
+        
+                    
+                    
+                    
+                    //$usersIdMeeting[$a]                
+                                  
+echo       '<div class="modal fade" id="MA'.$tabId[$a].'" role="dialog">
+                                   <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                    <button type="button" class="close" 
+                                    data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Informacje o spotkaniu</h4>
+                                     </div>
+                                    <div class="modal-body">
+                                    Spotkanie odbedzie sie dnia: '.$dateOfMeeting[$a].'
+                                        <br/>
+                                        W godzinach: '.$hourMeetingStarts[$a].' - '
+                                .$hourMeetingEnds[$a].'
+                                                 <br/>
+                                    '.$info[$a].'
+                                        <br/>
+                                        '.$moreInfo[$a].'
+          
                                             
-                                    
-                                   
-                                echo ' <td class="row"'
-                                        . 'id="F'.$tabId[$a].'"'
-                                        . '> '
-                                        . '<div  id="F'.$tabId[$a].'"  '
-                                        . 'class="head P'.$tabId[$a].'" 
-                                        data-toggle="popover"
-                                        data-placement="right" 
-                                        data-content="'.$content.'"'
-                                        . ' title="'.$title .'">'
-                                        .$info[$a].'
-                                        </div>
-                                        
-                                        <script> 
-                                            $(".P'.$tabId[$a].'").popover();
-                                        </script>
-                                        </td>';
-                                         echo ' <td class="row"'
-                                     
-                                        . 'id="F'.$tabId[($a+1)].'"'
-                                        . '>
-                                        </td>';
-                                    
-                                    
-                                    echo'<style>
-                                     #F'.$tabId[$a].'{
+                                    </div>
+                                    <div class="modal-footer">
+                                <button type="button" class="btn btn-default" 
+                                data-dismiss="modal">Zamknij</button>
+                                    </div>
+                                    </div>
+                                    </div>
+</div>';  
+                                  
+                                  
+                                  
+                                  
+                                  echo '<style> 
+                                          
+                                           #F'.$tabId[$a].'{
                                             background-Color: #AA0000;
                                             border-color: #AA0000;
                                             border-right-color: white;
-                                             padding: 1px;
-                                        }';
+                                             padding: 1%;
+                                              color: white; 
+                                              font-size: 70%;
+                                            }
+
+                                        </style>';
+                    
+                                  
+                                    
  
 
                                 } else { 
@@ -530,12 +553,7 @@ try{
                                 }
                          
                                 $a++;
-                                
-                               //}
-                               /*$f++;
-                               if($f==((4*$timeLast[$a])-1)){
-                                        $f=0;
-                                    }*/
+
                                
                             }
                              echo'    </tr>';

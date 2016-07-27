@@ -61,7 +61,7 @@ if($connection->connect_errno!=0){
            /* }else{
                 $_SESSION['error'] = '<span style="color:red">Nieprawidłowy '
                         . 'e-mail lub hasło!</span>';
-                header('Location: loginpre.php');
+                header('Location: index.php');
             }*/
         } else {
             $_SESSION['error'] = '<span class="list-group-item list-group-item-danger">'
