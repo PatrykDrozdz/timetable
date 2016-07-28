@@ -187,6 +187,7 @@
     font-size: 15px;
     text-align: center;
     width: 10%;
+
 }
 
 #make{
@@ -231,4 +232,10 @@
 .modal-content{
     color: black;
     text-align: center;
+}
+
+.text{
+    height: 2%;
+    width: 22%;
+    
 }

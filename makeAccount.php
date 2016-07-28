@@ -126,7 +126,7 @@
 
                  $sectionResult->free_result();
                  
-                 $checkRes = $connection->query("SELECT * FROM users WHERE email='$email' AND userLogin='$login'");
+                 $checkRes = $connection->query("SELECT * FROM users WHERE userLogin='$login'");
                  
                  if(!$checkRes){
                      throw new Exception($connection->errno());
@@ -136,8 +136,8 @@
                  
                  if($usersCount>0){
                      $valid = FALSE;
-                     $_SESSION['error_login'] = "Uzytkownik o  podanym emailu "
-                             . "lub hasle jest juz w bazie";
+                     $_SESSION['error_login'] = "Uzytkownik o  podanym loginie "
+                             . "jest juz w bazie";
                  }
        
                  
