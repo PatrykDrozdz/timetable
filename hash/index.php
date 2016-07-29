@@ -30,7 +30,7 @@ and open the template in the editor.
     </head>
     <body>
         <form method="post">
-             <input type="text" name="pass" id="textfield" />
+             <input type="password" name="pass" id="textfield" />
              <br/>
              <br/>
             <input type="submit" value="haszuj" id="button"/>

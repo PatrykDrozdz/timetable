@@ -146,19 +146,21 @@
                              . "VALUES (NULL, '$idsections', '$login', '$pass_hashed', "
                              . "'$name', '$surname', '$email', '$flag')";
                  
-                 $alterQuery = "ALTER TABLE `invited` ADD '$login' "
-                         . "INT NOT NULL AFTER `meetings_users_idusers`";
+                 $alterQuery = "ALTER TABLE invited ADD '$login' "
+                         . "INT NOT NULL AFTER meetings_users_idusers";
                  
                  if($valid==TRUE){
 
                      if($connection->query($insertQuery)){
-                         
+                         echo 'works'.'<b/>';
+                          //$_SESSION['made'] = "Konto zostało dodane do bazy";
                          if($connection->query($alterQuery)){
                          
                             $_SESSION['made'] = "Konto zostało dodane do bazy";
                             
                          } else {
-                            throw new Exception($connection->errno);
+                             echo'blad';
+                            //throw new Exception($connection->errno);
                          }
                      } else {
                         throw new Exception($connection->errno);
@@ -227,7 +229,7 @@
              <div id="make">
                 <form method="post">
                     <br/>
-                  login: <br/> <input type="text" name="login" id="textfield"/>
+                  login: <br/> <input type="text" name="login" id="textfieldAdmin"/>
                   
                   <?php 
                     if(isset($_SESSION['error_login'])){
@@ -238,7 +240,7 @@
                   
                   <br/>
                     <br/>
-                 hasło:<br/> <input type="password" name="pass" id="textfield"/>
+                 hasło:<br/> <input type="password" name="pass" id="textfieldAdmin"/>
                   <?php 
                     if(isset($_SESSION['error_pass'])){
                         echo '<div class="error">'.$_SESSION['error_pass'].'</div>';
@@ -247,7 +249,7 @@
                   ?>
                       <br/>
                     <br/>
-                    imię:<br/> <input type="text" name="name" id="textfield"/>
+                    imię:<br/> <input type="text" name="name" id="textfieldAdmin"/>
                      <?php 
                     if(isset($_SESSION['error_name'])){
                         echo '<div class="error">'.$_SESSION['error_name'].'</div>';
@@ -256,7 +258,7 @@
                   ?>
                        <br/>
                     <br/>
-                nazwisko: <br/><input type="text" name="surname" id="textfield"/>
+                nazwisko: <br/><input type="text" name="surname" id="textfieldAdmin"/>
                  <?php 
                     if(isset($_SESSION['error_surname'])){
                         echo '<div class="error">'.$_SESSION['error_surname'].'</div>';
@@ -265,7 +267,7 @@
                   ?>
                        <br/>
                     <br/>
-                    e-mail: <br/><input type="text" name="email" id="textfield"/>
+                    e-mail: <br/><input type="text" name="email" id="textfieldAdmin"/>
                     <?php 
                     if(isset($_SESSION['error_email'])){
                         echo '<div class="error">'.$_SESSION['error_email'].'</div>';
@@ -274,13 +276,13 @@
                   ?>
                        <br/>
                     <br/>
-                    status: <br/> <select name="flagStatus" id="textfield">
+                    status: <br/> <select name="flagStatus" id="textfieldAdmin">
                         <option>admin</option>
                         <option>user</option>
                             </select>
                        <br/>
                     <br/>
-                    sekcja: <br/> <select name="section" id="textfield">
+                    sekcja: <br/> <select name="section" id="textfieldAdmin">
                         
                         <?php 
                         for($i=1; $i<=$count; $i++){

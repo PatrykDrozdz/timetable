@@ -345,16 +345,13 @@ try{
                                                 </style>';
                                           
                                    }
-                                   
-                                   
-                                          
-                          
-                          $r++;
-            
-                          }
 
-                              $f++;
-                              $s++;  
+                               $r++;
+            
+                            }
+
+                        $f++;
+                        $s++;  
 
                              
                          }
@@ -589,6 +586,160 @@ try{
             }
         }
         ///////////////////////////////////////////////////////////////////////////////  
+         ///////////////////////////////////////////////////////////////////////////////  
+        //edytowanie spotkania
+        //////////////////////////////////////////////////////////////////////////////
+        if(isset($_POST['dateEdit'])){
+            
+            $dateOld = $_POST['dateOld'];
+            $begHoursOld = $_POST['begHoursOld'];
+            $endHoursOld = $_POST['endHoursOld'];
+            
+            /*echo $dateOld.'<br/>';
+            echo $begHoursOld '<br/>';
+            echo $endHoursOld.'<br/>';*/
+            
+            $dateEdit = $_POST['dateEdit'];
+            
+            $begHoursEdit = $_POST['begHoursEdit'];
+            $begMinutesEdit = $_POST['begMinutesEdit'];
+            
+            $hoursEdit = $_POST['hoursEdit'];
+            $minutesEdit = $_POST['minutesEdit'];
+            
+            $infoEdit = $_POST['infoEdit'];
+            $moreInfoEdit = $_POST['moreInfoEdit'];
+            
+            $dayOfWeekEdit = date('N', strtotime($dateEdit));//sprawdzanie dnia tygodnia z konkretnej daty
+            
+            /*echo $dayOfWeekEdit.'<br/>';
+            echo $dateEdit.'<br/>';
+  
+            echo $begHoursEdit.'<br/>';
+            echo $begMinutesEdit.'<br/>';
+            echo $hoursEdit.'<br/>';
+            echo $minutesEdit. '<br/>';
+            echo $infoEdit. '<br/>';
+            echo $moreInfoEdit. '<br/>';*/
+            
+            $idBegHourEdit = $begHoursEdit;
+            
+            if($begHoursEdit<10){
+                $begHoursEdit = '0'.$begHoursEdit;
+            }
+            
+            if($begMinutesEdit<10){
+                $begMinutesEdit = '0'.$begMinutesEdit;
+            }
+            
+            $FulHourStartEdit = $begHoursEdit.':'.$begMinutesEdit.':00';
+           // echo $FulHourStartEdit.''.'<br/>';
+            
+            
+             if($hoursEdit==NULL){
+                $hoursEdit=0;
+            }
+            
+            if($minutesEdit==NULL){
+                $minutesEdit=0;
+            }
+            
+            $timeOfMeetingEdit = $hoursEdit.':'.$minutesEdit;
+           //echo $timeOfMeetingEdit.'<br/>';
+            
+            $hourEndEdit = $begHoursEdit + $hoursEdit;
+            
+            $minutesEndEdit = $begMinutesEdit + $minutesEdit;
+            
+            if($minutesEndEdit>=60){
+                $minutesEndEdit = $minutesEndEdit - 60;
+                $hourEndEdit = $hourEndEdit + 1; 
+            }
+            
+            $idEndHourEdit = $hourEndEdit;
+            
+            if($hourEndEdit<10){
+                $hourEndEdit = '0'.$hourEndEdit;
+            }
+            
+            if($minutesEndEdit<10){
+                $minutesEndEdit = '0'.$minutesEndEdit;
+            }
+            
+            $FullHourEndEdit = $hourEndEdit.':'.$minutesEndEdit.':00';
+            
+            //echo $FullHourEndEdit.'<br/>';
+            
+             if($begMinutesEdit==0){
+                $minBegIdEdit=0;
+            }
+            
+            if($begMinutesEdit==15){
+                $minBegIdEdit=1;
+            }
+            
+            if($begMinutesEdit==30){
+                $minBegIdEdit=2;
+            }
+            
+            if($begMinutesEdit==45){
+                $minBegIdEdit=3;
+            }
+            
+            //echo $minBegIdEdit.'<br/>';
+            
+             if($minutesEndEdit==0){
+                $minEndIdEdit=0;
+            }
+            
+            if($minutesEndEdit==15){
+                $minEndIdEdit=1;
+            }
+            
+            if($minutesEndEdit==30){
+                $minEndIdEdit=2;
+            }
+            
+            if($minutesEndEdit==45){
+                $minEndIdEdit=3;
+            }
+            //echo $minEndIdEdit.'<br/>';
+            
+             
+            $StartIdEdit = $idBegHourEdit.$minBegIdEdit.$dayOfWeekEdit ;
+            $EndIdEdit =  $idEndHourEdit.$minEndIdEdit.$dayOfWeekEdit;
+            
+            
+            $resEdit = $connection->query("SELECT * FROM meetings WHERE day='$dateOld' "
+                    . "AND hourStart='$begHoursOld' AND hourEnd='$endHoursOld'");
+            
+            $rowEdit = $resEdit->fetch_assoc();
+            
+            $idmeetingsEdit = $rowEdit['idmeetings'];
+            
+            $resEdit->free_result();
+            
+           // echo $StartIdEdit.'<br/>'.$EndIdEdit;
+             /*$queryDel = "UPDATE meetings SET idStart='$idStartDel', idEnd='$idEndDel' "
+                    . "WHERE idmeetings='$idmeetingsDel'";*/
+        
+            
+            $queryEdit = "UPDATE meetings SET info='$infoEdit', moreInfo='$moreInfoEdit', "
+                    . "day='$dateEdit', hourStart='$FulHourStartEdit', "
+                    . "hourEnd='$FullHourEndEdit', timeLast='$timeOfMeetingEdit', "
+                    . "idStart='$StartIdEdit', idEnd='$EndIdEdit' WHERE "
+                    . "idmeetings='$idmeetingsEdit'";
+            
+            if($connection->query($queryEdit)){
+                $_SESSION['edit'] = '<span class="list-group-item list-group-item-success">
+                       Wydazenie zostalo edytowane</span>';
+            } else {
+                throw new Exception($connection->errno);
+            }
+            
+            
+        }
+        //////////////////////////////////////////////////////////////////////
          
         } else {
             throw new Exception($connection->errno);
@@ -614,47 +765,30 @@ try{
 
 ?>
 
-<?php 
-            for($i=0; $i<=$r; $i++){
-                for($j=0; $j<$r; $j++){
-                    if($reserved[$j]>$reserved[$j + 1]){
-                        $add = $reserved[$j];
-                        $reserved[$j] = $reserved[$j+1];
-                        $reserved[$j+1]=$add;
-                    }
-                }
-            }
-            
-            /*for($i=0; $i<=$r; $i++){
-                echo $i.' '.$reserved[$i].'<br/>';
-            }*/
-            
-            $r1 = 1;
-          ?>
              
 
 <!DOCTYPE html>
 
 <html lang="pl">
     <head>
-    <meta charset="UTF-8">
-        
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  
- 
-       <!-- The above 3 meta tags *must* come first in the head; 
-       any other head content must come *after* these tags -->
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">     
-    <script src="js/jquery.js"></script>
-    <script src="js/jquery_1.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery-ui.js"></script>
-    
-    <link href="css/jquery-ui.css" rel="stylesheet">
+        <meta charset="UTF-8">
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <!-- The above 3 meta tags *must* come first in the head; 
+        any other head content must come *after* these tags -->
+        <!-- Bootstrap -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">     
+        <script src="js/jquery.js"></script>
+        <script src="js/jquery_1.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery-ui.js"></script>
+
+        <link href="css/jquery-ui.css" rel="stylesheet">
 
         <title>Organizator</title>
         
@@ -676,12 +810,16 @@ try{
                     echo $_SESSION['added'];
                 }
              
-            if(isset($_SESSION['delete'])){
+                if(isset($_SESSION['delete'])){
                     echo $_SESSION['delete'];
                 }
                 
                 if(isset($_SESSION['error_add'])){
                     echo $_SESSION['error_add'];
+                }
+                
+                if(isset($_SESSION['edit'])){
+                    echo $_SESSION['edit'];
                 }
                 
                 ?>
@@ -725,7 +863,7 @@ try{
           
             <div id="table">
    
-             <table id="trueTable" border="5" width="100%" height="50%" 
+             <table id="trueTable" border="5" width="100%" height="20%" 
                     class="table-active table-responsive">
                     <tr>
                       <?php//////////////////////////////////////////////////
@@ -1162,8 +1300,7 @@ try{
                                         #F'.$tabId[$a].'{
                                             background-Color: #AA0000;
                                             border-color: #AA0000;
-                                            border-right-color: white;
-                                             padding: 1%;
+
                                             color: white; 
                                               font-size: 70%;
                                               

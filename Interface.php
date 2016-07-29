@@ -605,11 +605,9 @@ try{
             $begHoursOld = $_POST['begHoursOld'];
             $endHoursOld = $_POST['endHoursOld'];
             
-            /*echo $dateOld;
-            echo '<br/>';
-            echo $begHoursOld;
-            echo '<br/>';
-            echo $endHoursOld;*/
+            /*echo $dateOld.'<br/>';
+            echo $begHoursOld '<br/>';
+            echo $endHoursOld.'<br/>';*/
             
             $dateEdit = $_POST['dateEdit'];
             
@@ -622,33 +620,31 @@ try{
             $infoEdit = $_POST['infoEdit'];
             $moreInfoEdit = $_POST['moreInfoEdit'];
             
-            /*echo $dateEdit;
-            echo '<br/>';
-            echo $begHoursEdit;
-            echo '<br/>';
-            echo $begMinutesEdit;
-            echo '<br/>';
-            echo $hoursEdit;
-            echo '<br/>';
-            echo $minutesEdit;
-            echo '<br/>';
-            echo $infoEdit;
-            echo '<br/>';
-            echo $moreInfoEdit;
-            echo '<br/>';*/
+            $dayOfWeekEdit = date('N', strtotime($dateEdit));//sprawdzanie dnia tygodnia z konkretnej daty
             
-            $idBegHourEdit = $begHourEdit;
+            /*echo $dayOfWeekEdit.'<br/>';
+            echo $dateEdit.'<br/>';
+  
+            echo $begHoursEdit.'<br/>';
+            echo $begMinutesEdit.'<br/>';
+            echo $hoursEdit.'<br/>';
+            echo $minutesEdit. '<br/>';
+            echo $infoEdit. '<br/>';
+            echo $moreInfoEdit. '<br/>';*/
             
-            if($begHourEdit<10){
-                $begHourEdit = '0'.$begHourEdit;
+            $idBegHourEdit = $begHoursEdit;
+            
+            if($begHoursEdit<10){
+                $begHoursEdit = '0'.$begHoursEdit;
             }
             
             if($begMinutesEdit<10){
                 $begMinutesEdit = '0'.$begMinutesEdit;
             }
             
-            $FulHourStart = $begHoursEdit.':'.$begMinutesEdit.':00';
-            //echo $FulHourStart;
+            $FulHourStartEdit = $begHoursEdit.':'.$begMinutesEdit.':00';
+           // echo $FulHourStartEdit.''.'<br/>';
+            
             
              if($hoursEdit==NULL){
                 $hoursEdit=0;
@@ -659,7 +655,7 @@ try{
             }
             
             $timeOfMeetingEdit = $hoursEdit.':'.$minutesEdit;
-            //echo $timeOfMeetingEdit;
+           //echo $timeOfMeetingEdit.'<br/>';
             
             $hourEndEdit = $begHoursEdit + $hoursEdit;
             
@@ -681,48 +677,75 @@ try{
             }
             
             $FullHourEndEdit = $hourEndEdit.':'.$minutesEndEdit.':00';
-            //do dokonczenia - edycja spotkan
-/*
             
-  
+            //echo $FullHourEndEdit.'<br/>';
             
-            if($minuteEnd==0){
-                $minEndId=0;
+             if($begMinutesEdit==0){
+                $minBegIdEdit=0;
             }
             
-            if($minuteEnd==15){
-                $minEndId=1;
+            if($begMinutesEdit==15){
+                $minBegIdEdit=1;
             }
             
-            if($minuteEnd==30){
-                $minEndId=2;
+            if($begMinutesEdit==30){
+                $minBegIdEdit=2;
             }
             
-            if($minuteEnd==45){
-                $minEndId=3;
+            if($begMinutesEdit==45){
+                $minBegIdEdit=3;
             }
             
+            //echo $minBegIdEdit.'<br/>';
             
-            if($begMinutes==0){
-                $minBegId=0;
+             if($minutesEndEdit==0){
+                $minEndIdEdit=0;
             }
             
-            if($begMinutes==15){
-                $minBegId=1;
+            if($minutesEndEdit==15){
+                $minEndIdEdit=1;
             }
             
-            if($begMinutes==30){
-                $minBegId=2;
+            if($minutesEndEdit==30){
+                $minEndIdEdit=2;
             }
             
-            if($begMinutes==45){
-                $minBegId=3;
+            if($minutesEndEdit==45){
+                $minEndIdEdit=3;
             }
-   
-            $StartId = $idBegHour.$minBegId.$dayOfWeek;
-            $EndId =  $idEndHour.$minEndId.$dayOfWeek;
+            //echo $minEndIdEdit.'<br/>';
             
-            */
+             
+            $StartIdEdit = $idBegHourEdit.$minBegIdEdit.$dayOfWeekEdit ;
+            $EndIdEdit =  $idEndHourEdit.$minEndIdEdit.$dayOfWeekEdit;
+            
+            
+            $resEdit = $connection->query("SELECT * FROM meetings WHERE day='$dateOld' "
+                    . "AND hourStart='$begHoursOld' AND hourEnd='$endHoursOld'");
+            
+            $rowEdit = $resEdit->fetch_assoc();
+            
+            $idmeetingsEdit = $rowEdit['idmeetings'];
+            
+            $resEdit->free_result();
+            
+           // echo $StartIdEdit.'<br/>'.$EndIdEdit;
+             /*$queryDel = "UPDATE meetings SET idStart='$idStartDel', idEnd='$idEndDel' "
+                    . "WHERE idmeetings='$idmeetingsDel'";*/
+        
+            
+            $queryEdit = "UPDATE meetings SET info='$infoEdit', moreInfo='$moreInfoEdit', "
+                    . "day='$dateEdit', hourStart='$FulHourStartEdit', "
+                    . "hourEnd='$FullHourEndEdit', timeLast='$timeOfMeetingEdit', "
+                    . "idStart='$StartIdEdit', idEnd='$EndIdEdit' WHERE "
+                    . "idmeetings='$idmeetingsEdit'";
+            
+            if($connection->query($queryEdit)){
+                $_SESSION['edit'] = '<span class="list-group-item list-group-item-success">
+                       Wydazenie zostalo edytowane</span>';
+            } else {
+                throw new Exception($connection->errno);
+            }
             
             
         }
@@ -759,23 +782,23 @@ try{
 
 <html lang="pl">
     <head>
-    <meta charset="UTF-8">
-        
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="UTF-8">
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
   
  
-       <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">     
-    <script src="js/jquery.js"></script>
-    <script src="js/jquery_1.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery-ui.js"></script>
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+       <!-- Bootstrap -->
+       <link href="css/bootstrap.min.css" rel="stylesheet">     
+       <script src="js/jquery.js"></script>
+       <script src="js/jquery_1.js"></script>
+       <!-- Include all compiled plugins (below), or include individual files as needed -->
+       <script src="js/bootstrap.min.js"></script>
+       <script src="js/jquery-ui.js"></script>
     
-    <link href="css/jquery-ui.css" rel="stylesheet">
+        <link href="css/jquery-ui.css" rel="stylesheet">
 
         <title>Organizator</title>
         
@@ -828,7 +851,7 @@ try{
     
             <div id="table">
    
-             <table id="trueTable" border="5" width="100%" height="50%" 
+            <table id="trueTable" border="5" width="100%" height="20%" 
                     class="table-active table-responsive">
                     <tr >
                       <?php  //wrtzuci¢ do zwykłego u«ytkownika
@@ -1279,11 +1302,8 @@ try{
                                         #F'.$tabId[$a].'{
                                             background-Color: #AA0000;
                                             border-color: #AA0000;
-                                            border-right-color: white;
-                                             padding: 1%;
-                                              color: white; 
-                                              font-size: 70%;
-                                             
+                                            color: white; 
+                                            font-size: 70%;
                                             }
                                         </style>';
 
