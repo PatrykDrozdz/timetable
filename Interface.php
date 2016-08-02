@@ -1301,7 +1301,7 @@ try{
                                     echo'<style>
                                         #F'.$tabId[$a].'{
                                             background-Color: #AA0000;
-                                            border-color: #AA0000;
+                                            border-right-color:  white;
                                             color: white; 
                                             font-size: 70%;
                                             }
@@ -1317,6 +1317,7 @@ try{
                                      echo '<style> 
                                              #F'.$tabId[$a].'{
                                                 color: white;
+                                                border-right-color: white;
                                             }
                                         </style>';
                                      

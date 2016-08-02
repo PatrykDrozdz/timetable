@@ -1303,7 +1303,7 @@ try{
 
                                             color: white; 
                                               font-size: 70%;
-                                              
+                                              border-right-color: white;
                                              
                                             }
                                         </style>';

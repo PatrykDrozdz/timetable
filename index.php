@@ -106,16 +106,24 @@ try{
                     
                     $tabId[$a] = $tabH[$i].$tabMin[$i].$j;//id wygenerowanych komørek           
                     
-                    //settype($tabId[$a], 'integer');
+                    settype($tabId[$a], 'integer');
                     settype($idStart[$a], 'integer');
                     settype($idEnd[$a], 'integer');
+                    
+                    //echo $a.' '.$tabId[$a].' <br/>';
+                    
+                    
+                    
+                    if($tabId[$a]==$idEnd[$a]){
+                        $trueEnd[$a] = $tabId[($a-7)];
+                        echo $trueEnd[$a]. '<br/>';
+                        echo $a.' '.$idEnd[$a].' <br/>';
+                    }
                     
                     
                     
                  if($info[$a]!=NULL){   
-                     //////////////////////////////////////////////////////
-                     //
-                     //////////////////////////////////////////////////////
+                     /***************************************************
                      echo '  ilosc slow '. str_word_count($info[$a]);
                      $wordsCount = str_word_count($info[$a]);
                      echo '<br/>';
@@ -123,27 +131,45 @@ try{
                      $infoTab[$a] = explode(" ", $info[$a]);
                      print_r($infoTab[$a]);
                      echo '<br/>';
-                     
+                     *****************************************************/
                      $z=0;
                      $y=0;
+                     $z1 = 0;
                      for($m=0; $m<$wordsCount; $m++){
                          $wordsArray[$z] = strlen($infoTab[$a][$m]);
                          if($wordsArray[$z]<10 && strlen($infoTab[$a][$m])<7 && 
-                                 $infoTab[$a][$m]!=" "){
+                                 $infoTab[$a][$m]!=" " && 
+                                (strlen($infoTab[$a][$m])+strlen($infoTab[$a][($m+1)]))<=10){
                              $infoTab[$a][$m] = $infoTab[$a][$m].' '.$infoTab[$a][($m+1)].' ';
                              
                            
+                         } else {
+                             $infoTab[$a][$m] = $infoTab[$a][$m].' ';
                          }
+                        
+                         /********************************
+                         echo $wordsArray[$z];
+                         echo '<br/>';
+                         echo $m.' '.$infoTab[$a][$m];
+                         echo '<br/>'; 
+                          ********************************/
                          
-                         if (strlen($infoTab[$a][$m])<=10 && $infoTab[$a][$m]!=NULL 
-                                 && ($m%2!=0 || $m==0)) {
-                           echo $m.' '.$infoTab[$a][$m];
+                         if (/*strlen($infoTab[$a][$m])<=10 && $infoTab[$a][$m]!=NULL 
+                                 &&*/ ($m%2!=0 || $m==0)) {
+                           
+                           $trueInfoTab[$a][$z1] = $infoTab[$a][$m];
+                           
+                           /*****************************************
+                           echo $m.' '.$z1.' '.$trueInfoTab[$a][$z1];
                              echo '<br/>';
+                            *****************************************/
+                            
+                             $z1++;
                           // $tabId[$a]=$infoTab[$a][$m];
                          }
                          $z++;    
                      }
-                     echo '<br/>';
+                    
                      /////////////////////////////////////////////////////
                     $s = 0;
                     $f=0;
@@ -162,6 +188,7 @@ try{
                         echo'<br/>';
                         echo'<br/>';
                 /**********************************************************/
+                    $z1=0;
                     for($k=$start; $k<$end; $k++){
                          if($k%4==0 && $k!=0){     
                             $h2++;       
@@ -179,6 +206,7 @@ try{
                              if($day2>7){
                                  $day2=1;
                              }
+                             
                              if($s%7==0 && $unused[$s]<$idEnd[$a] && 
                                      $unused[$s]>$idStart[$a]){
                                  $trueUnused[$f] = $unused[$s];
@@ -190,8 +218,9 @@ try{
                                   echo '<br/>';
                                   //////////////////////////////////
                                  /***************************************/
-                                   
-                                      if($f==$idEnd[$a]){
+                                   //$tabId[$a] = $trueInfoTab[$a][$z1];
+                                   $z1++;
+                                      /*if($f==$trueEnd[$a]){
                                   
                                          echo'<style>
                                                  #F'.$trueUnused[$f].'{
@@ -201,7 +230,7 @@ try{
                                                 }
                                                 </style>';
                                         
-                                      }else{
+                                      /}else{*/
                                          echo '<style>
                                                  #F'.$trueUnused[$f].'{
                                                   background-Color: #AA0000;
@@ -209,7 +238,8 @@ try{
                                                    padding: 1px;
                                                 }
                                                 </style>';
-                                     }  
+                                        
+                                     //}  
                      ////////////////////////////////////////////////////////     
                     ///przydatne
                                 /*echo $f.' '. $trueUnused[$f];
@@ -273,6 +303,7 @@ for($i =0; $i<$a; $i++){
 }
 
 //echo $hd;
+//echo $r;
 ?>
 
 
@@ -335,10 +366,7 @@ for($i =0; $i<$a; $i++){
       
             <div id="table">
  
- 
-                 
-               
-                 
+
                         <!-- Modal -->
                         <div class="modal fade" id="log" role="dialog">
                           <div class="modal-dialog">
@@ -509,6 +537,7 @@ for($i =0; $i<$a; $i++){
                     $hd=0;
                     $f = 0;
                     $m=1;
+                    
                      
                     for($i=$start; $i<$end; $i++){
                           
@@ -541,12 +570,12 @@ for($i =0; $i<$a; $i++){
                                     
                                         echo ' <td class="row" id="F'.$tabId[$a].'"
                                             data-toggle="modal" data-target="#MA'.$tabId[$a].'"
-                                       > '.$infoTab[$a][0].'
+                                       > '.$info[$a].'
                                      </td>';
                                     
         
                     //'.$info[$a].'
-                   
+                   //maxlegth="" - maksymalna ilosc znakow w input
                     
                     //$usersIdMeeting[$a]                
                                   
@@ -584,7 +613,7 @@ for($i =0; $i<$a; $i++){
                                            #F'.$tabId[$a].'{
                                             background-Color: #AA0000;
                                             border-color: #AA0000;
-                                            
+                                            border-right-color: white;
                                            
                                             color: white; 
                                             font-size: 70%;
@@ -605,31 +634,42 @@ for($i =0; $i<$a; $i++){
                                             }
                                         </style>';
                                   */
+                                  
+                                   $wordsCount = str_word_count($info[$a]);
+                                  
                                   //echo $wordCounted;
-                                } /*else if (strlen($infoTab[$a][$m])<=10 && $m%2!=0 
-                                        && $infoTab[$a][$m]!=NULL && $info[$a]!=NULL) {*/
-
-                                       
-                                        
-                                  
-                                  
-                                    /*}*/ else {
-                                        $m=1;
+                                } else  {
+                                   
+                                        /***************************
+                                        $checking2 = $checking2 + 1;
+                                        echo $checking2;
+                                        echo '<br/>';
+                                         
+                                       *****************************/
+                                    //
                                             echo ' <td class="row" '
-                                    . 'id="F'.$tabId[$a] .'" ></td>';
+                                    . 'id="F'.$tabId[$a] .'" >'.$tabId[$a] .'</td>';
                                         
                                         echo '<style> 
                                              #F'.$tabId[$a] .'{
                                                 color: white;
                                             }
                                         </style>';
-                                    }
-                                  $m++; 
-                                  if($m==($wordCounted - 1)){
+                                    
+                                } 
+                                   
+                                  /*if($m==($wordsCount- 1)){
                                       $m=1;
+                                   * 
+                                   * 
                                       $wordCounted;
-                                  } 
-
+                                  } */
+                                  
+                                  if($m==$r){
+                                      $m=0;
+                                  }
+                                  $m++;
+                                
                                 $a++;
 
                                
