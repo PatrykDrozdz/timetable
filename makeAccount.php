@@ -140,11 +140,12 @@
                              . "jest juz w bazie";
                  }
        
+                 $fullName = $name.'_'.$surname;
                  
                  $insertQuery = "INSERT INTO users(idusers, sections_idsections, "
-                             . "userLogin, usersPass, name, surname, email, flag) "
+                             . "userLogin, usersPass, name, surname, fullName, email, flag) "
                              . "VALUES (NULL, '$idsections', '$login', '$pass_hashed', "
-                             . "'$name', '$surname', '$email', '$flag')";
+                             . "'$name', '$surname', '$fullName', '$email', '$flag')";
                  
                  $alterQuery = "ALTER TABLE invited ADD '$login' "
                          . "INT NOT NULL AFTER meetings_users_idusers";
@@ -153,7 +154,7 @@
 
                      if($connection->query($insertQuery)){
                          echo 'works'.'<b/>';
-                          //$_SESSION['made'] = "Konto zostało dodane do bazy";
+                          
                          if($connection->query($alterQuery)){
                          
                             $_SESSION['made'] = "Konto zostało dodane do bazy";

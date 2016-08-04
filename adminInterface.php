@@ -22,6 +22,8 @@ $end=4*13;//koniec petli
 $h=6;//domyslna godzina poczætkowa
 
 $r = 0;//zmienna do zarezerwowanych(indeksy)
+ $f=0;
+ $r1=0;
 ///////////////////////////////
 //wybør widokøw do panelu administratora
 require_once 'connection.php';

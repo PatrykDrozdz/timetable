@@ -27,7 +27,7 @@ $r = 0;
 ///////////////////////////////
 //wybør widokøw do panelu administratora
 
-
+$wordsCount=0;
 require_once 'connection.php';
 
 
@@ -131,7 +131,7 @@ try{
                      $infoTab[$a] = explode(" ", $info[$a]);
                      print_r($infoTab[$a]);
                      echo '<br/>';
-                     *****************************************************/
+                     /*****************************************************/
                      $z=0;
                      $y=0;
                      $z1 = 0;
@@ -152,7 +152,7 @@ try{
                          echo '<br/>';
                          echo $m.' '.$infoTab[$a][$m];
                          echo '<br/>'; 
-                          ********************************/
+                        /********************************/
                          
                          if (/*strlen($infoTab[$a][$m])<=10 && $infoTab[$a][$m]!=NULL 
                                  &&*/ ($m%2!=0 || $m==0)) {
@@ -400,8 +400,7 @@ for($i =0; $i<$a; $i++){
                                                    type="submit" value="Zaloguj się" id="button"/>
 
                                         </form>
-                
-                
+                                    
                                  </div>
                                      <div class="modal-footer">
                                         <button type="button" class="btn btn-default" 

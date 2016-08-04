@@ -20,6 +20,7 @@
     font-family: "Lucida Console", Monaco, monospace;
     height: 2000px;
     color: white
+    
 }
 
 #header{
@@ -69,6 +70,7 @@
     text-align: center;
     background-color:  #1c1c1c;
     float: left;
+   
 }
 
 
@@ -250,3 +252,12 @@
     color: black;
     
 }
+
+
+.modal-footer{
+    clear: both;
+}
+
+
+
+         
