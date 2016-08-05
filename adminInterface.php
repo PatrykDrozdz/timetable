@@ -47,6 +47,63 @@ try{
        echo "Error: ".$connection->connect_errno;
        
     } else {
+        
+         /*******************************/
+           //pobieranie sekcji z bazy
+           
+           $querySections = "SELECT * FROM sections";
+                          
+           $resSec = $connection->query($querySections);
+           $sectionCount = $resSec->num_rows;
+            
+           //echo $sectionCount.' <br/>';
+           
+           for($i=1; $i<=$sectionCount; $i++){
+               $resSecInc = $connection->query("SELECT * FROM sections "
+                       . "WHERE idsections = '$i'");
+               
+               $rowSecInc = $resSecInc->fetch_assoc();
+               
+               $tabSections[$i] = $rowSecInc['name'];
+               
+               //echo $tabSections[$i].'<br/>';
+               
+               $resSecInc->free();
+           }
+               
+           
+           /******************************/
+           /////////////////////////////////////////////////////////////
+           /*******************************/
+           //pobieranie uzytkownikow z bazy
+           
+           $queryUsers = "SELECT * FROM users";
+           
+           $resUsers = $connection->query($queryUsers);
+           $countUsers = $resUsers->num_rows;
+           
+           //echo $countUsers. '<br/>';
+           $countOfUsers = 1;
+           $myId =  $_SESSION['idusers'];
+           for($i=1; $i<=$countUsers; $i++){
+               $resUsersInc = $connection->query("SELECT * FROM users "
+                       . "WHERE idusers = '$i'");
+               
+               $rowUsersInc = $resUsersInc->fetch_assoc();
+                            
+               $tabFlag[$i] = $rowUsersInc['flag'];
+              
+               
+               if($tabFlag[$i]==0 && $i!=$myId){
+                     $tabUsers[$countOfUsers] = $rowUsersInc['fullName'];
+                     $tabUsersLogin[$countOfUsers] = $rowUsersInc['userLogin'];
+                     $countOfUsers++;
+               }
+               
+               $resUsersInc->free();
+           }
+           
+           /*********************************/
            
        if($valid==true){
            /////////////////////////////////////////////////////////////

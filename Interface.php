@@ -77,7 +77,7 @@ try{
            
            /******************************/
            /////////////////////////////////////////////////////////////
-            /*******************************/
+           /*******************************/
            //pobieranie uzytkownikow z bazy
            
            $queryUsers = "SELECT * FROM users";
@@ -86,14 +86,22 @@ try{
            $countUsers = $resUsers->num_rows;
            
            //echo $countUsers. '<br/>';
-           
+           $countOfUsers = 1;
+           $myId =  $_SESSION['idusers'];
            for($i=1; $i<=$countUsers; $i++){
                $resUsersInc = $connection->query("SELECT * FROM users "
                        . "WHERE idusers = '$i'");
                
                $rowUsersInc = $resUsersInc->fetch_assoc();
+                            
+               $tabFlag[$i] = $rowUsersInc['flag'];
+              
                
-               $tabUsers[$i] = $rowUsersInc['fullName'];
+               if($tabFlag[$i]==0 && $i!=$myId){
+                     $tabUsers[$countOfUsers] = $rowUsersInc['fullName'];
+                     $tabUsersLogin[$countOfUsers] = $rowUsersInc['userLogin'];
+                     $countOfUsers++;
+               }
                
                $resUsersInc->free();
            }
@@ -320,6 +328,10 @@ try{
                         . "idStart = '$POM ' AND day='$tab[$j]'");
                
                     $rowMeeting = $resMeeting->fetch_assoc();
+                    ////dodane
+                    $idMeeting[$a] = $rowMeeting['idmeetings'];
+                    
+                    /////
                     $info[$a] = $rowMeeting['info'];
                     $moreInfo[$a] = $rowMeeting['moreInfo'];
                     $idStart[$a] = $rowMeeting['idStart'];
@@ -345,21 +357,51 @@ try{
                     }
                     /********************************/
                     
+                    
                  if($info[$a]!=NULL){   
+                     
+                     /************************************/
+                    //pobieranie sekcji
+                    //'$idMeeting[$a]'
+                    //echo $idMeeting[$a] .'<br/>';
+                     
+                    $resSecView = $connection->query("SELECT * FROM groups "
+                       . "WHERE meetings_idmeetings = '$idMeeting[$a]'");
+                    
+                    $rowSecView = $resSecView->fetch_assoc();
+                    
+                    $secCount[$a] = 0;
+                    for($sect=1; $sect<=$sectionCount; $sect++){
+                        //$tabSections[$sect];
+                        $nameSec = $tabSections[$sect];
+                        $tabSecNum[$sect] = $rowSecView [$nameSec];
+                        echo $idMeeting[$a].'-'.$nameSec.'-'.$tabSecNum[$sect].' <br/>';
+                        
+                        if($tabSecNum[$sect]==1){
+                            $secSeen[$a][$secCout[$a]] = $nameSec;
+                            $secCout[$a] = $secCout[$a] + 1;
+                        }
+                    }
+                    
+                    $resSecView->free();
+                    
+                    /*****************************************/
+                     
                         //echo $a.' '.strlen($info[$a]).' '.$info[$a];
                      
                     
-                        if(strlen($info[$a])>10){
+                        if(strlen($info[$a])>21){
                      
                             $tabInfo = explode(" ", $info[$a]);
-                            /*       
+                                
                              echo str_word_count($info[$a]);
                     
                             echo '<br/>';
                             
                             print_r($tabInfo);
-                            echo '<br/>';*/
+                            echo '<br/>';
                         }
+                        
                         $s = 0;
                         $f=0;
                         $h2 = $tabH[$i];
@@ -601,7 +643,8 @@ try{
                         . "'$EndId')";
                 
               
-                
+                /****************************************/
+                //ustawianie sekcji, zaproszona i nie zaproszona
                 for($i=1; $i<=$sectionCount; $i++){
                     
                     if(isset($_POST['sec'.$i])){
@@ -609,9 +652,20 @@ try{
                     } else if(!isset($_POST['sec'.$i])){
                         $tabIdMeeting[$i] = 0;
                     }
-                    
+                   
                     //echo $tabIdMeeting[$i].$tabSections[$i].'<br/>';
                 }
+                /****************************************/
+                /****************************************/
+                //ustawianie użytkownikó, zaproszony i nie zaproszony
+                for($i=1; $i<$countOfUsers; $i++){
+                    if(isset($_POST['per'.$i])){
+                        $tabPersonsInvited[$i] = 1;
+                    } else if(!isset($_POST['per'.$i])){
+                        $tabPersonsInvited[$i] = 0;
+                    }
+                }
+                /****************************************/   
                 
                 if($connection->query($addMeetingQuerry)){
                     /********************************************/       
@@ -621,21 +675,35 @@ try{
                     //echo $countAllEvents.'<br/>';
                     /********************************************/
                     
+                    /*******************************************************/
+                    //dodawanie zaproszonych sekcji do spotkan
                     $connection->query("INSERT INTO groups (idgroups, meetings_idmeetings, "
                             . "meetings_users_idusers) VALUES(NULL, '$countAllEvents', '$idUsers')");
                     
+                    
+                    
                     for($i=1; $i<=$sectionCount; $i++){
-                       if($connection->query("UPDATE groups SET '$tabSections[$i]' = $tabIdMeeting[$i] "
-                                . "WHERE meetings_idmeetings = '$countAllEvents'")){
-                                    echo 'works <br/>';
-                                } else {
-                                    echo 'blad <br/>';
-                                }
+                       $connection->query("UPDATE `groups` SET `$tabSections[$i]` = $tabIdMeeting[$i] "
+                                . "WHERE `meetings_idmeetings` = '$countAllEvents'");
+     
                     }
+                    /********************************************************************************/
+                    /********************************************************************************/
+                    //dodawanie danych u«ytkownikow do spotkan
+                    $connection->query("INSERT INTO invited (idinvited, meetings_idmeetings, "
+                            . "meetings_users_idusers) VALUES(NULL, '$countAllEvents', '$idUsers')");
+                    for($i=1; $i<$countOfUsers; $i++){
+                   
+                         $connection->query("UPDATE `invited` SET `$tabUsersLogin[$i]` =  $tabPersonsInvited[$i] "
+                                . "WHERE `meetings_idmeetings` = '$countAllEvents'");
+                             
+                               
+                    }
+                    /********************************************************************************/
                     $_SESSION['added'] = '<span class="list-group-item list-group-item-success">
                        Dodano wydazenie do terminarza</span>';
                     
-                } else{
+                } else {
                     echo 'Error no. '.$connection->errno;
                 }
             }
@@ -1110,7 +1178,7 @@ try{
                     $check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
                     $a=0;
                     
-                    $r1=0;
+                    $m=0;
                      
                     for($i=$start; $i<$end; $i++){
                           
@@ -1136,7 +1204,7 @@ try{
                                     // rowspan="'.(4*$timeLast[$a]).'"
                                     if($info[$a]!=NULL){
                                         
-                                        if(strlen($info[$a])>10){
+                                        if(strlen($info[$a])>21){
                                             echo ' <td class="row" id="F'.$tabId[$a].'"
                                                 
                                             data-toggle="modal" data-target="#MA'.$tabId[$a].'">
@@ -1157,6 +1225,7 @@ try{
                                     <h4 class="modal-title">Informacje o spotkaniu</h4>
                                      </div>
                                     <div class="modal-body">
+                                    <div>
                                     Spotkanie odbedzie sie dnia: '.$dateOfMeeting[$a].'
                                         <br/>
                                         W godzinach: '.$hourMeetingStarts[$a].' - '
@@ -1166,14 +1235,27 @@ try{
                                         <br/>
                                         '.$moreInfo[$a].'
                                             <br/>
-                                            <br/>';
-
-
-
+                                            <br/>
+                                    
+                                    </div>';   
+                        
+                         echo '<div id="sections'.$tabId[$a].'">
+                             
+                             <p>sekcje zaproszone:</p>';
+                         for($sections=0; $sections<=$secCout[$a]; $sections++){
+                            echo $secSeen[$a][$sections];
+                         }
+                           echo'      </div>';
+                         echo '<div id="persons'.$tabId[$a].'">
+                                
+                                <p>osoby zaproszone:</p>
+                                
+                                 </div>';
                                             if($idUsers==$usersIdMeeting[$a]){
                                                 $key = 'active';
                                                  echo' </div>
-                                                <div class="modal-footer">
+                                                <div class="modal-footer" 
+                                                id="foot'.$tabId[$a].'"> 
                                                 <input type="submit" value="Edytuj"
                                                 class="btn btn-link '.$key.'"
                                                 data-toggle="modal" 
@@ -1190,11 +1272,14 @@ try{
                                                 </div>
                                                 </div>
                                                 </div>';  
+                                                 
+                          
                                                
                                             }else{
                                                  $key = 'disabled';
                                                   echo'</div>
-                                                  <div class="modal-footer">
+                                                  <div class="modal-footer" 
+                                                  id="foot'.$tabId[$a].'">
                                                   <input type="submit" value="Edytuj"
                                                               class="btn btn-link '.$key.'" />
 
@@ -1206,10 +1291,28 @@ try{
                                                   </div>
                                                   </div>
                                                   </div>
-                                                  </div>';  
-                  
-                                                
+                                                  </div>';   
                                             }
+                                            
+                                              echo '<style>
+                                    #sections'.$tabId[$a].'{
+                                        float: left;
+                                        width: 50%;
+                                        font-size: 80%;
+                                    }
+                                    
+                                    #persons'.$tabId[$a].'{
+                                        float: left;
+                                        width: 50%;
+                                        font-size: 80%;
+                                        height: 40%;
+                                    }
+                                    
+                                    #foot'.$tabId[$a].'{
+                                        clear: both;
+                                    }
+                                </style>';
+                                            
                                    echo '<div class="modal fade" id="Del'.$tabId[$a].'" 
                                        role="dialog">
                                    <div class="modal-dialog">
@@ -1409,7 +1512,7 @@ try{
                                                 border-right-color: white;
                                             }
                                         </style>';
-                                     
+                                     $m++;
 /////////////////////////////////////////////////////////////////////////////////////////////
                                 //okienko dodajæce spotkanie                              
                          echo '<div class="modal fade" id="M'.$tabId[$a].'" role="dialog">
@@ -1495,7 +1598,7 @@ try{
                                 echo '<div id="persons'.$tabId[$a].'">
                                  <p>Osoby zaproszone:</p>       ';
                                 
-                                for($k=1; $k<=$countUsers; $k++){
+                                for($k=1; $k<$countOfUsers; $k++){
                                     echo ' <label>
                                     <input type="checkbox" 
                                     name="per'.$k.'"/> '. 
@@ -1555,6 +1658,8 @@ try{
                                 </script>';
 //////////////////////////////////////////////////////////////////////////////////////////// ///////////
                                     } else {
+                                        //for($r1=0; $r1<$r; $r1++){
+                                            //if($tabId[$a]!=$reserved[$r1]){
                                           echo ' <td class="row" id="F'.$tabId[$a].'"
                                             data-toggle="modal" data-target="#M'.$tabId[$a].'">
                                      </td>';
@@ -1563,6 +1668,9 @@ try{
                                                 color: white;
                                             }
                                         </style>';
+                                   
+                                            //}
+                                       // }
                                     }
                                       $r1++;
                                     if($r1==$r){
