@@ -5,7 +5,7 @@ session_start();
 if((isset($_SESSION['loged'])) && ($_SESSION['loged']==TRUE)){
     $flag = $_SESSION['flag'];
     if($flag==0){
-        eader('Location: Interface.php');
+        header('Location: Interface.php');
         exit();
     }else if($flag==1){
         header('Location: adminInterface.php');
@@ -86,7 +86,7 @@ try{
            
            //echo $countUsers. '<br/>';
            $countOfUsers = 1;
-           $myId =  $_SESSION['idusers'];
+ 
            for($i=1; $i<=$countUsers; $i++){
                $resUsersInc = $connection->query("SELECT * FROM users "
                        . "WHERE idusers = '$i'");
@@ -96,10 +96,10 @@ try{
                $tabFlag[$i] = $rowUsersInc['flag'];
               
                
-               if($tabFlag[$i]==0 && $i!=$myId){
-                     $tabUsers[$countOfUsers] = $rowUsersInc['fullName'];
-                     $tabUsersLogin[$countOfUsers] = $rowUsersInc['userLogin'];
-                     $countOfUsers++;
+               if($tabFlag[$i]==0){
+                $tabUsers[$countOfUsers] = $rowUsersInc['fullName'];
+                $tabUsersLogin[$countOfUsers] = $rowUsersInc['userLogin'];
+                $countOfUsers++;
                }
                
                $resUsersInc->free();
@@ -152,6 +152,12 @@ try{
                     $rowMeeting = $resMeeting->fetch_assoc();
                     $info[$a] = $rowMeeting['info'];
                     $moreInfo[$a] = $rowMeeting['moreInfo'];
+                    
+                     ////dodane
+                    $idMeeting[$a] = $rowMeeting['idmeetings'];
+                    
+                    /////
+                    
                     ///////////////////////
                     ////nowe
                     $dateOfMeeting[$a] = $rowMeeting['day'];
@@ -190,6 +196,56 @@ try{
                      print_r($infoTab[$a]);
                      echo '<br/>';
                      /*****************************************************/
+                     
+                     /**************************************************/
+                     //wczytywanie sekcji zaproszonych na spotkanie
+                     
+                     $resSecView = $connection->query("SELECT * FROM groups "
+                       . "WHERE meetings_idmeetings = '$idMeeting[$a]'");
+                    
+                    $rowSecView = $resSecView->fetch_assoc();
+                     
+                       $secCount[$a] = 0;
+                    for($sect=1; $sect<=$sectionCount; $sect++){
+                        //$tabSections[$sect];
+                        $nameSec = $tabSections[$sect];
+                        $tabSecNum[$sect] = $rowSecView [$nameSec];
+                        //echo $idMeeting[$a].'-'.$nameSec.'-'.$tabSecNum[$sect].' <br/>';
+                        
+                        if($tabSecNum[$sect]==1){
+                            $secSeen[$a][$secCount[$a]] = $nameSec;
+                            $secCount[$a] = $secCount[$a] + 1;
+                        }
+                    }
+                    
+                    $resSecView->free();
+                     /********************************************************/
+                    
+                    /*****************************************/
+                    //pobieranie zaproszonych użytkowników
+                    
+                    $resUsersView = $connection->query("SELECT * FROM invited "
+                            . "WHERE meetings_idmeetings = '$idMeeting[$a]'");
+                    
+                    $rowUsersView = $resUsersView->fetch_assoc();
+                    
+                    $useCount[$a]=0;
+                    for($user=1; $user<$countOfUsers; $user++){
+                        
+                        $nameUser = $tabUsersLogin[$user];
+                        $tabUsersNum[$user] = $rowUsersView[$nameUser];
+                        
+                        if($tabUsersNum[$user] == 1){
+                            $usersSeen[$a][$useCount[$a]] = $tabUsers[$user];
+                            $useCount[$a] = $useCount[$a] + 1;
+                        }
+                        
+                    }
+                    
+                    $resUsersView->free();
+                    /*****************************************/
+                    
+                     
                      $z=0;
                      $y=0;
                      $z1 = 0;
@@ -653,8 +709,28 @@ for($i =0; $i<$a; $i++){
                                     '.$info[$a].'
                                         <br/>
                                         '.$moreInfo[$a].' 
-                                    </div>
-                                    <div class="modal-footer">
+                                    </div>';
+                echo '<div id="sections'.$tabId[$a].'">
+                             
+                             <p>sekcje zaproszone:</p>';
+                         for($sections=0; $sections<$secCount[$a]; $sections++){
+                            echo '<label>'. $secSeen[$a][$sections]. '</label> '
+                                    . '<br/>';
+                            
+                         }
+                           echo'      </div>';
+                         echo '<div id="persons'.$tabId[$a].'">
+                            
+                                
+                                <p>osoby zaproszone:</p>';
+                                
+                           for($users=0; $users< $useCount[$a]; $users++){
+                             echo '<label>'. $usersSeen[$a][$users]. '</label> '
+                                    . '<br/>';
+                         }
+                         
+                             echo'      </div>
+                                  <div class="modal-footer">
                                 <button type="button" class="btn btn-default" 
                                 data-dismiss="modal">Zamknij</button>
                                     </div>
@@ -675,6 +751,25 @@ for($i =0; $i<$a; $i++){
                                             color: white; 
                                             font-size: 70%;
                                             }
+                                            
+                                    
+                                    #sections'.$tabId[$a].'{
+                                        float: left;
+                                        width: 50%;
+                                        font-size: 80%;
+                                    }
+                                    
+                                    #persons'.$tabId[$a].'{
+                                        float: left;
+                                        width: 50%;
+                                        font-size: 80%;
+                                        height: 40%;
+                                    }
+                                    
+                                    #foot'.$tabId[$a].'{
+                                        clear: both;
+                                    }
+                              
 
                                         </style>';
                                        /* $m = 1;

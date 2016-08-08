@@ -361,6 +361,7 @@ try{
                  if($info[$a]!=NULL){   
                      
                      /************************************/
+                     //pobieranie sekcji i wpisywanie do tablicy
                     //pobieranie sekcji
                     //'$idMeeting[$a]'
                     //echo $idMeeting[$a] .'<br/>';
@@ -374,19 +375,44 @@ try{
                     for($sect=1; $sect<=$sectionCount; $sect++){
                         //$tabSections[$sect];
                         $nameSec = $tabSections[$sect];
-                        $tabSecNum[$sect] = $rowSecView [$nameSec];
-                        echo $idMeeting[$a].'-'.$nameSec.'-'.$tabSecNum[$sect].' <br/>';
+                        $tabSecNum[$sect] = $rowSecView[$nameSec];
+                        //echo $idMeeting[$a].'-'.$nameSec.'-'.$tabSecNum[$sect].' <br/>';
                         
                         if($tabSecNum[$sect]==1){
-                            $secSeen[$a][$secCout[$a]] = $nameSec;
-                            $secCout[$a] = $secCout[$a] + 1;
+                            $secSeen[$a][$secCount[$a]] = $nameSec;
+                            $secCount[$a] = $secCount[$a] + 1;
                         }
                     }
                     
                     $resSecView->free();
                     
                     /*****************************************/
+                    //pobieranie zaproszonych użytkowników
+                    
+                    $resUsersView = $connection->query("SELECT * FROM invited "
+                            . "WHERE meetings_idmeetings = '$idMeeting[$a]'");
+                    
+                    $rowUsersView = $resUsersView->fetch_assoc();
+                    
+                    $useCount[$a]=0;
+                    for($user=1; $user<$countOfUsers; $user++){
+                        
+                        $nameUser = $tabUsersLogin[$user];
+                        $tabUsersNum[$user] = $rowUsersView[$nameUser];
+                        
+                        if($tabUsersNum[$user] == 1){
+                            $usersSeen[$a][$useCount[$a]] = $tabUsers[$user];
+                            $useCount[$a] = $useCount[$a] + 1;
+                        }
+                        
+                    }
+                    
+                    $resUsersView->free();
+                    /*****************************************/
                      
+                    
+                    
+                    /*****************************************/
                         //echo $a.' '.strlen($info[$a]).' '.$info[$a];
                      
                     
@@ -394,12 +420,14 @@ try{
                      
                             $tabInfo = explode(" ", $info[$a]);
                                 
-                             echo str_word_count($info[$a]);
+                             /********************************
+                              echo str_word_count($info[$a]);
                     
                             echo '<br/>';
                             
                             print_r($tabInfo);
                             echo '<br/>';
+                            /***********************************/
                         }
                         
                         $s = 0;
@@ -1179,7 +1207,7 @@ try{
                     $a=0;
                     
                     $m=0;
-                     
+                     $r1=0;
                     for($i=$start; $i<$end; $i++){
                           
                            echo '<tr id="cols" class="table-active">';
@@ -1242,15 +1270,24 @@ try{
                          echo '<div id="sections'.$tabId[$a].'">
                              
                              <p>sekcje zaproszone:</p>';
-                         for($sections=0; $sections<=$secCout[$a]; $sections++){
-                            echo $secSeen[$a][$sections];
+                         for($sections=0; $sections<$secCount[$a]; $sections++){
+                            echo '<label>'. $secSeen[$a][$sections]. '</label> '
+                                    . '<br/>';
+                            
                          }
                            echo'      </div>';
                          echo '<div id="persons'.$tabId[$a].'">
                                 
-                                <p>osoby zaproszone:</p>
+                                <p>osoby zaproszone:</p>';
+                       
+                            
+                         for($users=0; $users< $useCount[$a]; $users++){
+                             echo '<label>'. $usersSeen[$a][$users]. '</label> '
+                                    . '<br/>';
+                         }
+                         
                                 
-                                 </div>';
+                       echo'          </div>';
                                             if($idUsers==$usersIdMeeting[$a]){
                                                 $key = 'active';
                                                  echo' </div>

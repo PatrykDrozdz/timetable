@@ -328,6 +328,11 @@ try{
                         . "idStart = '$POM ' AND day='$tab[$j]'");
                
                     $rowMeeting = $resMeeting->fetch_assoc();
+                    
+                    ////
+                    $idMeeting[$a] = $rowMeeting['idmeetings'];
+                    
+                    /////
                     $info[$a] = $rowMeeting['info'];
                     $moreInfo[$a] = $rowMeeting['moreInfo'];
                     $idStart[$a] = $rowMeeting['idStart'];
@@ -356,7 +361,57 @@ try{
                                 echo'<br/>';*/
                                 //////////////////////////////////////////////////////////
                      
+                     /************************************/
+                    //pobieranie sekcji
+                    //'$idMeeting[$a]'
+                    //echo $idMeeting[$a] .'<br/>';
+                     
+                    $resSecView = $connection->query("SELECT * FROM groups "
+                       . "WHERE meetings_idmeetings = '$idMeeting[$a]'");
+                    
+                    $rowSecView = $resSecView->fetch_assoc();
+                    
+                    $secCount[$a] = 0;
+                    for($sect=1; $sect<=$sectionCount; $sect++){
+                        //$tabSections[$sect];
+                        $nameSec = $tabSections[$sect];
+                        $tabSecNum[$sect] = $rowSecView [$nameSec];
+                        //echo $idMeeting[$a].'-'.$nameSec.'-'.$tabSecNum[$sect].' <br/>';
                         
+                        if($tabSecNum[$sect]==1){
+                            $secSeen[$a][$secCount[$a]] = $nameSec;
+                            $secCount[$a] = $secCount[$a] + 1;
+                        }
+                    }
+                    
+                    $resSecView->free();
+                    
+                    /*****************************************/   
+                     
+                     /*****************************************/
+                    //pobieranie zaproszonych użytkowników
+                    
+                    $resUsersView = $connection->query("SELECT * FROM invited "
+                            . "WHERE meetings_idmeetings = '$idMeeting[$a]'");
+                    
+                    $rowUsersView = $resUsersView->fetch_assoc();
+                    
+                    $useCount[$a]=0;
+                    for($user=1; $user<$countOfUsers; $user++){
+                        
+                        $nameUser = $tabUsersLogin[$user];
+                        $tabUsersNum[$user] = $rowUsersView[$nameUser];
+                        
+                        if($tabUsersNum[$user] == 1){
+                            $usersSeen[$a][$useCount[$a]] = $tabUsers[$user];
+                            $useCount[$a] = $useCount[$a] + 1;
+                        }
+                        
+                    }
+                    
+                    $resUsersView->free();
+                    /*****************************************/
+                     
                        
                         $h2 = $tabH[$i];
                         $min2 = $tabMin[$i];
@@ -1153,8 +1208,27 @@ try{
                                             <br/>
                                             
 
-                                    </div>
-                                    <div class="modal-footer">
+                                    </div>';
+                                 echo '<div id="sections'.$tabId[$a].'">
+                             
+                             <p>sekcje zaproszone:</p>';
+                         for($sections=0; $sections<$secCount[$a]; $sections++){
+                            echo '<label>'. $secSeen[$a][$sections]. '</label> '
+                                    . '<br/>';
+                            
+                         }
+                           echo'      </div>';
+                         echo '<div id="persons'.$tabId[$a].'">
+                                
+                                <p>osoby zaproszone:</p>';
+                                
+                           for($users=0; $users< $useCount[$a]; $users++){
+                             echo '<label>'. $usersSeen[$a][$users]. '</label> '
+                                    . '<br/>';
+                         }
+                         
+                             echo'      </div>
+                                  <div class="modal-footer">
                                     <input type="submit" value="Edytuj"
                                                 class="btn btn-link"
                                                 data-toggle="modal" data-target="#Edit'.$tabId[$a].'"/>
@@ -1170,6 +1244,26 @@ try{
                                     </div>
                                     </div>
                                                     </div>';  
+                              
+                                      echo '<style>
+                                    #sections'.$tabId[$a].'{
+                                        float: left;
+                                        width: 50%;
+                                        font-size: 80%;
+                                    }
+                                    
+                                    #persons'.$tabId[$a].'{
+                                        float: left;
+                                        width: 50%;
+                                        font-size: 80%;
+                                        height: 40%;
+                                    }
+                                    
+                                    #foot'.$tabId[$a].'{
+                                        clear: both;
+                                    }
+                                </style>';
+                              
 ////////////////////////////////////////////////////////////////////
 
 //okno słu«æce do usuwania spotkania
