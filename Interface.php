@@ -13,6 +13,9 @@
     $idUsers = $_SESSION['idusers'];
     //echo $_SESSION['fullName'];
     
+    $myFullName = $_SESSION['fullName'];
+    $mySectionId =  $_SESSION['sectionId'];
+    
 $check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
 $min = 0; //id minut - stała nie do zmiany
 
@@ -69,6 +72,11 @@ try{
                
                $tabSections[$i] = $rowSecInc['name'];
                
+               if($i==$mySectionId){
+                   $mySection = $tabSections[$i];
+                   //echo $mySectionId.' '.$mySection;
+               }
+
                //echo $tabSections[$i].'<br/>';
                
                $resSecInc->free();
@@ -87,6 +95,7 @@ try{
            
            //echo $countUsers. '<br/>';
            $countOfUsers = 1;
+           $countOfUsersView = 1;
            $myId =  $_SESSION['idusers'];
            for($i=1; $i<=$countUsers; $i++){
                $resUsersInc = $connection->query("SELECT * FROM users "
@@ -101,6 +110,12 @@ try{
                      $tabUsers[$countOfUsers] = $rowUsersInc['fullName'];
                      $tabUsersLogin[$countOfUsers] = $rowUsersInc['userLogin'];
                      $countOfUsers++;
+               }
+               
+               if($tabFlag[$i]==0){
+                   $tabUsersView[$countOfUsersView] = $rowUsersInc['fullName'];
+                   $tabUsersLoginView[$countOfUsersView] = $rowUsersInc['userLogin'];
+                   $countOfUsersView++;
                }
                
                $resUsersInc->free();
@@ -360,6 +375,16 @@ try{
                     
                  if($info[$a]!=NULL){   
                      
+                     /***********************************/
+                     //pobieranie czasu spotkania do edycji
+                     
+                     $timesExplodedPre = explode(":", $timeLast[$a]);
+                     //echo $timeLast[$a].'<br/>';
+                     //print_r($timesExplodedPre). '<br/>';
+                     $timesExploded[$a][0] = $timesExplodedPre[0];
+                     $timesExploded[$a][1] = $timesExplodedPre[1];
+                     /**********************************/
+                     
                      /************************************/
                      //pobieranie sekcji i wpisywanie do tablicy
                     //pobieranie sekcji
@@ -376,6 +401,7 @@ try{
                         //$tabSections[$sect];
                         $nameSec = $tabSections[$sect];
                         $tabSecNum[$sect] = $rowSecView[$nameSec];
+                        $secNum[$a][$sec] =  $tabSecNum[$sect];
                         //echo $idMeeting[$a].'-'.$nameSec.'-'.$tabSecNum[$sect].' <br/>';
                         
                         if($tabSecNum[$sect]==1){
@@ -395,13 +421,15 @@ try{
                     $rowUsersView = $resUsersView->fetch_assoc();
                     
                     $useCount[$a]=0;
-                    for($user=1; $user<$countOfUsers; $user++){
+                    for($user=1; $user<$countOfUsersView; $user++){
                         
-                        $nameUser = $tabUsersLogin[$user];
+                        $nameUser = $tabUsersLoginView[$user];
                         $tabUsersNum[$user] = $rowUsersView[$nameUser];
-                        
+                        $usersNum[$a][$user] = $tabUsersNum[$user];
+                       
                         if($tabUsersNum[$user] == 1){
-                            $usersSeen[$a][$useCount[$a]] = $tabUsers[$user];
+                            $usersSeen[$a][$useCount[$a]] = $tabUsersView[$user];
+                            //echo $usersSeen[$a][$useCount[$a]].'<br/>';
                             $useCount[$a] = $useCount[$a] + 1;
                         }
                         
@@ -919,18 +947,58 @@ try{
             
             $resEdit->free_result();
             
-           // echo $StartIdEdit.'<br/>'.$EndIdEdit;
-             /*$queryDel = "UPDATE meetings SET idStart='$idStartDel', idEnd='$idEndDel' "
-                    . "WHERE idmeetings='$idmeetingsDel'";*/
-        
+            /****************************************/
+                //ustawianie sekcji, zaproszona i nie zaproszona
+                for($i=1; $i<=$sectionCount; $i++){
+                    
+                    if(isset($_POST['secEdit'.$i])){
+                        $tabIdMeetingEdit[$i] = 1;
+                    } else if(!isset($_POST['sec'.$i])){
+                        $tabIdMeetingEdit[$i] = 0;
+                    }
+                   
+                    //echo $tabIdMeetingEdit[$i].$tabSections[$i].'<br/>';
+                }
+                /****************************************/
+                /****************************************/
+                //ustawianie użytkownikó, zaproszony i nie zaproszony
+                for($i=1; $i<$countOfUsers; $i++){
+                    if(isset($_POST['perEdit'.$i])){
+                        $tabPersonsInvitedEdit[$i] = 1;
+                    } else if(!isset($_POST['per'.$i])){
+                        $tabPersonsInvitedEdit[$i] = 0;
+                    }
+                }
+                /****************************************/
             
+
             $queryEdit = "UPDATE meetings SET info='$infoEdit', moreInfo='$moreInfoEdit', "
                     . "day='$dateEdit', hourStart='$FulHourStartEdit', "
                     . "hourEnd='$FullHourEndEdit', timeLast='$timeOfMeetingEdit', "
                     . "idStart='$StartIdEdit', idEnd='$EndIdEdit' WHERE "
                     . "idmeetings='$idmeetingsEdit'";
             
+                    /********************************************************************************/
+               
+            
+            
             if($connection->query($queryEdit)){
+                /*******************************************************/
+                //edytowanie zaproszonych grup
+                for($i=1; $i<=$sectionCount; $i++){
+                     $connection->query("UPDATE `groups` SET `$tabSections[$i]` = "
+                             . "$tabIdMeetingEdit[$i] "
+                                . "WHERE `meetings_idmeetings` = '$idmeetingsEdit'");
+                }
+                /*******************************************************/
+                 /*******************************************************/
+                //
+                for($i=1; $i<$countOfUsers; $i++){
+                       $connection->query("UPDATE `invited` SET `$tabUsersLogin[$i]` =  "
+                               . "$tabPersonsInvitedEdit[$i] "
+                                . "WHERE `meetings_idmeetings` = '$idmeetingsEdit'");
+                }
+                 /*******************************************************/
                 $_SESSION['edit'] = '<span class="list-group-item list-group-item-success">
                        Wydazenie zostalo edytowane</span>';
             } else {
@@ -1271,8 +1339,32 @@ try{
                              
                              <p>sekcje zaproszone:</p>';
                          for($sections=0; $sections<$secCount[$a]; $sections++){
-                            echo '<label>'. $secSeen[$a][$sections]. '</label> '
+                            echo '<label id="sec'.$sections.'">'
+                                    . $secSeen[$a][$sections]. '</label> '
                                     . '<br/>';
+                            
+                            if($mySection==$secSeen[$a][$sections]){
+                                
+                                 echo ' 
+                                     <style> 
+                                        #sec'.$sections.'{
+                                            color: red;
+                                        }
+                                        
+                                     </style>
+                                 ';
+                                
+                            } else if($mySection!=$secSeen[$a][$sections]){
+                                 
+                                 echo ' 
+                                     <style> 
+                                        #sec'.$sections.'{
+                                            color: black;
+                                        }
+                                        
+                                     </style>
+                                 ';
+                            }
                             
                          }
                            echo'      </div>';
@@ -1281,9 +1373,30 @@ try{
                                 <p>osoby zaproszone:</p>';
                        
                             
-                         for($users=0; $users< $useCount[$a]; $users++){
-                             echo '<label>'. $usersSeen[$a][$users]. '</label> '
+                         for($users=0; $users<= $useCount[$a]; $users++){
+                             echo '<label id="users'.$users.'">'. 
+                                     $usersSeen[$a][$users]. '</label> '
                                     . '<br/>';
+                             
+                             if($myFullName==$usersSeen[$a][$users]){
+                                 echo ' 
+                                     <style> 
+                                        #users'.$users.'{
+                                            color: red;
+                                        }
+                                        
+                                     </style>
+                                 ';
+                             } else if($myFullName!=$usersSeen[$a][$users]){
+                                 echo ' 
+                                     <style> 
+                                        #users'.$users.'{
+                                            color: black;
+                                        }
+                                        
+                                     </style>
+                                 ';
+                             }
                          }
                          
                                 
@@ -1349,7 +1462,8 @@ try{
                                         clear: both;
                                     }
                                 </style>';
-                                            
+ //////////////////////////////////////////////////////////////////////////////
+                                              //usuwanie spotkania
                                    echo '<div class="modal fade" id="Del'.$tabId[$a].'" 
                                        role="dialog">
                                    <div class="modal-dialog">
@@ -1410,9 +1524,33 @@ try{
                                                 '.$moreInfo[$a].'</textarea>
                                      
                                             <br/>
-                                            <br/>
+                                            <br/>';
+                                            
+                                              
+                         echo '<div id="sections'.$tabId[$a].'">
+                             
+                             <p>sekcje zaproszone:</p>';
+                         for($sections=0; $sections<$secCount[$a]; $sections++){
+                            echo '<label>'. $secSeen[$a][$sections]. '</label> '
+                                    . '<br/>';
+                            
+                         }
+                           echo'      </div>';
+                         echo '<div id="persons'.$tabId[$a].'">
+                                
+                                <p>osoby zaproszone:</p>';
+                       
+                            
+                         for($users=0; $users<= $useCount[$a]; $users++){
+                             echo '<label>'. $usersSeen[$a][$users]. '</label> '
+                                    . '<br/>';
+                         }
+                         
+                                
+                       echo'          </div>';
+                                                
                                         
-                                            <input class="btn btn-danger active" 
+                                       echo'     <input class="btn btn-danger active" 
                                                 type="submit" value="Usun" id="button"/>
                                             </form>
                                             </div>
@@ -1424,8 +1562,8 @@ try{
                                             </div>
                                             </div>';                                            
 
-                                            
-
+//////////////////////////////////////////////////////////////////////                                            
+//edytowanie spotkania
                                 echo'<div class="modal fade" id="Edit'.$tabId[$a].'" 
                                     role="dialog">
                                    <div class="modal-dialog">
@@ -1489,10 +1627,11 @@ try{
                                         <p>Czas spotkania</p>
                                          <br/>
                                         godziny:
-                                        <input type="number" name="hoursEdit" min="0" max="7"/>
+                                        <input type="number" name="hoursEdit" min="0" max="7"
+                                        value="'.$timesExploded[$a][0].'"/>
                                          minuty:
                                         <input type="number" name="minutesEdit" min="0" 
-                                        max="45" step="15"/>
+                                        max="45" step="15" value="'.$timesExploded[$a][1].'"/>
                                         <br/>
                                         <br/>
                                         <input type="text" name="infoEdit" id="textfield" 
@@ -1505,9 +1644,66 @@ try{
                                                 '.$moreInfo[$a].'</textarea>
                                      
                                             <br/>
-                                            <br/>
+                                            <br/>';
+                                      /**********************************************/
+                                //sekcje
+                                echo '<div id="sections'.$tabId[$a].'">
+                                <p>Sekcje zaproszone:</p> ';
+
+                                for($k=1; $k<=$sectionCount; $k++){
+                                   for($sections=0; $sections<$secCount[$a]; $sections++){
+                                    if($secSeen[$a][$sections]==$tabSections[$k]){
+                                        echo ' <label>
+                                        <input type="checkbox" 
+                                        name="secEdit'.$k.'" checked="checked"/> '. 
+                                            $tabSections[$k].
+                                        '</label>';
+                                        echo '<br/>';
+                                    } else {
+                                        echo ' <label>
+                                        <input type="checkbox" 
+                                        name="secEdit'.$k.'"/> '. 
+                                            $tabSections[$k].
+                                        '</label>';
+                                        echo '<br/>';
+                                    }
+                                    }
+                                }
+                                echo '</div>';
+                                 /**********************************************/   
+                                 /**********************************************/
+                                //osoby
+                                echo '<div id="persons'.$tabId[$a].'">
+                                 <p>Osoby zaproszone:</p>       ';
+                                $users=0;
+                                for($k=1; $k<$countOfUsers; $k++){
+                                    
+                                     if($usersSeen[$a][$users]==$tabUsers[$k]){
+                                        echo ' <label>
+                                        <input type="checkbox" 
+                                        name="perEdit'.$k.'" checked="checked"/> '. 
+                                            $tabUsers[$k].
+                                        '</label>';
+                                        echo '<br/>';
+                                    } else {
+                                        echo ' <label>
+                                        <input type="checkbox" 
+                                        name="perEdit'.$k.'"/> '. 
+                                            $tabUsers[$k].
+                                        '</label>';
+                                        echo '<br/>';
+                                    }
+                                  
+                                    $users++;
+                                    
+                                    if($useCount[$a]==$users){
+                                        $users=0;
+                                    }
+                                }
+                                echo '</div>';
+                                 /**********************************************/ 
                                         
-                                            <input class="btn btn-primary active" 
+                                 echo'           <input class="btn btn-primary active" 
                                                 type="submit" value="Edytuj" id="button"/>
                                             </form>
                                             </div>
@@ -1695,10 +1891,9 @@ try{
                                 </script>';
 //////////////////////////////////////////////////////////////////////////////////////////// ///////////
                                     } else {
-                                        //for($r1=0; $r1<$r; $r1++){
-                                            //if($tabId[$a]!=$reserved[$r1]){
+                                    
                                           echo ' <td class="row" id="F'.$tabId[$a].'"
-                                            data-toggle="modal" data-target="#M'.$tabId[$a].'">
+                                            data-toggle="modal">
                                      </td>';
                                      echo '<style> 
                                              #F'.$tabId[$a].'{
@@ -1706,49 +1901,17 @@ try{
                                             }
                                         </style>';
                                    
-                                            //}
-                                       // }
-                                    }
-                                      $r1++;
-                                    if($r1==$r){
-                                        $r1=0;
-                                        }
-                                    
-                                    /*
-                                    $word=1;
-                                    
-                                    if($tabId[$a]!=$reserved[$r1]){
-                                    
-                                    echo ' <td class="row" id="F'.$tabId[$a].'"
-                                            data-toggle="modal" data-target="#M'.$tabId[$a].'">
-                                     '.$tabId[$a].'</td>';
-                                     echo '<style> 
-                                             #F'.$tabId[$a].'{
-                                                color: white;
-                                            }
-                                        </style>';
-                                    } else if ($tabId[$a]==$reserved[$r1]){
-                                        echo ' <td class="row" id="F'.$tabId[$a].'">
-                                     </td>';
-                                     echo '<style> 
-                                             #F'.$tabId[$a].'{
-                                                color: white;
-                                            }
-                                        </style>';
                                         
-                                        if($word==(str_word_count($info[$a])-1)){
-                                            $word=1;
-                                        }
                                     }
-                                    $r1++;
                                     
-                                    if($r1==$r){
-                                        $r1=0;
-                                    }*/
+                                 
                                 }
                               
                                 $a++;
-                               
+                                 $r1++;
+                                    if($r1==$r){
+                                        $r1=1;
+                                    }
                               
 
                             }

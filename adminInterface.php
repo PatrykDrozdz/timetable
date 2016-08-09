@@ -348,11 +348,22 @@ try{
                     if($a%7==0){
                         echo '<br/>';
                     }*/
+                    
+                    
+                    
                     settype($tabId[$a], 'integer');
                     settype($idStart[$a], 'integer');
                     settype($idEnd[$a], 'integer');
-                 if($info[$a]!=NULL){   
-             
+                 if($info[$a]!=NULL){ 
+                     /***********************************/
+                     //pobieranie czasu spotkania do edycji
+                     
+                     $timesExplodedPre = explode(":", $timeLast[$a]);
+                     //echo $timeLast[$a].'<br/>';
+                     //print_r($timesExplodedPre). '<br/>';
+                            $timesExploded[$a][0] = $timesExplodedPre[0];
+                            $timesExploded[$a][1] = $timesExplodedPre[1];
+                     /**********************************/
                      /*echo $s.' '.$unused[$s];
                               echo '<br/>';*/
                      
@@ -493,163 +504,7 @@ try{
                     $min=0;
                 }
            }
-           ///////////////////////////////////////////////////////////////
-           //dodawanie spotkania
-        //////////////////////////////////////////////////////////////////   
-        if(isset($_POST['date'])){
-            
-            $dateMeet = $_POST['date'];  
-    
-            $dayOfWeek = date('N', strtotime($dateMeet));//sprawdzanie dnia tygodnia z konkretnej daty
- 
-            $begHours = $_POST['begHours'];
-            $begMinutes = $_POST['begMinutes'];
-            
-            $idBegHour = $begHours ;
-           if($begHours==NULL){
-                $begHours=0;
-            }
-            
-            if($begMinutes==NULL){
-                $begMinutes=0;
-            }
-            
-            if($begHours<10){
-                $begHours = '0'.$begHours;
-            }
-            
-            if($begMinutes<10){
-                $begMinutes = '0'.$begMinutes;
-            }
-            
-            $FullHourStart = $begHours.':'.$begMinutes.':'.'00';
-             
-            /*echo $FullHourStart;
-            echo '<br/>';*/
-            
-            $hours = $_POST['hours'];
-            $minutes = $_POST['minutes'];
-            
-            if($hours==NULL){
-                $hours=0;
-            }
-            
-            if($minutes==NULL){
-                $minutes=0;
-            }
-          
-            $timeOfMeeting = $hours.':'.$minutes;
-            
-            /*echo $timeOfMeeting;
-            echo '<br/>';*/
-            
-            $hourEnd = $begHours + $hours;
-           
-            $minuteEnd = $begMinutes + $minutes;
-              
-            if($minuteEnd>=60){
-                $minuteEnd = $minuteEnd - 60;
-                $hourEnd = $hourEnd+1;
-            }
-             $idEndHour = $hourEnd;
-            
-            if($hourEnd<10){
-                $hourEnd = '0'.$hourEnd;
-            }
-            
-            if($minuteEnd<10){
-                $minuteEnd = '0'.$minuteEnd;
-            }
-            
-            $FullHourEnd = $hourEnd.':'.$minuteEnd.':'.'00';
-            
-            /*echo $FullHourEnd;
-            echo'<br/>';*/
-            
-           
-            
-            if($minuteEnd==0){
-                $minEndId=0;
-            }
-            
-            if($minuteEnd==15){
-                $minEndId=1;
-            }
-            
-            if($minuteEnd==30){
-                $minEndId=2;
-            }
-            
-            if($minuteEnd==45){
-                $minEndId=3;
-            }
-            
-            
-            if($begMinutes==0){
-                $minBegId=0;
-            }
-            
-            if($begMinutes==15){
-                $minBegId=1;
-            }
-            
-            if($begMinutes==30){
-                $minBegId=2;
-            }
-            
-            if($begMinutes==45){
-                $minBegId=3;
-            }
-   
-            $StartId = $idBegHour.$minBegId.$dayOfWeek;
-            $EndId =  $idEndHour.$minEndId.$dayOfWeek;
-            
-            /*echo $StartId;
-            echo '<br/>';
-              echo $EndId;
-            echo '<br/>';*/
-            
-             $infoRead = $_POST['info'];
-            
-            $moreInfoRead = $_POST['moreInfo'];
-            
-            $usersId = $_SESSION['idusers'];
-            /*echo $usersId;
-            echo '<br/>';*/
-            $validAdd = TRUE;
-            //////////////////////////////////////////
-            //zabezpieczenie
-            $resChechAdd = $connection->query("SELECT * FROM meetings WHERE day='$dateMeet' "
-                    . "AND hourStart BETWEEN '$FullHourStart' AND '$FullHourEnd' "
-                    . "AND hourEnd BETWEEN '$FullHourStart' AND '$FullHourEnd'");
-            
-            if(!$resChechAdd){
-                throw new Exception(mysqli_connect_errno());
-            }
-            
-            $countEvents = $resChechAdd->num_rows;
-            
-            if($countEvents>0){
-                $validAdd=FALSE;
-                $_SESSION['error_add'] = '<span class="list-group-item list-group-item-danger">'
-                    . 'Wydarzenie w tym terminie zostało ju« dodane do bazy danych!</span>';
-            }
-            
-            if($validAdd==TRUE){
-                $addMeetingQuerry = "INSERT INTO `meetings` (idmeetings, users_idusers, "
-                        . "info, moreInfo,day, hourStart, hourEnd, timeLast, idStart, idEnd) "
-                        . "VALUES (NULL, '$usersId', '$infoRead', '$moreInfoRead', '$dateMeet', "
-                        . "'$FullHourStart', '$FullHourEnd', '$timeOfMeeting', '$StartId', "
-                        . "'$EndId')";
-                if($connection->query($addMeetingQuerry)){
-                    $_SESSION['added'] = '<span class="list-group-item list-group-item-success">
-                       Dodano wydazenie do terminarza</span>';
-                } else{
-                    echo 'Error no. '.$connection->errno;
-                }
-            }
-            
-        }
+      
         ////////////////////////////////////////////////////////////////////////
         //usuwanie spotkania
         ////////////////////////////////////////////////////////////////////////
@@ -844,7 +699,58 @@ try{
                     . "idStart='$StartIdEdit', idEnd='$EndIdEdit' WHERE "
                     . "idmeetings='$idmeetingsEdit'";
             
+            /****************************************/
+                //ustawianie sekcji, zaproszona i nie zaproszona
+                for($i=1; $i<=$sectionCount; $i++){
+                    
+                    if(isset($_POST['secEdit'.$i])){
+                        $tabIdMeetingEdit[$i] = 1;
+                    } else if(!isset($_POST['sec'.$i])){
+                        $tabIdMeetingEdit[$i] = 0;
+                    }
+                   
+                    //echo $tabIdMeetingEdit[$i].$tabSections[$i].'<br/>';
+                }
+                /****************************************/
+                /****************************************/
+                //ustawianie użytkownikó, zaproszony i nie zaproszony
+                for($i=1; $i<$countOfUsers; $i++){
+                    if(isset($_POST['perEdit'.$i])){
+                        $tabPersonsInvitedEdit[$i] = 1;
+                    } else if(!isset($_POST['per'.$i])){
+                        $tabPersonsInvitedEdit[$i] = 0;
+                    }
+                }
+                /****************************************/
+            
+
+            $queryEdit = "UPDATE meetings SET info='$infoEdit', moreInfo='$moreInfoEdit', "
+                    . "day='$dateEdit', hourStart='$FulHourStartEdit', "
+                    . "hourEnd='$FullHourEndEdit', timeLast='$timeOfMeetingEdit', "
+                    . "idStart='$StartIdEdit', idEnd='$EndIdEdit' WHERE "
+                    . "idmeetings='$idmeetingsEdit'";
+            
+                    /********************************************************************************/
+               
+            
+            
             if($connection->query($queryEdit)){
+                /*******************************************************/
+                //edytowanie zaproszonych grup
+                for($i=1; $i<=$sectionCount; $i++){
+                     $connection->query("UPDATE `groups` SET `$tabSections[$i]` = "
+                             . "$tabIdMeetingEdit[$i] "
+                                . "WHERE `meetings_idmeetings` = '$idmeetingsEdit'");
+                }
+                /*******************************************************/
+                 /*******************************************************/
+                //
+                for($i=1; $i<$countOfUsers; $i++){
+                       $connection->query("UPDATE `invited` SET `$tabUsersLogin[$i]` =  "
+                               . "$tabPersonsInvitedEdit[$i] "
+                                . "WHERE `meetings_idmeetings` = '$idmeetingsEdit'");
+                }
+                 /*******************************************************/
                 $_SESSION['edit'] = '<span class="list-group-item list-group-item-success">
                        Wydazenie zostalo edytowane</span>';
             } else {
@@ -1324,7 +1230,27 @@ try{
                                                 '.$moreInfo[$a].'</textarea>
                                      
                                             <br/>
-                                            <br/>
+                                            <br/>';
+                                                 
+                                 echo '<div id="sections'.$tabId[$a].'">
+                             
+                             <p>sekcje zaproszone:</p>';
+                         for($sections=0; $sections<$secCount[$a]; $sections++){
+                            echo '<label>'. $secSeen[$a][$sections]. '</label> '
+                                    . '<br/>';
+                            
+                         }
+                           echo'      </div>';
+                         echo '<div id="persons'.$tabId[$a].'">
+                                
+                                <p>osoby zaproszone:</p>';
+                                
+                           for($users=0; $users< $useCount[$a]; $users++){
+                             echo '<label>'. $usersSeen[$a][$users]. '</label> '
+                                    . '<br/>';
+                         }
+                         
+                             echo'      </div>
                                         
                                     <input class="btn btn-danger active" 
                                         type="submit" value="Usun" id="button"/>
@@ -1336,7 +1262,10 @@ try{
                                     </div>
                                     </div>
                                     </div>
-                                    </div>';                                     
+                                    </div>';  
+                             
+                             
+                             
 ////////////////////////////////////////////////////////////////////////////////////////
                   
 //okno słu«æce do edycji spotkania                  
@@ -1404,10 +1333,11 @@ try{
                                         <p>Czas spotkania</p>
                                          <br/>
                                         godziny:
-                                        <input type="number" name="hoursEdit" min="0" max="7"/>
+                                        <input type="number" name="hoursEdit" min="0" max="7"
+                                        value="'.$timesExploded[$a][0].'"/>
                                          minuty:
                                         <input type="number" name="minutesEdit" min="0" 
-                                        max="45" step="15"/>
+                                        max="45" step="15" value="'.$timesExploded[$a][1].'"/>
                                         <br/>
                                         <br/>
                                         <input type="text" name="infoEdit" id="textfield" 
@@ -1420,9 +1350,66 @@ try{
                                                 '.$moreInfo[$a].'</textarea>
                                      
                                             <br/>
-                                            <br/>
+                                            <br/>';
+                                           /**********************************************/
+                                //sekcje
+                                echo '<div id="sections'.$tabId[$a].'">
+                                <p>Sekcje zaproszone:</p> ';
+
+                                for($k=1; $k<=$sectionCount; $k++){
+                                   for($sections=0; $sections<$secCount[$a]; $sections++){
+                                    if($secSeen[$a][$sections]==$tabSections[$k]){
+                                        echo ' <label>
+                                        <input type="checkbox" 
+                                        name="secEdit'.$k.'" checked="checked"/> '. 
+                                            $tabSections[$k].
+                                        '</label>';
+                                        echo '<br/>';
+                                    } else {
+                                        echo ' <label>
+                                        <input type="checkbox" 
+                                        name="secEdit'.$k.'"/> '. 
+                                            $tabSections[$k].
+                                        '</label>';
+                                        echo '<br/>';
+                                    }
+                                    }
+                                }
+                                echo '</div>';
+                                 /**********************************************/   
+                                 /**********************************************/
+                                //osoby
+                                echo '<div id="persons'.$tabId[$a].'">
+                                 <p>Osoby zaproszone:</p>       ';
+                                $users=0;
+                                for($k=1; $k<$countOfUsers; $k++){
+                                    
+                                     if($usersSeen[$a][$users]==$tabUsers[$k]){
+                                        echo ' <label>
+                                        <input type="checkbox" 
+                                        name="perEdit'.$k.'" checked="checked"/> '. 
+                                            $tabUsers[$k].
+                                        '</label>';
+                                        echo '<br/>';
+                                    } else {
+                                        echo ' <label>
+                                        <input type="checkbox" 
+                                        name="perEdit'.$k.'"/> '. 
+                                            $tabUsers[$k].
+                                        '</label>';
+                                        echo '<br/>';
+                                    }
+                                  
+                                    $users++;
+                                    
+                                    if($useCount[$a]==$users){
+                                        $users=0;
+                                    }
+                                }
+                                echo '</div>';
+                                 /**********************************************/ 
                                         
-                                            <input class="btn btn-primary active" 
+                               echo'  <input class="btn btn-primary active" 
                                                 type="submit" value="Edytuj" id="button"/>
                                             </form>
                                             </div>
@@ -1474,89 +1461,7 @@ try{
                                                 color: white;
                                             }
                                         </style>';
-/////////////////////////////////////////////////////////////////////////////////////////////
-//okienko dodajæce spotkanie                              
-                    echo       '<div class="modal fade" id="M'.$tabId[$a].'" role="dialog">
-                                   <div class="modal-dialog">
-                                    <div class="modal-content">
-                                    <div class="modal-header">
-                                    <button type="button" class="close" 
-                                    data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Dodaj spotkanie</h4>
-                                     </div>
-                                    <div class="modal-body">
-                                    <form method="post" >
-                                        <p>Data spotkania</p>
-                                        <br/>
-                                        <input type="text" id="datepicker'.$a.'" name="date"
-                                            value="'.$tab[$j].'"/>
-                                         <br/>
-                                        <br/>
-                                        <p>Godzina rozpoczecia</p>
-                                        <br/>
-                                         godzina:
-                                        <input type="number" name="begHours" min="0" max="23"
-                                        value="'.($h-1).'"/>';
-                                        ///obsługa minut
-                                       if($tabMin[$i]==0){
-                                           $minut=0;
-                                       } 
-                                         if($tabMin[$i]==1){
-                                           $minut=15;
-                                       } 
-                                         if($tabMin[$i]==2){
-                                           $minut=30;
-                                       } 
-                                         if($tabMin[$i]==3){
-                                           $minut=45;
-                                       } 
- 
- 
-                                echo' minuta:
-                                        <input type="number" name="begMinutes" min="0" max="45" step="15"
-                                        value="'.$minut.'"/>
-                                        <br/>
-                                        <br/>
-                                        
-                                        <p>Czas spotkania</p>
-                                         <br/>
-                                        godziny:
-                                        <input type="number" name="hours" min="0" max="7"/>
-                                         minuty:
-                                        <input type="number" name="minutes" min="0" max="45" step="15"/>
-                                        <br/>
-                                        <br/>
-                                        <input type="text" name="info" id="textfield" 
-                                            placeholder="temat" class="form-control"/>
-                                            <br/>
-                                            <br/>
-                                      
-                                         <textarea type="text" name="moreInfo" id="textfield" 
-                                                " class="form-control" placeholder="wiecej informacji" 
-                                                cols="30" rows="10"></textarea>
-                                            <br/>
-                                            <br/>
-                                        
-                                    <input class="btn btn-primary active" 
-                                        type="submit" value="Dodaj" id="button"/>
-                                    </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                <button type="button" class="btn btn-default" 
-                                data-dismiss="modal">Anuluj</button>
-                                    </div>
-                                    </div>
-                                    </div>
-                                    </div>'; 
- ///////////////////////////////////////////////////////////////////////////////////
-//datapicker - kalendarz rozwijany                                
- /////////////////////////////////////////////////////////////////////////////////////                               
-                                echo '<script>
-                                    $( function() {
-                                        $( "#datepicker'.$a.'" ).
-                                            datepicker({dateFormat: "yy-mm-dd"});
-                                    } );
-                                </script>';
+
 ////////////////////////////////////////////////////////////////////////////////////////////                                     
                                      
                                    } else if($tabId[$a]==$reserved[$r1]){

@@ -46,6 +46,7 @@ if($connection->connect_errno!=0){
                 $_SESSION['surname'] = $row['surname'];
                 $_SESSION['fullName'] = $row['fullName'];
                 $_SESSION['flag'] = $row['flag'];
+                $_SESSION['sectionId'] = $row['sections_idsections'];
                 $flag = $row['flag'];
                 $result->free_result();
             

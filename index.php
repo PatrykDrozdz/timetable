@@ -180,8 +180,8 @@ try{
                     
                     if($tabId[$a]==$idEnd[$a]){
                         $trueEnd[$a] = $tabId[($a-7)];
-                        echo $trueEnd[$a]. '<br/>';
-                        echo $a.' '.$idEnd[$a].' <br/>';
+                        //echo $trueEnd[$a]. '<br/>';
+                        //echo $a.' '.$idEnd[$a].' <br/>';
                     }
                     
                     
