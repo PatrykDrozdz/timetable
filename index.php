@@ -153,10 +153,10 @@ try{
                     $info[$a] = $rowMeeting['info'];
                     $moreInfo[$a] = $rowMeeting['moreInfo'];
                     
-                     ////dodane
+                    
                     $idMeeting[$a] = $rowMeeting['idmeetings'];
                     
-                    /////
+                    $idUsersMade[$a] = $rowMeeting['users_idusers'];
                     
                     ///////////////////////
                     ////nowe
@@ -195,6 +195,31 @@ try{
                      $infoTab[$a] = explode(" ", $info[$a]);
                      print_r($infoTab[$a]);
                      echo '<br/>';
+                     /*****************************************************/
+                     
+                     /*****************************************************/
+                     //pobieranie organizatora spotkania
+
+                     $resultUsersMade = $connection->query("SELECT * FROM users");
+                     
+                     $usersCount = $resultUsersMade->num_rows;
+                     
+                     
+                     for($usersMade=1; $usersMade<=$usersCount; $usersMade++){
+                         $usersResultIncMade = $connection->query("SELECT * "
+                                 . "FROM users WHERE idusers='$usersMade'");
+                         
+                         $rowUsersMade = $usersResultIncMade->fetch_assoc();
+                         
+                         if($usersMade==$idUsersMade[$a]){
+                             $NameUsersMade[$a] = $rowUsersMade['fullName'];
+                             
+                             //echo $idUsersMade[$a].' '.$NameUsersMade[$a].'<br/>';
+                         }
+                         
+                         $usersResultIncMade->free();
+                     }
+                     
                      /*****************************************************/
                      
                      /**************************************************/
@@ -467,16 +492,7 @@ for($i =0; $i<$a; $i++){
                 }
                 
                 ?>
-            <div id="header">
-                 <h1>Terminarz</h1>
-                 <div id="loging">
-                                          <!-- Trigger the modal with a button -->
-  <button type="button" class="btn btn-link btn-lg active" 
-  data-toggle="modal" data-target="#log">Zaloguj sie</button>
-                                          <br/>
-                 </div>
-                
-            </div>
+            
       
             <div id="table">
  
@@ -528,13 +544,29 @@ for($i =0; $i<$a; $i++){
                 
                 <table id="trueTable" border="5" width="100%" height="20%" 
                     class="table-active table-responsive">
-                   
+                    <tr>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                    </tr>
                     <tr id="cols">
                         
                         
                         <td rowspan="2" colspan="2">
                             <div  id="textHour">
                                 Godzina
+                                <br/>
+                                
+                                  <button type="button" 
+                                          class="btn btn-link btn-xs active" 
+                                data-toggle="modal" data-target="#log"
+                                >Zaloguj sie</button>
                             </div>
                             
                         </td>
@@ -691,7 +723,8 @@ for($i =0; $i<$a; $i++){
                    //maxlegth="" - maksymalna ilosc znakow w input
                     
                     //$usersIdMeeting[$a]                
-                                  
+                 /*******************************************************************/
+                  //wyswietlanie spotkania                      
                 echo '<div class="modal fade" id="MA'.$tabId[$a].'" role="dialog">
                                    <div class="modal-dialog">
                                     <div class="modal-content">
@@ -701,35 +734,41 @@ for($i =0; $i<$a; $i++){
                                     <h4 class="modal-title">Informacje o spotkaniu</h4>
                                      </div>
                                     <div class="modal-body">
+                                    <div id="subject'.$tabId[$a].'">
+                                    <label>'.$info[$a].'</label>
+                                    </div>
+                                    <div id="info'.$tabId[$a].'">
+                                        '.$moreInfo[$a].' 
+                                    </div>
+                                <div id="dateView'.$tabId[$a].'">
                                     Spotkanie odbedzie sie dnia: '.$dateOfMeeting[$a].'
                                         <br/>
-                                        W godzinach: '.$hourMeetingStarts[$a].' - '
-                                .$hourMeetingEnds[$a].'
-                                                 <br/>
-                                    '.$info[$a].'
-                                        <br/>
-                                        '.$moreInfo[$a].' 
-                                    </div>';
-                echo '<div id="sections'.$tabId[$a].'">
-                             
-                             <p>sekcje zaproszone:</p>';
+                                      W godzinach: '.$hourMeetingStarts[$a].' - '
+                                .$hourMeetingEnds[$a].' 
+                                    <br/>
+                                     Organizator: '.$NameUsersMade[$a].'
+                                    </div>
+                                    
+                                    ';
+                echo '<div id="sections'.$tabId[$a].'">';
+                             if($secSeen[$a][0]!=NULL){
+                                echo'    <label>sekcje zaproszone:</label>';
+                             }
                          for($sections=0; $sections<$secCount[$a]; $sections++){
-                            echo '<label>'. $secSeen[$a][$sections]. '</label> '
-                                    . '<br/>';
+                            echo $secSeen[$a][$sections]. '<br/>';
                             
                          }
                            echo'      </div>';
-                         echo '<div id="persons'.$tabId[$a].'">
+                         echo '<div id="persons'.$tabId[$a].'">';
                             
-                                
-                                <p>osoby zaproszone:</p>';
-                                
+                                if($usersSeen[$a][0]!=NULL){
+                                    echo'<label>osoby zaproszone:</label> <br/>';
+                                }
                            for($users=0; $users< $useCount[$a]; $users++){
-                             echo '<label>'. $usersSeen[$a][$users]. '</label> '
-                                    . '<br/>';
+                             echo  $usersSeen[$a][$users]. '<br/>';
                          }
                          
-                             echo'      </div>
+                             echo'   </div>   </div>
                                   <div class="modal-footer">
                                 <button type="button" class="btn btn-default" 
                                 data-dismiss="modal">Zamknij</button>
@@ -743,35 +782,59 @@ for($i =0; $i<$a; $i++){
                                   
                                   echo '<style> 
                                           
-                                           #F'.$tabId[$a].'{
+                                    #F'.$tabId[$a].'{
                                             background-Color: #AA0000;
                                             border-color: #AA0000;
                                             border-right-color: white;
                                            
                                             color: white; 
                                             font-size: 70%;
-                                            }
+                                    }
                                             
                                     
                                     #sections'.$tabId[$a].'{
                                         float: left;
                                         width: 50%;
                                         font-size: 80%;
+                                        background-color: #CCFFFF;
                                     }
                                     
                                     #persons'.$tabId[$a].'{
                                         float: left;
                                         width: 50%;
                                         font-size: 80%;
-                                        height: 40%;
+                                        
+                                       background-color: #99FF99;
                                     }
                                     
                                     #foot'.$tabId[$a].'{
                                         clear: both;
                                     }
                               
-
-                                        </style>';
+                                    #dateView'.$tabId[$a].'{
+                                        width: 100%;
+                                       
+                                        padding: 1%;
+                                        background-color: #99FFFF;
+                                        font-size: 60%;
+                                    }
+                                    
+                                    #subject'.$tabId[$a].'{
+                                       width: 100%;
+                                       
+                                       padding: 1%;
+                                       background-color: #669999
+                                    }
+                                    
+                                    #info'.$tabId[$a].'{
+                                        width: 100%;
+                                        
+                                        padding: 4%;
+                                        background-color: #00CCCC;
+                                        font-size: 80%;
+                                    }
+                                    
+                                  </style>';
                                        /* $m = 1;
                                   $wordCounted = str_word_count($info[$a]);
                                   ;

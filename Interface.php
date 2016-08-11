@@ -345,7 +345,7 @@ try{
                     $rowMeeting = $resMeeting->fetch_assoc();
                     ////dodane
                     $idMeeting[$a] = $rowMeeting['idmeetings'];
-                    
+                    $idUsersMade[$a] = $rowMeeting['users_idusers'];
                     /////
                     $info[$a] = $rowMeeting['info'];
                     $moreInfo[$a] = $rowMeeting['moreInfo'];
@@ -384,6 +384,31 @@ try{
                      $timesExploded[$a][0] = $timesExplodedPre[0];
                      $timesExploded[$a][1] = $timesExplodedPre[1];
                      /**********************************/
+                     
+                     /*****************************************************/
+                     //pobieranie organizatora spotkania
+
+                     $resultUsersMade = $connection->query("SELECT * FROM users");
+                     
+                     $usersCount = $resultUsersMade->num_rows;
+                     
+                     
+                     for($usersMade=1; $usersMade<=$usersCount; $usersMade++){
+                         $usersResultIncMade = $connection->query("SELECT * "
+                                 . "FROM users WHERE idusers='$usersMade'");
+                         
+                         $rowUsersMade = $usersResultIncMade->fetch_assoc();
+                         
+                         if($usersMade==$idUsersMade[$a]){
+                             $NameUsersMade[$a] = $rowUsersMade['fullName'];
+                             
+                             //echo $idUsersMade[$a].' '.$NameUsersMade[$a].'<br/>';
+                         }
+                         
+                         $usersResultIncMade->free();
+                     }
+                     
+                     /*****************************************************/
                      
                      /************************************/
                      //pobieranie sekcji i wpisywanie do tablicy
@@ -1321,29 +1346,31 @@ try{
                                     <h4 class="modal-title">Informacje o spotkaniu</h4>
                                      </div>
                                     <div class="modal-body">
-                                    <div>
+                                    <div id="subject'.$tabId[$a].'">
+                                    <label>'.$info[$a].'</label>
+                                    </div>
+                                    <div id="info'.$tabId[$a].'">
+                                        '.$moreInfo[$a].' 
+                                    </div>
+                                <div id="dateView'.$tabId[$a].'">
                                     Spotkanie odbedzie sie dnia: '.$dateOfMeeting[$a].'
                                         <br/>
-                                        W godzinach: '.$hourMeetingStarts[$a].' - '
-                                        .$hourMeetingEnds[$a].'
-                                                 <br/>
-                                    '.$info[$a].'
-                                        <br/>
-                                        '.$moreInfo[$a].'
-                                            <br/>
-                                            <br/>
+                                      W godzinach: '.$hourMeetingStarts[$a].' - '
+                                .$hourMeetingEnds[$a].' 
+                                    <br/>
+                                     Organizator: '.$NameUsersMade[$a].'
+                                    </div>
                                     
-                                    </div>';   
-                        
-                         echo '<div id="sections'.$tabId[$a].'">
-                             
-                             <p>sekcje zaproszone:</p>';
+                                    ';
+                echo '<div id="sections'.$tabId[$a].'">';
+                             if($secSeen[$a][0]!=NULL){
+                                echo'    <label>sekcje zaproszone:</label>';
+                             }
                          for($sections=0; $sections<$secCount[$a]; $sections++){
-                            echo '<label id="sec'.$sections.'">'
-                                    . $secSeen[$a][$sections]. '</label> '
-                                    . '<br/>';
+                            echo $secSeen[$a][$sections]. '<br/>';
                             
-                            if($mySection==$secSeen[$a][$sections]){
+                       
+                          if($mySection==$secSeen[$a][$sections]){
                                 
                                  echo ' 
                                      <style> 
@@ -1368,17 +1395,14 @@ try{
                             
                          }
                            echo'      </div>';
-                         echo '<div id="persons'.$tabId[$a].'">
-                                
-                                <p>osoby zaproszone:</p>';
-                       
+                         echo '<div id="persons'.$tabId[$a].'">';
                             
-                         for($users=0; $users<= $useCount[$a]; $users++){
-                             echo '<label id="users'.$users.'">'. 
-                                     $usersSeen[$a][$users]. '</label> '
-                                    . '<br/>';
-                             
-                             if($myFullName==$usersSeen[$a][$users]){
+                                if($usersSeen[$a][0]!=NULL){
+                                    echo'<label>osoby zaproszone:</label> <br/>';
+                                }
+                           for($users=0; $users< $useCount[$a]; $users++){
+                             echo  $usersSeen[$a][$users]. '<br/>';
+                                  if($myFullName==$usersSeen[$a][$users]){
                                  echo ' 
                                      <style> 
                                         #users'.$users.'{
@@ -1399,9 +1423,11 @@ try{
                              }
                          }
                          
-                                
-                       echo'          </div>';
-                                            if($idUsers==$usersIdMeeting[$a]){
+                             echo'     </div>';
+                    
+                      
+                       
+                                        if($idUsers==$usersIdMeeting[$a]){
                                                 $key = 'active';
                                                  echo' </div>
                                                 <div class="modal-footer" 
@@ -1425,7 +1451,7 @@ try{
                                                  
                           
                                                
-                                            }else{
+                                        }else{
                                                  $key = 'disabled';
                                                   echo'</div>
                                                   <div class="modal-footer" 
@@ -1444,24 +1470,75 @@ try{
                                                   </div>';   
                                             }
                                             
-                                              echo '<style>
+                                 echo '<style> 
+                                          
+                                    #F'.$tabId[$a].'{
+                                            background-Color: #AA0000;
+                                            border-color: #AA0000;
+                                            border-right-color: white;
+                                           
+                                            color: white; 
+                                            font-size: 70%;
+                                    }
+                                            
+                                    
                                     #sections'.$tabId[$a].'{
                                         float: left;
                                         width: 50%;
                                         font-size: 80%;
+                                        background-color: #CCFFFF;
                                     }
                                     
                                     #persons'.$tabId[$a].'{
                                         float: left;
                                         width: 50%;
                                         font-size: 80%;
-                                        height: 40%;
+                                        
+                                        background-color: #99FF99;
+                                    }
+                                    
+                                    #sections2'.$tabId[$a].'{
+                                        float: left;
+                                        width: 50%;
+                                        font-size: 80%;
+                                        padding: 1%;
+                                    }
+                                    
+                                    #persons2'.$tabId[$a].'{
+                                        float: left;
+                                        width: 50%;
+                                        font-size: 80%;
+                                        padding: 2%;
                                     }
                                     
                                     #foot'.$tabId[$a].'{
                                         clear: both;
                                     }
-                                </style>';
+                              
+                                    #dateView'.$tabId[$a].'{
+                                        width: 100%;
+                                       
+                                        padding: 1%;
+                                        background-color: #99FFFF;
+                                        font-size: 60%;
+                                    }
+                                    
+                                    #subject'.$tabId[$a].'{
+                                       width: 100%;
+                                       
+                                       padding: 1%;
+                                       background-color: #669999
+                                    }
+                                    
+                                    #info'.$tabId[$a].'{
+                                        width: 100%;
+                                        
+                                        padding: 4%;
+                                        background-color: #00CCCC;
+                                        font-size: 80%;
+                                    }
+                                    
+                                  </style>';
  //////////////////////////////////////////////////////////////////////////////
                                               //usuwanie spotkania
                                    echo '<div class="modal fade" id="Del'.$tabId[$a].'" 
@@ -1527,7 +1604,7 @@ try{
                                             <br/>';
                                             
                                               
-                         echo '<div id="sections'.$tabId[$a].'">
+                         echo '<div id="sections2'.$tabId[$a].'">
                              
                              <p>sekcje zaproszone:</p>';
                          for($sections=0; $sections<$secCount[$a]; $sections++){
@@ -1536,7 +1613,7 @@ try{
                             
                          }
                            echo'      </div>';
-                         echo '<div id="persons'.$tabId[$a].'">
+                         echo '<div id="persons2'.$tabId[$a].'">
                                 
                                 <p>osoby zaproszone:</p>';
                        
@@ -1647,18 +1724,19 @@ try{
                                             <br/>';
                                       /**********************************************/
                                 //sekcje
-                                echo '<div id="sections'.$tabId[$a].'">
+                                echo '<div id="sections2'.$tabId[$a].'">
                                 <p>Sekcje zaproszone:</p> ';
-
+                                $section = 0;
                                 for($k=1; $k<=$sectionCount; $k++){
-                                   for($sections=0; $sections<$secCount[$a]; $sections++){
-                                    if($secSeen[$a][$sections]==$tabSections[$k]){
+                                  
+                                    if($secSeen[$a][$section]==$tabSections[$k]){
                                         echo ' <label>
                                         <input type="checkbox" 
                                         name="secEdit'.$k.'" checked="checked"/> '. 
                                             $tabSections[$k].
                                         '</label>';
                                         echo '<br/>';
+                                        $section++;
                                     } else {
                                         echo ' <label>
                                         <input type="checkbox" 
@@ -1667,13 +1745,17 @@ try{
                                         '</label>';
                                         echo '<br/>';
                                     }
+                                    
+                                    if($section==$secCount[$a]){
+                                        $section=0;
                                     }
+                                  
                                 }
                                 echo '</div>';
                                  /**********************************************/   
                                  /**********************************************/
                                 //osoby
-                                echo '<div id="persons'.$tabId[$a].'">
+                                echo '<div id="persons2'.$tabId[$a].'">
                                  <p>Osoby zaproszone:</p>       ';
                                 $users=0;
                                 for($k=1; $k<$countOfUsers; $k++){
@@ -1685,6 +1767,7 @@ try{
                                             $tabUsers[$k].
                                         '</label>';
                                         echo '<br/>';
+                                        $users++;
                                     } else {
                                         echo ' <label>
                                         <input type="checkbox" 
@@ -1694,7 +1777,7 @@ try{
                                         echo '<br/>';
                                     }
                                   
-                                    $users++;
+                                    
                                     
                                     if($useCount[$a]==$users){
                                         $users=0;

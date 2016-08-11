@@ -331,7 +331,7 @@ try{
                     
                     ////
                     $idMeeting[$a] = $rowMeeting['idmeetings'];
-                    
+                    $idUsersMade[$a] = $rowMeeting['users_idusers'];
                     /////
                     $info[$a] = $rowMeeting['info'];
                     $moreInfo[$a] = $rowMeeting['moreInfo'];
@@ -355,6 +355,32 @@ try{
                     settype($idStart[$a], 'integer');
                     settype($idEnd[$a], 'integer');
                  if($info[$a]!=NULL){ 
+                     
+                     /*****************************************************/
+                     //pobieranie organizatora spotkania
+
+                     $resultUsersMade = $connection->query("SELECT * FROM users");
+                     
+                     $usersCount = $resultUsersMade->num_rows;
+                     
+                     
+                     for($usersMade=1; $usersMade<=$usersCount; $usersMade++){
+                         $usersResultIncMade = $connection->query("SELECT * "
+                                 . "FROM users WHERE idusers='$usersMade'");
+                         
+                         $rowUsersMade = $usersResultIncMade->fetch_assoc();
+                         
+                         if($usersMade==$idUsersMade[$a]){
+                             $NameUsersMade[$a] = $rowUsersMade['fullName'];
+                             
+                             //echo $idUsersMade[$a].' '.$NameUsersMade[$a].'<br/>';
+                         }
+                         
+                         $usersResultIncMade->free();
+                     }
+                     
+                     /*****************************************************/
+                     
                      /***********************************/
                      //pobieranie czasu spotkania do edycji
                      
@@ -1102,38 +1128,41 @@ try{
                                     <h4 class="modal-title">Informacje o spotkaniu</h4>
                                      </div>
                                     <div class="modal-body">
+                                    <div id="subject'.$tabId[$a].'">
+                                    <label>'.$info[$a].'</label>
+                                    </div>
+                                    <div id="info'.$tabId[$a].'">
+                                        '.$moreInfo[$a].' 
+                                    </div>
+                                <div id="dateView'.$tabId[$a].'">
                                     Spotkanie odbedzie sie dnia: '.$dateOfMeeting[$a].'
                                         <br/>
-                                        W godzinach: '.$hourMeetingStarts[$a].' - '
-                                        .$hourMeetingEnds[$a].'
-                                                 <br/>
-                                    '.$info[$a].'
-                                        <br/>
-                                        '.$moreInfo[$a].'
-                                            <br/>
-                                            <br/>
-                                            
-
-                                    </div>';
-                                 echo '<div id="sections'.$tabId[$a].'">
-                             
-                             <p>sekcje zaproszone:</p>';
+                                      W godzinach: '.$hourMeetingStarts[$a].' - '
+                                .$hourMeetingEnds[$a].' 
+                                    <br/>
+                                     Organizator: '.$NameUsersMade[$a].'
+                                    </div>
+                                    
+                                    ';
+                echo '<div id="sections'.$tabId[$a].'">';
+                             if($secSeen[$a][0]!=NULL){
+                                echo'    <label>sekcje zaproszone:</label>';
+                             }
                          for($sections=0; $sections<$secCount[$a]; $sections++){
-                            echo '<label>'. $secSeen[$a][$sections]. '</label> '
-                                    . '<br/>';
+                            echo $secSeen[$a][$sections]. '<br/>';
                             
                          }
                            echo'      </div>';
-                         echo '<div id="persons'.$tabId[$a].'">
-                                
-                                <p>osoby zaproszone:</p>';
-                                
+                         echo '<div id="persons'.$tabId[$a].'">';
+                            
+                                if($usersSeen[$a][0]!=NULL){
+                                    echo'<label>osoby zaproszone:</label> <br/>';
+                                }
                            for($users=0; $users< $useCount[$a]; $users++){
-                             echo '<label>'. $usersSeen[$a][$users]. '</label> '
-                                    . '<br/>';
+                             echo  $usersSeen[$a][$users]. '<br/>';
                          }
                          
-                             echo'      </div>
+                             echo'    </div>
                                   <div class="modal-footer">
                                     <input type="submit" value="Edytuj"
                                                 class="btn btn-link"
@@ -1151,24 +1180,61 @@ try{
                                     </div>
                                                     </div>';  
                               
-                                      echo '<style>
+                                echo '<style> 
+                                          
+                                    #F'.$tabId[$a].'{
+                                            background-Color: #AA0000;
+                                            border-color: #AA0000;
+                                            border-right-color: white;
+                                           
+                                            color: white; 
+                                            font-size: 70%;
+                                    }
+                                            
+                                    
                                     #sections'.$tabId[$a].'{
                                         float: left;
                                         width: 50%;
                                         font-size: 80%;
+                                        background-color: #CCFFFF;
                                     }
                                     
                                     #persons'.$tabId[$a].'{
                                         float: left;
                                         width: 50%;
                                         font-size: 80%;
-                                        height: 40%;
+                                        
+                                       background-color: #99FF99;
                                     }
                                     
                                     #foot'.$tabId[$a].'{
                                         clear: both;
                                     }
-                                </style>';
+                              
+                                    #dateView'.$tabId[$a].'{
+                                        width: 100%;
+                                       
+                                        padding: 1%;
+                                        background-color: #99FFFF;
+                                        font-size: 60%;
+                                    }
+                                    
+                                    #subject'.$tabId[$a].'{
+                                       width: 100%;
+                                       
+                                       padding: 1%;
+                                       background-color: #669999
+                                    }
+                                    
+                                    #info'.$tabId[$a].'{
+                                        width: 100%;
+                                        
+                                        padding: 4%;
+                                        background-color: #00CCCC;
+                                        font-size: 80%;
+                                    }
+                                    
+                                  </style>';
                               
 ////////////////////////////////////////////////////////////////////
 
@@ -1355,9 +1421,10 @@ try{
                                 //sekcje
                                 echo '<div id="sections'.$tabId[$a].'">
                                 <p>Sekcje zaproszone:</p> ';
-
+                                
+                                $sections=0;
                                 for($k=1; $k<=$sectionCount; $k++){
-                                   for($sections=0; $sections<$secCount[$a]; $sections++){
+                                   
                                     if($secSeen[$a][$sections]==$tabSections[$k]){
                                         echo ' <label>
                                         <input type="checkbox" 
@@ -1365,6 +1432,7 @@ try{
                                             $tabSections[$k].
                                         '</label>';
                                         echo '<br/>';
+                                        $sections++;
                                     } else {
                                         echo ' <label>
                                         <input type="checkbox" 
@@ -1373,6 +1441,9 @@ try{
                                         '</label>';
                                         echo '<br/>';
                                     }
+                                    
+                                    if($sections==$secCount[$a]){
+                                        $sections=0;
                                     }
                                 }
                                 echo '</div>';
@@ -1391,6 +1462,7 @@ try{
                                             $tabUsers[$k].
                                         '</label>';
                                         echo '<br/>';
+                                        $users++;
                                     } else {
                                         echo ' <label>
                                         <input type="checkbox" 
@@ -1400,7 +1472,7 @@ try{
                                         echo '<br/>';
                                     }
                                   
-                                    $users++;
+                                    
                                     
                                     if($useCount[$a]==$users){
                                         $users=0;
@@ -1451,31 +1523,33 @@ try{
 /**************************************************************************************/
 //obsłua pustych pol
                                 } else { 
+                                    $r1=0;
                                    if($tabId[$a]!=$reserved[$r1]){
                                     
                                     echo ' <td class="row" id="F'.$tabId[$a].'"
                                             data-toggle="modal" data-target="#M'.$tabId[$a].'">
-                                     '.$tabId[$a].'</td>';
+                                     </td>';
                                      echo '<style> 
                                              #F'.$tabId[$a].'{
                                                 color: white;
                                             }
                                         </style>';
-
+                                     $r1++;
 ////////////////////////////////////////////////////////////////////////////////////////////                                     
                                      
-                                   } else if($tabId[$a]==$reserved[$r1]){
-                                       echo ' <td class="row" id="F'.$tabId[$a].'"></td>';
+                                   } else if($tabId[$a]==$reserved[$r1]) {
+                                       echo ' <td class="row" id="F'.$tabId[$a].'">
+                                              '.$tabId[$a].' </td>';
                                      echo '<style> 
                                              #F'.$tabId[$a].'{
                                                 color: white;
                                             }
                                         </style>';
-                                   }
+                                   } 
                                 }
                               
                                  $a++;
-                                 $r1++;
+                                 
                                  if($r1==$r){
                                      $r1=1;
                                  }
