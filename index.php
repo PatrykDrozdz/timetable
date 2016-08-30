@@ -493,7 +493,7 @@ for($i =0; $i<$a; $i++){
                 
                 ?>
             
-      
+
             <div id="table">
  
 
@@ -544,17 +544,22 @@ for($i =0; $i<$a; $i++){
                 
                 <table id="trueTable" border="5" width="100%" height="20%" 
                     class="table-active table-responsive">
+                    
                     <tr>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
+                        
+                        <td colspan="4" class="tabHead" id="logo"></td>
+                         <td colspan="3" class="tabHead">1</td>
+                         <td class="tabHead">
+                             Dzień:
+                             <br/>
+                             Godzina:
+                         </td>
+                         <td class="tabHead"></td>
+                        
+                  
                     </tr>
+                   
+                    
                     <tr id="cols">
                         
                         
@@ -581,6 +586,7 @@ for($i =0; $i<$a; $i++){
                                         
                                         #date'.$i.'{
                                             color: white;
+                                            height: 3%;
                                         }
                                     
                                     </style>

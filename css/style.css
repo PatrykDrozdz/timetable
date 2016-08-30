@@ -258,3 +258,17 @@
     clear: both;
 }
      
+.tabHead{
+    height: 74px;
+    color: white;
+    text-align: left;
+    padding: 0.5%;
+}
+
+#logo{
+    background:  url("logo.png");
+}
+
+#buttonDay{
+    color: white;
+}

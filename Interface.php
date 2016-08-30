@@ -26,7 +26,7 @@ $start=0;//start petli
 $end=4*13;//koniec petli
                       
 $h=6;//domyslna godzina poczætkowa
-
+$sec=0;
 $r = 0;//zmienna do zarezerwowanych(indeksy)
 ///////////////////////////////
 //wybør widokøw do panelu administratora
@@ -206,9 +206,12 @@ try{
                 $decMonth = $connection->query($qDecMonth);
                 $rowDecMonth = $decMonth->fetch_assoc();
                 
+                if(isset($_POST['decMonth'])){
+                
                 $DM = $rowDecMonth["DATE_ADD('$date', INTERVAL -'$monthCount ' MONTH)"];
+                //echo '<br/>'.$DM;
                 $date = $DM;
-               
+                }
                 $decMonth->free_result();
                 
                 $qDWD = "SELECT DAYOFWEEK('$DM')";
@@ -290,7 +293,7 @@ try{
                      $resUltIM->free_result();
 
                 }
-                $incMon++;
+                //$incMon++;
             }
             /////////////////////////////////////////////////////////////////////
             //dekrementacja tygodnia
@@ -1079,6 +1082,8 @@ try{
        <script src="js/bootstrap.min.js"></script>
        <script src="js/jquery-ui.js"></script>
     
+       <script src="js/reload.js"></script>
+       
         <link href="css/jquery-ui.css" rel="stylesheet">
 
         <title>Organizator</title>
@@ -1134,10 +1139,25 @@ try{
    
             <table id="trueTable" border="5" width="100%" height="20%" 
                     class="table-active table-responsive">
+                
+                 <tr>
+                        
+                        <td colspan="4" class="tabHead" id="logo"></td>
+                         <td colspan="3" class="tabHead">1</td>
+                         <td class="tabHead">
+                             Dzień:
+                             <br/>
+                             Godzina:
+                         </td>
+                         <td class="tabHead"></td>
+                        
+                  
+                    </tr>
+                
                     <tr >
                       <?php  //wrtzuci¢ do zwykłego u«ytkownika
                         ///////////////////////////////////////////////// ?>
-                          <td colspan="2" > 
+                          <td colspan="2"> 
                               <form method="post">
                               <input class="btn btn-primary active" 
                            type="submit" value="<<" id="buttonDay" name="decMonth"/>
@@ -1152,11 +1172,11 @@ try{
                             <td colspan="5" class="head">Pole z opisem najbliszego 
                                 spotkania</td>
                     
-                            <td colspan="2"> 
+                            <td colspan="2" > 
                                 <form method="post"> 
                                     <input class="btn btn-primary active" 
                                          type="submit" value=">>" id="buttonDay" 
-                                         name="incMonth"/>
+                                         name="incMonth" />
                                 </form>
                                 <form method="post"> 
                                     <input class="btn btn-primary active" 
@@ -1168,9 +1188,10 @@ try{
                             <?php 
                             
                                        
-                    echo '<td rowspan="'. ($SpanCol+1).'" class="changeHour"><input 
-                            class="btn btn-primary active" 
-                           type="submit" value="<<" id="buttonHour"
+                    echo '<td rowspan="'.($SpanCol+1).'" class="changeHour">
+                        
+                        <input class="btn btn-primary active" 
+                           type="submit" value="<<" id="buttonHour"/>
                         </td>';
                     
                      ?>
@@ -1199,6 +1220,7 @@ try{
                                         
                                         #date'.$i.'{
                                             color: white;
+                                            height: 3%;
                                         }
                                     
                                     </style>
@@ -1628,12 +1650,12 @@ try{
                                                 
                                         
                                        echo'     <input class="btn btn-danger active" 
-                                                type="submit" value="Usun" id="button"/>
+                                                type="submit" value="Usun" id="button" onclick="reLoad()"/>
                                             </form>
                                             </div>
                                             <div class="modal-footer">
                                         <button type="button" class="btn btn-default" 
-                                        data-dismiss="modal">Anuluj</button>
+                                        data-dismiss="modal" >Anuluj</button>
                                             </div>
                                             </div>
                                             </div>
@@ -1787,7 +1809,7 @@ try{
                                  /**********************************************/ 
                                         
                                  echo'           <input class="btn btn-primary active" 
-                                                type="submit" value="Edytuj" id="button"/>
+                                                type="submit" value="Edytuj" id="button" onclick="reLoad()"/>
                                             </form>
                                             </div>
                                             <div class="modal-footer">
@@ -1817,7 +1839,8 @@ try{
 
 
                                 } else { 
-                                        if($tabId[$a]!=$reserved[$r1]){
+                                    
+                                        //if($tabId[$a]!=$reserved[$r1] && $reserved[$r1]!=NULL){
                                     
                                     echo ' <td class="row" id="F'.$tabId[$a].'"
                                             data-toggle="modal" data-target="#M'.$tabId[$a].'">
@@ -1930,7 +1953,7 @@ try{
                                     <br/>
                                     <div class="make'.$tabId[$a].'">
                                     <input class="btn btn-primary active" 
-                                        type="submit" value="Dodaj" id="button"/>
+                                        type="submit" value="Dodaj" id="button" onclick="reLoad()"/>
                                      </div>   
                                     </form>
                                     </div>
@@ -1973,7 +1996,7 @@ try{
                                     } );
                                 </script>';
 //////////////////////////////////////////////////////////////////////////////////////////// ///////////
-                                    } else {
+                                    /*} else {
                                     
                                           echo ' <td class="row" id="F'.$tabId[$a].'"
                                             data-toggle="modal">
@@ -1985,7 +2008,7 @@ try{
                                         </style>';
                                    
                                         
-                                    }
+                                    }*/
                                     
                                  
                                 }

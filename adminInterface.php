@@ -833,7 +833,8 @@ try{
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="js/bootstrap.min.js"></script>
         <script src="js/jquery-ui.js"></script>
-
+        <script src="js/reload.js"></script>
+        
         <link href="css/jquery-ui.css" rel="stylesheet">
 
         <title>Organizator</title>
@@ -911,6 +912,21 @@ try{
    
              <table id="trueTable" border="5" width="100%" height="20%" 
                     class="table-active table-responsive">
+                 
+                  <tr>
+                        
+                        <td colspan="4" class="tabHead" id="logo"></td>
+                         <td colspan="3" class="tabHead">1</td>
+                         <td class="tabHead">
+                             Dzień:
+                             <br/>
+                             Godzina:
+                         </td>
+                         <td class="tabHead"></td>
+                        
+                  
+                    </tr>
+                 
                     <tr>
                       <?php//////////////////////////////////////////////////
                       //klawisze inkrementacji i dekrementacji
@@ -982,6 +998,7 @@ try{
                                         
                                         #date'.$i.'{
                                             color: white;
+                                            height: 3%;
                                         }
                                     
                                     </style>
