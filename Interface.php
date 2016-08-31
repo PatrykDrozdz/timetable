@@ -787,6 +787,8 @@ try{
                     $_SESSION['added'] = '<span class="list-group-item list-group-item-success">
                        Dodano wydazenie do terminarza</span>';
                     
+                    header('Location: adding.php');
+                    
                 } else {
                     echo 'Error no. '.$connection->errno;
                 }
@@ -838,6 +840,8 @@ try{
             if($connection->query($queryDel)){
                 $_SESSION['delete'] = '<span class="list-group-item list-group-item-success">
                        Usunieto wydazenie z terminarza</span>';
+                
+                header('Location: adding.php');
             } else {
                 throw new Exception($connection->erno);
             }
@@ -1029,6 +1033,9 @@ try{
                  /*******************************************************/
                 $_SESSION['edit'] = '<span class="list-group-item list-group-item-success">
                        Wydazenie zostalo edytowane</span>';
+                
+                header('Location: adding.php');
+                
             } else {
                 throw new Exception($connection->errno);
             }
