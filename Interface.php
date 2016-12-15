@@ -1074,33 +1074,20 @@ try{
 <html lang="pl">
     <head>
         <meta charset="UTF-8">
-
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-  
- 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrom=1"/>
+        <?php  //<meta http-equiv="Refresh" content="60"/> ?>
+
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-       <!-- Bootstrap -->
-       <link href="css/bootstrap.min.css" rel="stylesheet">     
-       <script src="js/jquery.js"></script>
-       <script src="js/jquery_1.js"></script>
-       <!-- Include all compiled plugins (below), or include individual files as needed -->
-       <script src="js/bootstrap.min.js"></script>
-       <script src="js/jquery-ui.js"></script>
-    
-       <script src="js/reload.js"></script>
-       
-        <link href="css/jquery-ui.css" rel="stylesheet">
+        <!-- Bootstrap -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">     
+        <script src="js/jquery.js"></script>
+        <script src="js/jquery_1.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="js/bootstrap.min.js"></script>
 
         <title>Organizator</title>
-        
-        
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="keywords" content="paliwo spalanie pojazdy licznik kalkulator baza danych"/>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrom=1"/>
-        
+
         <link rel="stylesheet" href="css/style.css" type="text/css"/>
   
         
@@ -1142,10 +1129,10 @@ try{
                     </div>
             </div>
     
-            <div id="table">
+            <div class="table-responsive">
    
             <table id="trueTable" border="5" width="100%" height="20%" 
-                    class="table-active table-responsive">
+                    class="table-active">
                 
                  <tr>
                         

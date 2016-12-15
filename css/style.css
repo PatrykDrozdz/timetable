@@ -9,7 +9,7 @@
 
     background:  url("broken_noise.png");/*(from http://subtlepatterns.com/) */
     font-family: "Lucida Console", Monaco, monospace;
-    height: 4000px;
+    height: 1000px;
     color: black;
    
     
@@ -56,7 +56,7 @@
 }
 
 #table{
-    height: 3500px;
+    height: 100%;
     font-size: 20px;
     text-align: center;
     background-color:  #1c1c1c;
@@ -266,9 +266,14 @@
 }
 
 #logo{
-    background:  url("logo.png");
+    
 }
 
 #buttonDay{
     color: white;
+}
+
+.date {
+    color: white;
+    height: 3%;
 }
