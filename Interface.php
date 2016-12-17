@@ -1125,7 +1125,10 @@ try{
                                 .$_SESSION['surname'];
                          ?>
                     <br/>
-                    <a href='logout.php'>Wyloguj sie</a>
+                    <a
+                     href='logout.php' 
+                     >Wyloguj sie</a>
+                
                     </div>
             </div>
     
@@ -1380,7 +1383,7 @@ try{
                                     ';
                 echo '<div id="sections'.$tabId[$a].'">';
                              if($secSeen[$a][0]!=NULL){
-                                echo'    <label>sekcje zaproszone:</label>';
+                                echo'    <label>sekcje zaproszone:</label> <br/>';
                              }
                          for($sections=0; $sections<$secCount[$a]; $sections++){
                             echo $secSeen[$a][$sections]. '<br/>';

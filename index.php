@@ -55,6 +55,17 @@ require_once 'gettingDatas.php';
                 
                 ?>
             
+            <div id="header">
+                 <h1>Terminarz</h1>
+                      <div id="loging">
+                          
+                                  <button type="button" 
+                                          class="btn btn-link btn-lg active" 
+                                data-toggle="modal" data-target="#log"
+                                >Zaloguj sie</button>
+                    </div>
+            </div>
+            
 
             <div class="table-responsive">
  
@@ -130,10 +141,6 @@ require_once 'gettingDatas.php';
                                 Godzina
                                 <br/>
                                 
-                                  <button type="button" 
-                                          class="btn btn-link btn-xs active" 
-                                data-toggle="modal" data-target="#log"
-                                >Zaloguj sie</button>
                             </div>
                             
                         </td>
@@ -143,6 +150,13 @@ require_once 'gettingDatas.php';
                             
                             <td>
                                     <div class="date"><?php echo $tab[$i];?></div>
+                                    
+                                    <style>
+                                        .date {
+                                            color: white;
+                                            height: 3%;
+                                        }
+                                    </style>
                                     
                             </td> 
                
