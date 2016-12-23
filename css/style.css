@@ -9,7 +9,7 @@
 
     background:  url("broken_noise.png");/*(from http://subtlepatterns.com/) */
     font-family: "Lucida Console", Monaco, monospace;
-    height: 1000px;
+    height: 4000px;
     color: black;
    
     
@@ -18,7 +18,7 @@
 #container2{
     background: url("broken_noise.png");/*(from http://subtlepatterns.com/) */ 
     font-family: "Lucida Console", Monaco, monospace;
-    height: 2000px;
+    height: 4000px;
     color: white
     
 }
@@ -276,4 +276,8 @@
 .date {
     color: white;
     height: 3%;
+}
+
+#fieldsText{
+    margin: auto;
 }

@@ -81,7 +81,7 @@ require_once 'gettingDatas.php';
                                         data-dismiss="modal">&times;</button>
                                     <h4 class="modal-title">Logowanie</h4>
                                 </div>
-                                <div class="modal-body">
+                                <div class="modal-body" id="fieldsText">
 
                                    <form action="loging.php" method="post" name="form_name">
 
@@ -150,13 +150,7 @@ require_once 'gettingDatas.php';
                             
                             <td>
                                     <div class="date"><?php echo $tab[$i];?></div>
-                                    
-                                    <style>
-                                        .date {
-                                            color: white;
-                                            height: 3%;
-                                        }
-                                    </style>
+
                                     
                             </td> 
                
