@@ -1,12 +1,24 @@
 
 <?php
-   
-//stałe wartoßci domyslne
-///////////////////////
+require_once 'getView.php';
+
+//echo $startView.'<br/>'.$endView.'<br/>'.$tableIndex ;
+
+/*************************************/
 $start=0;//start petli
-$end=4*13;//koniec petli
-                      
-$h=6;//domyslna godzina poczætkowa
+if(isset($_SESSION['tableIndex']) && isset($_SESSION['startView'])){                      
+    $end = $_SESSION['tableIndex'];//koniec petli
+    $h = $_SESSION['startView'];//domyslna godzina poczætkowa
+} else {
+    $end = NULL;
+    $h = NULL;
+}
+/***********************************/
+
+$a=0;
+$hd=0;
+$f = 0;
+$m=1;
 $check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
 $min = 0; //id minut
 $r = 0;

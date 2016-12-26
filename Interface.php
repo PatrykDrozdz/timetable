@@ -7,19 +7,26 @@
         exit();
     }
     require_once 'gettingDatasLoged.php';
+    require_once 'getView.php';
  
-/*
+    //echo $startView.'<br/>'.$endView.'<br/>'.$tableIndex ;
+
+    /*************************************/
     $start=0;//start petli
-    $a = $_SESSION['startOfView'];
-    $b = $_SESSION['endOfView'] + 1;
-    $interval = $b - $a;
-    $end=4*$interval;//koniec petli
-              
+
+    $end=$tableIndex;//koniec petli
+    $h=$startView;//domyslna godzina poczætkowa
+    /***********************************/
+    $check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
+    $a=0;
+    $hd=0;
+    $f = 0;
+    $m=1;
+    $a2=$a;
     
-*/
-
-
-          ?>
+    $allHours = $endView;
+    $r1=$r;
+?>
              
 
 <!DOCTYPE html>
@@ -253,17 +260,7 @@
                         
                     </tr>
                     <?php 
-                    $a2=$a;
-                    $start=0;//start petli
-                    $allHours = 13;
-                    $end=4*$allHours;//koniec petli
-                      
-                    $h=6;//domyslna godzina poczætkowa
-                    $check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
-                    $a=0;
-                    
-                    $m=0;
-                     $r1=0;
+                  
                     for($i=$start; $i<$end; $i++){
                           
                            echo '<tr id="cols" class="table-active">';
@@ -581,7 +578,7 @@
                                 <p>osoby zaproszone:</p>';
                        
                             
-                         for($users=0; $users<= $useCount[$a]; $users++){
+                         for($users=0; $users< $useCount[$a]; $users++){
                              echo '<label>'. $usersSeen[$a][$users]. '</label> '
                                     . '<br/>';
                          }

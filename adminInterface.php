@@ -8,7 +8,28 @@
     }
 
     require_once 'gettingDatasLoged.php';
+    require_once 'getView.php';
+    require_once 'setView.php';
+    //echo $startView.'<br/>'.$endView.'<br/>'.$tableIndex ;
+    //echo $newView;
+    //echo $idViewUpdate;
+
+    /*************************************/
+    $start=0;//start petli
+
+    $end=$tableIndex;//koniec petli
+    $h=$startView;//domyslna godzina poczætkowa
+    /***********************************/
+    $check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
+    $a=0;
+    $hd=0;
+    $f = 0;
+    $m=1;
     
+    $a2=$a;
+    
+    $allHours = $endView;
+
     
 ?>
 
@@ -56,6 +77,9 @@
                 if(isset($_SESSION['edit'])){
                     echo $_SESSION['edit'];
                 }
+                if(isset($_SESSION['editView'])){
+                    echo $_SESSION['editView'];
+                }
                 
                 ?>
              
@@ -78,9 +102,13 @@
                     <a href='logout.php'>Wyloguj sie</a>
                      <br/>
                      <a  href="makeAccount.php">załóż konto</a>
+                     <button type="button" 
+                     class="btn btn-link btn-lg active" 
+                     data-toggle="modal" data-target="#make"
+                    >załóż konto</button>
                     <br/>
                     <form method="post">
-                    <select id="view" name="view">
+                    <select id="view" name="updateView">
                         <?php 
                         for($i=1; $i<=$count; $i++){
                             echo '<option>'.$vievs[$i].'</option>';
@@ -95,6 +123,111 @@
                     </form>
                 
             </div>
+            
+            
+            
+             <div class="modal fade" id="make" role="dialog">
+                          <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <button type="button" class="close" 
+                                        data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Dodaj użytkownika</h4>
+                                </div>
+                                <div class="modal-body">
+
+                    <form method="post">
+                    <div class="form-group"> 
+                        <label for="login">Login:</label>
+                        <input type="text" class="form-control" id="login"  name="login">
+                    </div>
+                  
+                  <?php 
+                    if(isset($_SESSION['error_login'])){
+                        echo '<div class="error">'.$_SESSION['error_login'].'</div>';
+                        unset($_SESSION['error_login']);
+                    }
+                  ?>
+                  
+                  <br/>
+                    <br/>
+                 hasło:<br/> <input type="password" name="pass"/>
+                  <?php 
+                    if(isset($_SESSION['error_pass'])){
+                        echo '<div class="error">'.$_SESSION['error_pass'].'</div>';
+                        unset($_SESSION['error_pass']);
+                    }
+                  ?>
+                      <br/>
+                    <br/>
+                    imię:<br/> <input type="text" name="name"/>
+                     <?php 
+                    if(isset($_SESSION['error_name'])){
+                        echo '<div class="error">'.$_SESSION['error_name'].'</div>';
+                        unset($_SESSION['error_name']);
+                    }
+                  ?>
+                       <br/>
+                    <br/>
+                nazwisko: <br/><input type="text" name="surname"/>
+                 <?php 
+                    if(isset($_SESSION['error_surname'])){
+                        echo '<div class="error">'.$_SESSION['error_surname'].'</div>';
+                        unset($_SESSION['error_surname']);
+                    }
+                  ?>
+                       <br/>
+                    <br/>
+                    e-mail: <br/><input type="text" name="email"/>
+                    <?php 
+                    if(isset($_SESSION['error_email'])){
+                        echo '<div class="error">'.$_SESSION['error_email'].'</div>';
+                        unset($_SESSION['error_email']);
+                    }
+                  ?>
+                       <br/>
+                    <br/>
+                    status: <br/> <select name="flagStatus">
+                        <option>admin</option>
+                        <option>user</option>
+                            </select>
+                       <br/>
+                    <br/>
+                    sekcja: <br/> <select name="section">
+                        
+                        <?php 
+                        for($i=1; $i<=$count; $i++){
+                            echo '<option>'.$tabSec[$i].'</option>';
+                        }
+                        
+                        ?>
+
+                            </select>
+                      <?php 
+                    if(isset($_SESSION['made'])){
+                        echo '<div class="possitive">'.$_SESSION['made'].'</div>';
+                        unset($_SESSION['made']);
+                    }
+                  ?>
+                  
+                       <br/>
+                    <br/>
+                    <input type="submit" value="dodaj użytkownika"/>>
+                </form>
+                                    
+                                 </div>
+                                     <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" 
+                                                data-dismiss="modal">Anuluj</button>
+                                    </div>
+                                 </div>
+      
+                            </div>
+                     </div>
+            
+            
           
             <div class="table-responsive">
    
@@ -269,16 +402,7 @@
                         
                     </tr>
                     <?php 
-                    $a2=$a;
-                    $start=0;//start petli
-                    $allHours = 13;
-                    $end=4*$allHours;//koniec petli
-                      
-                    $h=6;//domyslna godzina poczætkowa
-                    $check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
-                    $a=0;
                     
-                    $f = 0;
                      
                     for($i=$start; $i<$end; $i++){
                           ////////////////////////////////////////////////
@@ -717,7 +841,7 @@
 //obsłua pustych pol
                                 } else { 
                                     $r1=0;
-                                   if($tabId[$a]!=$reserved[$r1]){
+                                  /* if($tabId[$a]!=$reserved[$r1]){
                                     
                                     echo ' <td class="row" id="F'.$tabId[$a].'"
                                             data-toggle="modal" data-target="#M'.$tabId[$a].'">
@@ -730,7 +854,7 @@
                                      $r1++;
 ////////////////////////////////////////////////////////////////////////////////////////////                                     
                                      
-                                   } else if($tabId[$a]==$reserved[$r1]) {
+                                   } else if($tabId[$a]==$reserved[$r1]) {*/
                                        echo ' <td class="row" id="F'.$tabId[$a].'">
                                               '.$tabId[$a].' </td>';
                                      echo '<style> 
@@ -738,7 +862,7 @@
                                                 color: white;
                                             }
                                         </style>';
-                                   } 
+                                   //} 
                                 }
                               
                                  $a++;

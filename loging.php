@@ -37,10 +37,11 @@ if($connection->connect_errno!=0){
             
             if(password_verify($password, $row['usersPass'])){
             
-                $_SESSION['loged']=TRUE;
+                
             
             
                 $_SESSION['user'] = $row['userLogin'];
+                
                 $_SESSION['idusers'] = $row['idusers'];
                 $_SESSION['name'] = $row['name'];
                 $_SESSION['surname'] = $row['surname'];
@@ -48,6 +49,11 @@ if($connection->connect_errno!=0){
                 $_SESSION['flag'] = $row['flag'];
                 $_SESSION['sectionId'] = $row['sections_idsections'];
                 $flag = $row['flag'];
+                
+                $loged = 'loged'.$row['idusers'];
+                
+                $_SESSION['loged']=TRUE;
+                
                 $result->free_result();
             
           

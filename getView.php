@@ -22,10 +22,12 @@
         $rowView = $resultViews->fetch_assoc();
         
         $startView = $rowView['startOfView'];//start petli
-        $endView=4*$rowView['endOfView'];//koniec petli
+        $endView=$rowView['endOfView'];//koniec petli
                       
-        $hStart = $rowView['startOfView'];//domyslna godzina poczætkowa
-
+        $tableIndex = 4*(($endView - $startView + 1));
+        
+        $_SESSION['startView'] = $startView;
+        $_SESSION['tableIndex'] = $tableIndex;
         
         $resultViews->free();
         

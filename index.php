@@ -14,9 +14,22 @@ if((isset($_SESSION['loged'])) && ($_SESSION['loged']==TRUE)){
 }
 
 require_once 'gettingDatas.php';
+require_once 'getView.php';
 
-//echo $hd;
-//echo $r;
+//echo $startView.'<br/>'.$endView.'<br/>'.$tableIndex ;
+
+/*************************************/
+$start=0;//start petli
+                      
+$end=$tableIndex;//koniec petli
+$h=$startView;//domyslna godzina poczætkowa
+/***********************************/
+$check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
+$a=0;
+$hd=0;
+$f = 0;
+$m=1;
+
 ?>
 
 
@@ -85,24 +98,23 @@ require_once 'gettingDatas.php';
 
                                    <form action="loging.php" method="post" name="form_name">
 
-
-                                            login:
-                                            <br/>
-                                            <input type="text" name="login" id="textfield" 
+                                            <div class="form-group"> 
+                                                <label for="login">Login:</label>
+                                                <input type="text" name="login" id="login" 
                                                    placeholder="login" class="form-control"/>
+                                            </div>
                                             <br/>
-                                             <br/>
-
-                                            hasło:
-                                            <br/>
-                                            <input type="password" name="pass" id="textfield" 
+                                            
+                                            <div class="form-group"> 
+                                                <label for="pass">Hasło:</label>
+                                                <input type="password" name="pass" id="pass" 
                                                    placeholder="hasło" class="form-control"/>
-                                            <br/>
+                                            </div>
                                             <br/>
                                             <input class="btn btn-primary active" 
                                                    type="submit" value="Zaloguj się" id="button"/>
 
-                                        </form>
+                                   </form>
                                     
                                  </div>
                                      <div class="modal-footer">
@@ -239,16 +251,7 @@ require_once 'gettingDatas.php';
                         
                     </tr>
                     <?php 
-                    
-                    $start=0;//start petli
-                    $end=4*13;//koniec petli
-                      
-                    $h=6;//domyslna godzina poczætkowa
-                    $check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
-                    $a=0;
-                    $hd=0;
-                    $f = 0;
-                    $m=1;
+                   
                     
                      
                     for($i=$start; $i<$end; $i++){

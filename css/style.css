@@ -281,3 +281,12 @@
 #fieldsText{
     margin: auto;
 }
+
+.form-group{
+    text-align: center;
+}
+
+.form-control{
+    width: 50%;
+    margin: auto;
+}

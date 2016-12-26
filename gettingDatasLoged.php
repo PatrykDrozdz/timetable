@@ -2,25 +2,39 @@
        //stałe wartoßci domyslne
 ///////////////////////
 require_once 'getView.php';
+
+if(isset($_SESSION['idusers'])){
     $idUsers = $_SESSION['idusers'];
+} else {
+    $idUsers = NULL;
+}
     //echo $_SESSION['fullName'];
-    
+if(isset($_SESSION['fullName'])){    
     $myFullName = $_SESSION['fullName'];
+}
+if(isset($_SESSION['sectionId'])){
     $mySectionId =  $_SESSION['sectionId'];
+} else {
+    $mySectionId = NULL;
+}    
     
-    
-  
+
+//echo $startView.'<br/>'.$endView.'<br/>'.$tableIndex ;
+
+/*************************************/
 $start=0;//start petli
-$end=4*13;//koniec petli
-                      
-$h=6;//domyslna godzina poczætkowa
-   
-/*
-$start=$startView;//start petli
-$end=$endView;//koniec petli
-                      
-$h=$startView;//domyslna godzina poczætkowa
-    */
+if(isset($_SESSION['tableIndex']) && isset($_SESSION['startView'])){                      
+    $end = $_SESSION['tableIndex'];//koniec petli
+    $h = $_SESSION['startView'];//domyslna godzina poczætkowa
+} else {
+    $end = NULL;
+    $h = NULL;
+}
+/***********************************/
+$a=0;
+$hd=0;
+$f = 0;
+$m=1;
 $check = 1;//flaga sprawdzjaca minuty - nie zmienia¢
 $min = 0; //id minut - stała nie do zmiany
 
@@ -73,7 +87,7 @@ try{
                
                $tabSections[$i] = $rowSecInc['name'];
                
-               if($i==$mySectionId){
+               if($i==$mySectionId && $mySectionId!=NULL){
                    $mySection = $tabSections[$i];
                    //echo $mySectionId.' '.$mySection;
                }
@@ -97,7 +111,11 @@ try{
            //echo $countUsers. '<br/>';
            $countOfUsers = 1;
            $countOfUsersView = 1;
-           $myId =  $_SESSION['idusers'];
+           if(isset($_SESSION['idusers'])){
+            $myId =  $_SESSION['idusers'];
+           } else {
+            $myId = NULL;
+           }
            for($i=1; $i<=$countUsers; $i++){
                $resUsersInc = $connection->query("SELECT * FROM users "
                        . "WHERE idusers = '$i'");
@@ -107,7 +125,7 @@ try{
                $tabFlag[$i] = $rowUsersInc['flag'];
               
                
-               if($tabFlag[$i]==0 && $i!=$myId){
+               if($tabFlag[$i]==0 && $i!=$myId && $myId!=NULL){
                      $tabUsers[$countOfUsers] = $rowUsersInc['fullName'];
                      $tabUsersLogin[$countOfUsers] = $rowUsersInc['userLogin'];
                      $countOfUsers++;
@@ -163,10 +181,7 @@ try{
             
                 $vievs[$i] = $row12['nameOfView'];
                 
-                if($vievs[$i]=='basic'){
-                    $_SESSION['startOfView'] = $row12['startOfView'];
-                    $_SESSION['endOfView'] = $row12['endOfView'];
-                }
+                
                 
                 $res1->free_result();
                 
@@ -176,28 +191,6 @@ try{
             //////////////////////////////////////////////////////////////////
             //ustawianie widokøw(godzin)
             /////////////////////////////////////////////////////////
-            if(isset($_POST['view'])){
-                    
-                $view = $_POST['view'];
-                    
-                $viewResult= $connection->query("SELECT * FROM view WHERE nameOfView = '$view'");
-            
-            
-                if($connection->query("SELECT * FROM view WHERE nameOfView = '$view'")){          
-                    
-                    
-                    $rowViews = $viewResult->fetch_assoc();
-                
-                    $_SESSION['startOfView'] = $rowViews['startOfView'];
-                    $_SESSION['endOfView'] = $rowViews['endOfView'];
-            
-
-                    $viewResult->free_result(); 
-                          
-                }
-                    
-            }
-            //////////////////////////////////////////////////////////////////
             //dekrementacja miesiæca
             ////////////////////////////////////////////////////////////////////
             if(isset($_POST['decMonth'])){

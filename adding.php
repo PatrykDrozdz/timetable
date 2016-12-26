@@ -10,6 +10,10 @@ if(!isset($_POST['login']) || !isset($_POST['pass'])){
 }
 $myFlag = $_SESSION['flag'];
 echo $myFlag;
-header('Location: Interface.php');
+if($myFlag==0){
+    header('Location: Interface.php');
+} else if ($myFlag==1) {
+    header('Location: adminInterface.php');
+}
 ?>
 
