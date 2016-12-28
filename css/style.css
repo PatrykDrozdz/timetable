@@ -289,6 +289,7 @@
 
 .modal-body{
     background-color: #99CCFF;
+    padding: 4%;
 }
 
 .modal-content{
@@ -301,4 +302,50 @@
 
 .modal-footer{
     background-color: #99FFCC;
+}
+
+.changes{
+    padding: 4%;
+}
+
+.sections{
+    float: left;
+    width: 50%;
+    font-size: 100%;
+    background-color: #66CCFF;
+}
+
+ .persons{
+    float: left;
+    width: 50%;
+    font-size: 100%;
+     background-color: #6699FF;
+}
+                               
+.foot{
+    clear: both;
+}
+                              
+.dateView{
+    width: 100%;
+    padding: 1%;
+    background-color: #99FFFF;
+    font-size: 100%;
+}
+                                    
+.subject{
+    width: 100%;
+    padding: 1%;
+    background-color: #669999
+}
+                                    
+.info{
+    width: 100%;
+    padding: 4%;
+    background-color: #00CCCC;
+    font-size: 100%;
+}
+
+.make{
+    clear: both;
 }

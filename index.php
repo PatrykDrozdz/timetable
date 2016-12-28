@@ -128,7 +128,7 @@ $m=1;
                      </div>
 
                 
-                <table id="trueTable" border="5" width="100%" height="20%" 
+                <table id="trueTable" border="5"
                     class="table-active table-responsive">
                     
                     <tr>
@@ -284,10 +284,18 @@ $m=1;
                             
                                 if($info[$a]!=NULL){
                                     
-                                        echo ' <td class="row" id="F'.$tabId[$a].'"
-                                            data-toggle="modal" data-target="#MA'.$tabId[$a].'"
-                                       > '.$info[$a].'
-                                     </td>';
+                                    if(strlen($info[$a])>21){
+                                            echo ' <td class="row" id="F'.$tabId[$a].'"
+                                                
+                                            data-toggle="modal" data-target="#MA'.$tabId[$a].'">
+                                            '.$tabInfo[0].'</td>';
+                                       
+                                        }else{
+                                            echo ' <td class="row" id="F'.$tabId[$a].'"
+                                                
+                                            data-toggle="modal" data-target="#MA'.$tabId[$a].'">
+                                            '.$info[$a].'</td>';  
+                                        }
                                     
         
                     //'.$info[$a].'
@@ -305,13 +313,13 @@ $m=1;
                                     <h4 class="modal-title">Informacje o spotkaniu</h4>
                                      </div>
                                     <div class="modal-body">
-                                    <div id="subject'.$tabId[$a].'">
+                                    <div class="subject">
                                     <label>'.$info[$a].'</label>
                                     </div>
                                     <div id="info'.$tabId[$a].'">
                                         '.$moreInfo[$a].' 
                                     </div>
-                                <div id="dateView'.$tabId[$a].'">
+                                <div class="dateView">
                                     Spotkanie odbedzie sie dnia: '.$dateOfMeeting[$a].'
                                         <br/>
                                       W godzinach: '.$hourMeetingStarts[$a].' - '
@@ -321,19 +329,19 @@ $m=1;
                                     </div>
                                     
                                     ';
-                echo '<div id="sections'.$tabId[$a].'">';
+                echo '<div class="sections">';
                              if($secSeen[$a][0]!=NULL){
-                                echo'    <label>sekcje zaproszone:</label> <br/>';
+                                echo'    <label>Sekcje zaproszone:</label> <br/>';
                              }
                          for($sections=0; $sections<$secCount[$a]; $sections++){
                             echo $secSeen[$a][$sections]. '<br/>';
                             
                          }
                            echo'      </div>';
-                         echo '<div id="persons'.$tabId[$a].'">';
+                         echo '<div class="persons">';
                             
                                 if($usersSeen[$a][0]!=NULL){
-                                    echo'<label>osoby zaproszone:</label> <br/>';
+                                    echo'<label>Osoby zaproszone:</label> <br/>';
                                 }
                            for($users=0; $users< $useCount[$a]; $users++){
                              echo  $usersSeen[$a][$users]. '<br/>';
@@ -362,49 +370,6 @@ $m=1;
                                             font-size: 100%;
                                     }
                                             
-                                    
-                                    #sections'.$tabId[$a].'{
-                                        float: left;
-                                        width: 50%;
-                                        font-size: 100%;
-                                        background-color: #66CCFF;
-                                    }
-                                    
-                                    #persons'.$tabId[$a].'{
-                                        float: left;
-                                        width: 50%;
-                                        font-size: 100%;
-                                        
-                                       background-color: #6699FF;
-                                    }
-                                    
-                                    #foot'.$tabId[$a].'{
-                                        clear: both;
-                                    }
-                              
-                                    #dateView'.$tabId[$a].'{
-                                        width: 100%;
-                                       
-                                        padding: 1%;
-                                        background-color: #99FFFF;
-                                        font-size: 100%;
-                                    }
-                                    
-                                    #subject'.$tabId[$a].'{
-                                       width: 100%;
-                                       
-                                       padding: 1%;
-                                       background-color: #669999
-                                    }
-                                    
-                                    #info'.$tabId[$a].'{
-                                        width: 100%;
-                                        
-                                        padding: 4%;
-                                        background-color: #00CCCC;
-                                        font-size: 100%;
-                                    }
-                                    
                                   </style>';
                                        /* $m = 1;
                                   $wordCounted = str_word_count($info[$a]);
