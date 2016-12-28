@@ -38,7 +38,7 @@
 <!DOCTYPE html>
 
 <html lang="pl">
-    <head>
+  <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrom=1"/>
@@ -47,15 +47,23 @@
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <!-- Bootstrap -->
         <link href="css/bootstrap.min.css" rel="stylesheet">     
-        <script src="js/jquery.js"></script>
+
         <script src="js/jquery_1.js"></script>
+
+        <script src="js/jquery-ui.js"></script>
+        <link href="css/jquery-ui.min.css" rel="stylesheet">
+        
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="js/bootstrap.min.js"></script>
 
         <title>Organizator</title>
 
         <link rel="stylesheet" href="css/style.css" type="text/css"/>
-  
+        
+        <link href="css/jquery.datepick.css" rel="stylesheet">
+        <script src="js/jquery.plugin.js"></script>
+        <script src="js/jquery.datepick.js"></script>
+        <script src="js/jquery.datepick-pl.js"></script>
         
     </head>
     <body>
@@ -81,6 +89,37 @@
                     echo $_SESSION['editView'];
                 }
                 
+                if(isset($_SESSION['error_login'])){
+                    echo '<div class="error">'.$_SESSION['error_login'].'</div>';
+                    unset($_SESSION['error_login']);
+                }
+                
+                if(isset($_SESSION['error_pass'])){
+                    echo '<div class="error">'.$_SESSION['error_pass'].'</div>';
+                    unset($_SESSION['error_pass']);
+                }                     
+                
+                if(isset($_SESSION['error_name'])){
+                    echo '<div class="error">'.$_SESSION['error_name'].'</div>';
+                    unset($_SESSION['error_name']);
+                }                     
+                
+                if(isset($_SESSION['error_surname'])){
+                        echo '<div class="error">'.$_SESSION['error_surname'].'</div>';
+                        unset($_SESSION['error_surname']);
+                    }                     
+                
+                if(isset($_SESSION['error_email'])){
+                        echo '<div class="error">'.$_SESSION['error_email'].'</div>';
+                        unset($_SESSION['error_email']);
+                    }       
+                    
+                if(isset($_SESSION['made'])){
+                        echo '<div class="possitive">'.$_SESSION['made'].'</div>';
+                        unset($_SESSION['made']);
+                    }
+                
+                
                 ?>
              
         
@@ -102,10 +141,6 @@
                     <a href='logout.php'>Wyloguj sie</a>
                      <br/>
                      <a  href="makeAccount.php">załóż konto</a>
-                     <button type="button" 
-                     class="btn btn-link btn-lg active" 
-                     data-toggle="modal" data-target="#make"
-                    >załóż konto</button>
                     <br/>
                     <form method="post">
                     <select id="view" name="updateView">
@@ -123,111 +158,7 @@
                     </form>
                 
             </div>
-            
-            
-            
-             <div class="modal fade" id="make" role="dialog">
-                          <div class="modal-dialog">
 
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <button type="button" class="close" 
-                                        data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Dodaj użytkownika</h4>
-                                </div>
-                                <div class="modal-body">
-
-                    <form method="post">
-                    <div class="form-group"> 
-                        <label for="login">Login:</label>
-                        <input type="text" class="form-control" id="login"  name="login">
-                    </div>
-                  
-                  <?php 
-                    if(isset($_SESSION['error_login'])){
-                        echo '<div class="error">'.$_SESSION['error_login'].'</div>';
-                        unset($_SESSION['error_login']);
-                    }
-                  ?>
-                  
-                  <br/>
-                    <br/>
-                 hasło:<br/> <input type="password" name="pass"/>
-                  <?php 
-                    if(isset($_SESSION['error_pass'])){
-                        echo '<div class="error">'.$_SESSION['error_pass'].'</div>';
-                        unset($_SESSION['error_pass']);
-                    }
-                  ?>
-                      <br/>
-                    <br/>
-                    imię:<br/> <input type="text" name="name"/>
-                     <?php 
-                    if(isset($_SESSION['error_name'])){
-                        echo '<div class="error">'.$_SESSION['error_name'].'</div>';
-                        unset($_SESSION['error_name']);
-                    }
-                  ?>
-                       <br/>
-                    <br/>
-                nazwisko: <br/><input type="text" name="surname"/>
-                 <?php 
-                    if(isset($_SESSION['error_surname'])){
-                        echo '<div class="error">'.$_SESSION['error_surname'].'</div>';
-                        unset($_SESSION['error_surname']);
-                    }
-                  ?>
-                       <br/>
-                    <br/>
-                    e-mail: <br/><input type="text" name="email"/>
-                    <?php 
-                    if(isset($_SESSION['error_email'])){
-                        echo '<div class="error">'.$_SESSION['error_email'].'</div>';
-                        unset($_SESSION['error_email']);
-                    }
-                  ?>
-                       <br/>
-                    <br/>
-                    status: <br/> <select name="flagStatus">
-                        <option>admin</option>
-                        <option>user</option>
-                            </select>
-                       <br/>
-                    <br/>
-                    sekcja: <br/> <select name="section">
-                        
-                        <?php 
-                        for($i=1; $i<=$count; $i++){
-                            echo '<option>'.$tabSec[$i].'</option>';
-                        }
-                        
-                        ?>
-
-                            </select>
-                      <?php 
-                    if(isset($_SESSION['made'])){
-                        echo '<div class="possitive">'.$_SESSION['made'].'</div>';
-                        unset($_SESSION['made']);
-                    }
-                  ?>
-                  
-                       <br/>
-                    <br/>
-                    <input type="submit" value="dodaj użytkownika"/>>
-                </form>
-                                    
-                                 </div>
-                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" 
-                                                data-dismiss="modal">Anuluj</button>
-                                    </div>
-                                 </div>
-      
-                            </div>
-                     </div>
-            
-            
           
             <div class="table-responsive">
    
@@ -236,8 +167,14 @@
                  
                   <tr>
                         
-                        <td colspan="4" class="tabHead" id="logo"></td>
-                         <td colspan="3" class="tabHead">1</td>
+                        <td colspan="2" class="tabHead" id="logo">
+                         <form method="post">
+                                    <input class="btn btn-primary active" 
+                                 type="submit" value="Odśwież" id="buttonDay" name="refresh"/>
+                        </form>
+                         
+                     </td>
+                         <td colspan="5" class="tabHead">1</td>
                          <td class="tabHead">
                              Dzień:
                              <br/>
@@ -252,40 +189,57 @@
                       <?php//////////////////////////////////////////////////
                       //klawisze inkrementacji i dekrementacji
                         ///////////////////////////////////////////////// ?>
-                          <td colspan="2"> 
-                              <form method="post">
-                              <input class="btn btn-primary active" 
-                           type="submit" value="<<" id="buttonDay" name="decMonth"/>
-                              </form>
-                              <form method="post">
-                           <input class="btn btn-primary active" 
-                           type="submit" value="<" id="buttonDay" name="decWeek"/>
-                           </form>
+                          <td colspan="3"> 
+                            <form method="post">
+                                <br/>
+                                <input type="number" class="form-control" name="decMonthValue" 
+                                       value="1" min="1" title="O ile miesięcy przesunąć">
+                                <br/>
+                                <input class="btn btn-primary active" 
+                                type="submit" value="<<" id="buttonDay" name="decMonth"
+                                title="Przesuń miesiąc do tyłu"/>
+                            </form>
+                            
                          
                           </td>
-                             
-                            <td colspan="5" class="head">Pole z opisem najbliszego 
-                                spotkania</td>
-                    
-                            <td colspan="2"> 
+                          <td colspan="2">
+                           <form method="post">
+                               <br/>
+                                <input type="number" class="form-control" name="decWeekValue" 
+                                       value="1" min="1" title="O ile tygodni przesunąć">
+                                <br/>
+                                <input class="btn btn-primary active" 
+                                type="submit" value="<" id="buttonDay" name="decWeek"
+                                title="Przesuń tydzień do tyłu"/>
+                            </form>
+                          </td>
+                          <td colspan="2">
                                 <form method="post"> 
-                                    <input class="btn btn-primary active" 
-                                         type="submit" value=">>" id="buttonDay" 
-                                         name="incMonth"/>
-                                </form>
-                                <form method="post"> 
+                                    <br/>
+                                    <input type="number" class="form-control" name="incWeekValue" 
+                                       value="1" min="1" title="O ile tygodni przesunąć">
+                                    <br/>
                                     <input class="btn btn-primary active" 
                                         type="submit" value=">" id="buttonDay" 
-                                        name="incWeek"/>
+                                        name="incWeek" title="Przesuń tydzień do przodu"/>
+                                </form>
+                          </td>
+                            
+                            <td colspan="2"> 
+                                <form method="post"> 
+                                    <br/>
+                                    <input type="number" class="form-control" name="incMonthValue" 
+                                       value="1" min="1" title="O ile miesięcy przesunąć">
+                                    <br/>
+                                    <input class="btn btn-primary active" 
+                                         type="submit" value=">>" id="buttonDay" 
+                                         name="incMonth" title="Przesuń miesiąc do przodu"/>
                                 </form>
                             </td>
                 <?php  ////////////////////////////////////////////////////////
                 //zmaina godziny
                 //////////////////////////////////////////////////////////////
-                        
-                        
-                                       
-                    echo '<td rowspan="'. ($SpanCol+1).'" class="changeHour"><input 
+                  echo '<td rowspan="'. ($SpanCol+1).'" class="changeHour"><input 
                             class="btn btn-primary active" 
                            type="submit" value="<<" id="buttonHour"
                         </td>';
@@ -353,42 +307,42 @@
                                }
                                   </style> ';
                             }
-                              if($day==2){
+                        if($day==2){
                             echo' <style> 
                             #wt{
                                 background-Color: #AA0000;
                                }
                                   </style> ';
                             }
-                              if($day==3){
+                        if($day==3){
                             echo' <style> 
                             #sr{
                                 background-Color: #AA0000;
                                }
                                   </style> ';
                             }
-                              if($day==4){
+                        if($day==4){
                             echo' <style> 
                             #czw{
                                 background-Color: #AA0000;
                                }
                                   </style> ';
                             }
-                              if($day==5){
+                        if($day==5){
                             echo' <style> 
                             #pt{
                                 background-Color: #AA0000;
                                }
                                   </style> ';
                             }
-                              if($day==6){
+                        if($day==6){
                             echo' <style> 
                             #sob{
                                 background-Color: #AA0000;
                                }
                                   </style> ';
                             }
-                              if($day==7){
+                        if($day==7){
                             echo' <style> 
                             #nd{
                                 background-Color: #AA0000;
@@ -463,7 +417,7 @@
                                     ';
                 echo '<div id="sections'.$tabId[$a].'">';
                              if($secSeen[$a][0]!=NULL){
-                                echo'    <label>sekcje zaproszone:</label>';
+                                echo'    <label>sekcje zaproszone:</label> <br/>';
                              }
                          for($sections=0; $sections<$secCount[$a]; $sections++){
                             echo $secSeen[$a][$sections]. '<br/>';
@@ -497,7 +451,7 @@
                                     </div>
                                                     </div>';  
                               
-                                echo '<style> 
+echo '<style> 
                                           
                                     #F'.$tabId[$a].'{
                                             background-Color: #AA0000;
@@ -505,23 +459,23 @@
                                             border-right-color: white;
                                            
                                             color: white; 
-                                            font-size: 70%;
+                                            font-size: 100%;
                                     }
                                             
                                     
                                     #sections'.$tabId[$a].'{
                                         float: left;
                                         width: 50%;
-                                        font-size: 80%;
-                                        background-color: #CCFFFF;
+                                        font-size: 100%;
+                                        background-color: #66CCFF;
                                     }
                                     
                                     #persons'.$tabId[$a].'{
                                         float: left;
                                         width: 50%;
-                                        font-size: 80%;
+                                        font-size: 100%;
                                         
-                                       background-color: #99FF99;
+                                       background-color: #6699FF;
                                     }
                                     
                                     #foot'.$tabId[$a].'{
@@ -533,7 +487,7 @@
                                        
                                         padding: 1%;
                                         background-color: #99FFFF;
-                                        font-size: 60%;
+                                        font-size: 100%;
                                     }
                                     
                                     #subject'.$tabId[$a].'{
@@ -548,7 +502,7 @@
                                         
                                         padding: 4%;
                                         background-color: #00CCCC;
-                                        font-size: 80%;
+                                        font-size: 100%;
                                     }
                                     
                                   </style>';
@@ -563,22 +517,19 @@
                                     <div class="modal-header">
                                     <button type="button" class="close" 
                                     data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Czy na pewno chcesz usunæc to spotkanie?</h4>
+                                    <h4 class="modal-title">Czy na pewno chcesz usunąć to spotkanie?</h4>
                                      </div>
                                     <div class="modal-body">
                                     <form method="post">
-                                        <p>Data spotkania</p>
-                                        <br/>
-                                       
-                                            
-                                      <input type="text"  name="dateDel"
+                                    <div id="dateView'.$tabId[$a].'">
+                                      <label for="dateDel">Data spotkania</label> 
+                                      <input type="text"  name="dateDel" id="dateDel"
                                           value="'.$dateOfMeeting[$a].'"  
                                               readonly="readonly"/>
-                                         <br/>
-                                        <br/>
-                                        <p>Godzina rozpoczecia</p>
-                                        <br/>
-                                         godzina:
+                                    </div>
+                                    <div id="dateView'.$tabId[$a].'">
+                                    <label for="hourDel">Godzina rozpoczecia</label>
+                                        <div id="hourDel"> godzina:
                                         <input type="number" name="begHoursDel" min="0" max="23"
                                         value="'.($h-1).'" readonly="readonly"/>';
                                         
@@ -599,9 +550,9 @@
                                         echo'                 minuta:
                                         <input type="number" name="begMinutesDel" min="0" max="45" step="15"
                                         value="'.$minut.'"  readonly="readonly"/>
-                                        <br/>
-                                        <br/>
-                               
+                                            </div>
+                                            </div>
+                                        <div id="subject'.$tabId[$a].'">    
                                         <input type="text" name="infoDel" id="textfield" 
                                             value="'.$info[$a].'" class="form-control" 
                                                 readonly="readonly"/>
@@ -611,9 +562,7 @@
                                                 " class="form-control" cols="30" rows="10"
                                                 readonly="readonly">
                                                 '.$moreInfo[$a].'</textarea>
-                                     
-                                            <br/>
-                                            <br/>';
+                                     </div>';
                                                  
                                  echo '<div id="sections'.$tabId[$a].'">
                              
@@ -655,18 +604,17 @@
 /////////////////////////////////////////////////////////////////////////////////////////
                             echo'<div class="modal fade" id="Edit'.$tabId[$a].'" 
                                     role="dialog">
-                                   <div class="modal-dialog">
+                                    <div class="modal-dialog">
                                     <div class="modal-content">
                                     <div class="modal-header">
                                     <button type="button" class="close" 
                                     data-dismiss="modal">&times;</button>
                                     <h4 class="modal-title">Edytuj spotkanie</h4>
-                                    
-                                     </div>
+                                    </div>
                                     <div class="modal-body">
                                     <form method="post" >
-                                       
-                                     <h6>Stare dane</h6>
+                                       <div id="dateView'.$tabId[$a].'">
+                                    <h6>Stare dane</h6>
                                     <h6> Data: <input type="text"  name="dateOld"
                                           value="'.$dateOfMeeting[$a].'" class="text" 
                                               readonly="readonly"/></h6>
@@ -677,18 +625,16 @@
                                           <input type="text"  name="endHoursOld"
                                           value="'.$hourMeetingEnds[$a].'" class="text" 
                                               readonly="readonly"/></h6>
-                                                                             </br>
-                                        <br/>
-                                         <p>Data spotkania</p>
-                                         <br/>
-                                        <br/> 
-                                      <input type="text" id="datepicker'.$a.'" name="dateEdit"
-                                          value="'.$dateOfMeeting[$a].'"/>
-                                         <br/>
-                                        <br/>
-                                        <p>Godzina rozpoczecia</p>
-                                        <br/>
-                                         godzina:
+                                              </div>
+                                        <div id="dateView'.$tabId[$a].'"> 
+                                            <label for="datepicker'.$a.'">Data spotkania</label>
+                                            <input type="text" id="datepicker'.$a.'" name="dateEdit"
+                                                value="'.$dateOfMeeting[$a].'" class="form-control date-picker"
+                                                    readonly="readonly"/>
+                                        </div>
+                                        <div id="dateView'.$tabId[$a].'"> 
+                                        <label for="hour">Godzina rozpoczecia</label>
+                                         <div id="hour">godzina:
                                         <input type="number" name="begHoursEdit" min="0" max="23"
                                         value="'.($h-1).'"/>';
                                         
@@ -709,35 +655,33 @@
                                         echo' minuta:
                                         <input type="number" name="begMinutesEdit" min="0" 
                                         max="45" step="15"
-                                        value="'.$minut.'"/>
-                                        <br/>
-                                        <br/>
-                               
-                                        <p>Czas spotkania</p>
-                                         <br/>
+                                        value="'.$minut.'"/></div>
+                                        </div>    
+                                        <div id="dateView'.$tabId[$a].'">
+                                        <label for="time-last">Czas spotkania</label>
+                                         <div id="time-last">
                                         godziny:
                                         <input type="number" name="hoursEdit" min="0" max="7"
                                         value="'.$timesExploded[$a][0].'"/>
                                          minuty:
                                         <input type="number" name="minutesEdit" min="0" 
-                                        max="45" step="15" value="'.$timesExploded[$a][1].'"/>
-                                        <br/>
-                                        <br/>
+                                        max="45" step="15" value="'.$timesExploded[$a][1].'"/></div>
+                                        </div> 
+                                        <div id="subject'.$tabId[$a].'">
                                         <input type="text" name="infoEdit" id="textfield" 
                                             value="'.$info[$a].'" class="form-control"/>
-                                            <br/>
-                                            <br/>
+                                                </div>
+
+                                            <div id="info'.$tabId[$a].'">
                                             <textarea type="text" name="moreInfoEdit" 
                                             id="textfield" 
                                                 " class="form-control" cols="30" rows="10">
                                                 '.$moreInfo[$a].'</textarea>
-                                     
-                                            <br/>
-                                            <br/>';
+                                      </div>';
                                            /**********************************************/
                                 //sekcje
                                 echo '<div id="sections'.$tabId[$a].'">
-                                <p>Sekcje zaproszone:</p> ';
+                                <label>Sekcje zaproszone:</label> ';
                                 
                                 $sections=0;
                                 for($k=1; $k<=$sectionCount; $k++){
@@ -768,7 +712,7 @@
                                  /**********************************************/
                                 //osoby
                                 echo '<div id="persons'.$tabId[$a].'">
-                                 <p>Osoby zaproszone:</p>       ';
+                                 <label>Osoby zaproszone:</label>       ';
                                 $users=0;
                                 for($k=1; $k<$countOfUsers; $k++){
                                     
@@ -812,12 +756,12 @@
        
 /////////////////////////////////////////////////////////
 //datapicker - okienko z kalendarzem
-                                     echo '<script>
+echo '<script>
                                         $( function() {
-                                            $( "#datepicker'.$a.'" ).datepicker
-                                                ({dateFormat: "yy-mm-dd"});
-                                                    } );
-                                            </script>';
+                                            $( "#datepicker'.$a.'" ).
+                                                datepicker({dateFormat: "yy-mm-dd"});
+                                        } );
+                                    </script>';
 /////////////////////////////////////////////////////////////////////////////
 
 

@@ -18,8 +18,8 @@
 #container2{
     background: url("broken_noise.png");/*(from http://subtlepatterns.com/) */ 
     font-family: "Lucida Console", Monaco, monospace;
-    height: 4000px;
-    color: white
+    height: 1000px;
+    color: white;
     
 }
 
@@ -198,7 +198,7 @@
     color: white;
     padding: 20px;
     font-size: 40px;
-    height: 2000px;
+    height: 70%;
 }
 
 .head{
@@ -265,10 +265,6 @@
     padding: 0.5%;
 }
 
-#logo{
-    
-}
-
 #buttonDay{
     color: white;
 }
@@ -289,4 +285,20 @@
 .form-control{
     width: 50%;
     margin: auto;
+}
+
+.modal-body{
+    background-color: #99CCFF;
+}
+
+.modal-content{
+    background-color: #99CCFF;
+}
+
+.modal-header{
+    background-color: #99FFCC;
+}
+
+.modal-footer{
+    background-color: #99FFCC;
 }

@@ -146,11 +146,11 @@ try{
            $query2 = "SELECT DATE_ADD('$date', INTERVAL -'$day' DAY)";
 
         
-            $result2 =  $connection->query($query2);
-            $row2 = $result2->fetch_assoc();
+           $result2 =  $connection->query($query2);
+           $row2 = $result2->fetch_assoc();
             
            
-            $mon = $row2["DATE_ADD('$date', INTERVAL -'$day' DAY)"];
+           $mon = $row2["DATE_ADD('$date', INTERVAL -'$day' DAY)"];
           
            $result2->free_result();
            
@@ -193,18 +193,19 @@ try{
             /////////////////////////////////////////////////////////
             //dekrementacja miesiæca
             ////////////////////////////////////////////////////////////////////
-            if(isset($_POST['decMonth'])){
+            if(isset($_POST['decMonthValue'])){
                 
-            
+                $monthCount = $_POST['decMonthValue'];
+                
                 $qDecMonth= "SELECT DATE_ADD('$date', INTERVAL -'$monthCount' MONTH)";
                 $decMonth = $connection->query($qDecMonth);
                 $rowDecMonth = $decMonth->fetch_assoc();
                 
                 if(isset($_POST['decMonth'])){
                 
-                $DM = $rowDecMonth["DATE_ADD('$date', INTERVAL -'$monthCount ' MONTH)"];
-                //echo '<br/>'.$DM;
-                $date = $DM;
+                    $DM = $rowDecMonth["DATE_ADD('$date', INTERVAL -'$monthCount' MONTH)"];
+                    //echo '<br/>'.$DM;
+                    $date = $DM;
                 }
                 $decMonth->free_result();
                 
@@ -245,8 +246,9 @@ try{
             //inkrementacja miesiæca
             /////////////////////////////////////////////////////////////////
             
-            if(isset($_POST['incMonth'])){
+            if(isset($_POST['incMonthValue'])){
                
+                $monthCount = $_POST['incMonthValue'];
                 
                 $qIncMonth= "SELECT DATE_ADD('$date', INTERVAL '$monthCount' MONTH)";
                 $incMonth = $connection->query($qIncMonth);
@@ -284,7 +286,7 @@ try{
            
                     $tab[$i] = $rowUltIM["DATE_ADD('$monINC', INTERVAL +'$i' DAY)"];
                
-                     $resUltIM->free_result();
+                    $resUltIM->free_result();
 
                 }
                 //$incMon++;
@@ -293,8 +295,9 @@ try{
             //dekrementacja tygodnia
             ////////////////////////////////////////////////////////////////////
             
-            if(isset($_POST['decWeek'])){
+            if(isset($_POST['decWeekValue'])){
                
+                $weekCount = $_POST['decWeekValue'];
                 
                 $qDM = "SELECT DATE_ADD('$mon', INTERVAL -'$weekCount' WEEK)";
                 $resDM = $connection->query($qDM);
@@ -302,21 +305,56 @@ try{
                 
                 $monD = $rowDM["DATE_ADD('$mon', INTERVAL -'$weekCount' WEEK)"];
                 
-                echo $monD;
+                //echo $monD;
                 
                 $resDM->free_result();
                 
                 for($i=1; $i<=7; $i++){
                     
                     $resWD = $connection->query
-                            ("SELECT DATE_ADD('$monD', INTERVAL +'$i' DAY");
+                            ("SELECT DATE_ADD('$monD', INTERVAL +'$i' DAY)");
                    
-                  // $rowWD = $resWD->fetch_assoc();
+                    $rowWD = $resWD->fetch_assoc();
+                    
+                    $tab[$i] = $rowWD["DATE_ADD('$monD', INTERVAL +'$i' DAY)"];
+               
+                    $resWD->free();
                     
                 }
                 
+            }
+        ////////////////////////////////////////////////////////////////////
+        //inkrementacja miesiąca    
+        ////////////////////////////////////////////////////////////////////    
+        if(isset($_POST['incWeekValue'])){
+                
+                $weekCount = $_POST['incWeekValue'];
+                 
+                $qIM = "SELECT DATE_ADD('$mon', INTERVAL +'$weekCount' WEEK)";
+                $resIM = $connection->query($qIM);
+                $rowIM = $resIM->fetch_assoc();
+                
+                $monD = $rowIM["DATE_ADD('$mon', INTERVAL +'$weekCount' WEEK)"];
+                
+                //echo $monD;
+                
+                $resIM->free_result();
+                
+                for($i=1; $i<=7; $i++){
+                    
+                    $resWI = $connection->query
+                            ("SELECT DATE_ADD('$monD', INTERVAL +'$i' DAY)");
+                   
+                    $rowWI = $resWI->fetch_assoc();
+                    
+                    $tab[$i] = $rowWI["DATE_ADD('$monD', INTERVAL +'$i' DAY)"];
+               
+                    $resWI->free();
+                    
+                }
                 
             }
+            
             
 
          /*************************************************************************/

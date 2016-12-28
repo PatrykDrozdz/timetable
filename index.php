@@ -53,11 +53,12 @@ $m=1;
         <title>Organizator</title>
 
         <link rel="stylesheet" href="css/style.css" type="text/css"/>
-
+        
     </head>
     <body>
         
         <div id="container">
+            
           <?php 
                 
                // ni_set('session.gc_maxlifetime', '3600');
@@ -132,8 +133,8 @@ $m=1;
                     
                     <tr>
                         
-                        <td colspan="4" class="tabHead" id="logo"></td>
-                         <td colspan="3" class="tabHead">1</td>
+                        
+                         <td colspan="7" class="tabHead">1</td>
                          <td class="tabHead">
                              Dzień:
                              <br/>
@@ -322,7 +323,7 @@ $m=1;
                                     ';
                 echo '<div id="sections'.$tabId[$a].'">';
                              if($secSeen[$a][0]!=NULL){
-                                echo'    <label>sekcje zaproszone:</label>';
+                                echo'    <label>sekcje zaproszone:</label> <br/>';
                              }
                          for($sections=0; $sections<$secCount[$a]; $sections++){
                             echo $secSeen[$a][$sections]. '<br/>';
@@ -358,23 +359,23 @@ $m=1;
                                             border-right-color: white;
                                            
                                             color: white; 
-                                            font-size: 70%;
+                                            font-size: 100%;
                                     }
                                             
                                     
                                     #sections'.$tabId[$a].'{
                                         float: left;
                                         width: 50%;
-                                        font-size: 80%;
-                                        background-color: #CCFFFF;
+                                        font-size: 100%;
+                                        background-color: #66CCFF;
                                     }
                                     
                                     #persons'.$tabId[$a].'{
                                         float: left;
                                         width: 50%;
-                                        font-size: 80%;
+                                        font-size: 100%;
                                         
-                                       background-color: #99FF99;
+                                       background-color: #6699FF;
                                     }
                                     
                                     #foot'.$tabId[$a].'{
@@ -386,7 +387,7 @@ $m=1;
                                        
                                         padding: 1%;
                                         background-color: #99FFFF;
-                                        font-size: 60%;
+                                        font-size: 100%;
                                     }
                                     
                                     #subject'.$tabId[$a].'{
@@ -401,7 +402,7 @@ $m=1;
                                         
                                         padding: 4%;
                                         background-color: #00CCCC;
-                                        font-size: 80%;
+                                        font-size: 100%;
                                     }
                                     
                                   </style>';

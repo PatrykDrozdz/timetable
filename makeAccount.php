@@ -211,7 +211,7 @@
     </head>
     <body>
         
-        <div id="container">
+        <div id="container2">
           
             <div id="header">
                  <h1>Terminarz - panel administartora</h1>
@@ -232,80 +232,45 @@
           
              <div id="make">
                 <form method="post">
-                    <br/>
-                  login: <br/> <input type="text" name="login" id="textfieldAdmin"/>
-                  
-                  <?php 
-                    if(isset($_SESSION['error_login'])){
-                        echo '<div class="error">'.$_SESSION['error_login'].'</div>';
-                        unset($_SESSION['error_login']);
-                    }
-                  ?>
-                  
-                  <br/>
-                    <br/>
-                 hasło:<br/> <input type="password" name="pass" id="textfieldAdmin"/>
-                  <?php 
-                    if(isset($_SESSION['error_pass'])){
-                        echo '<div class="error">'.$_SESSION['error_pass'].'</div>';
-                        unset($_SESSION['error_pass']);
-                    }
-                  ?>
-                      <br/>
-                    <br/>
-                    imię:<br/> <input type="text" name="name" id="textfieldAdmin"/>
-                     <?php 
-                    if(isset($_SESSION['error_name'])){
-                        echo '<div class="error">'.$_SESSION['error_name'].'</div>';
-                        unset($_SESSION['error_name']);
-                    }
-                  ?>
-                       <br/>
-                    <br/>
-                nazwisko: <br/><input type="text" name="surname" id="textfieldAdmin"/>
-                 <?php 
-                    if(isset($_SESSION['error_surname'])){
-                        echo '<div class="error">'.$_SESSION['error_surname'].'</div>';
-                        unset($_SESSION['error_surname']);
-                    }
-                  ?>
-                       <br/>
-                    <br/>
-                    e-mail: <br/><input type="text" name="email" id="textfieldAdmin"/>
-                    <?php 
-                    if(isset($_SESSION['error_email'])){
-                        echo '<div class="error">'.$_SESSION['error_email'].'</div>';
-                        unset($_SESSION['error_email']);
-                    }
-                  ?>
-                       <br/>
-                    <br/>
-                    status: <br/> <select name="flagStatus" id="textfieldAdmin">
-                        <option>admin</option>
-                        <option>user</option>
-                            </select>
-                       <br/>
-                    <br/>
-                    sekcja: <br/> <select name="section" id="textfieldAdmin">
-                        
-                        <?php 
-                        for($i=1; $i<=$count; $i++){
-                            echo '<option>'.$tabSec[$i].'</option>';
-                        }
-                        
-                        ?>
-
-                            </select>
-                      <?php 
-                    if(isset($_SESSION['made'])){
-                        echo '<div class="possitive">'.$_SESSION['made'].'</div>';
-                        unset($_SESSION['made']);
-                    }
-                  ?>
-                  
-                       <br/>
-                    <br/>
-                    <input type="submit" value="dodaj użytkownika" id="buttonadmin"/>
+                    <div class="form-group"> 
+                        <label for="login">Login:</label>
+                        <input type="text" class="form-control" id="login"  name="login">
+                    </div>
+                    <div class="form-group">    
+                        <label for="pass">Hasło:</label>
+                        <input type="password" class="form-control" id="pass" name="pass"/>
+                    </div>
+                    <div class="form-group">    
+                        <label for="name">Imię:</label>
+                        <input type="text" class="form-control" id="name" name="name"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="surname">Nazwisko:</label>
+                        <input type="text" class="form-control" id="surname" name="surname"/>
+                    </div>
+                    <div class="form-group">    
+                        <label for="email">E-mail:</label>
+                        <input type="text" class="form-control" id="email" name="email"/>
+                    </div>
+                    <div class="form-group">    
+                        <label for="flagStatus">Status:</label> 
+                        <select class="form-control" id="flagStatus" name="flagStatus">
+                            <option>admin</option>
+                            <option>user</option>
+                        </select>
+                    </div>
+                    <div class="form-group">      
+                        <label for="section">Sekcja:</label>
+                        <select class="form-control" id="section" name="section">
+                            <?php 
+                            for($i=1; $i<=$count; $i++){
+                                echo '<option>'.$tabSec[$i].'</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <input type="submit" class="btn btn-primary active" 
+                           value="Dodaj użytkownika"/>
                 </form>
             </div>
              
