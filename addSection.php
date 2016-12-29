@@ -12,6 +12,10 @@ if(isset($_POST['sectionAdd'])){
         
         $connection = new mysqli($host, $dbUser, $dbPass, $dbName);
         
+        $getIdCount = $connection->query("SELECT * FROM sections");
+        
+        $countId = $getIdCount->num_rows;
+        
         $checkSections = $connection->query("SELECT * FROM sections WHERE name = '$newSection'");
         
         $sectionCountCheck = $checkSections->num_rows;
@@ -23,21 +27,25 @@ if(isset($_POST['sectionAdd'])){
                              . "jest juz w bazie</span>";
         }
         
-        $insertQuery = "INSERT INTO sections(idsections, name) VALUES (NULL, '$newSection')";
+        $countId = $countId+1;
         
-        $alterQuery = "ALTER TABLE groups ADD `$newSection` "
+        $insertQuerySec = "INSERT INTO sections(idsections, name) VALUES ('$countId', '$newSection')";
+        
+        $alterQuerySec = "ALTER TABLE groups ADD `$newSection` "
                 . "INT NOT NULL AFTER meetings_users_idusers";
 
         if($valid==true){
             
-            if($connection->query($insertQuery)){
-                //if($connection->query($alterQuery)){
+            if($connection->query($insertQuerySec)){
+                if($connection->query($alterQuerySec)){
                     $_SESSION['addSection'] = "<span class='list-group-item "
                                         . "list-group-item-success'>Sekcja została dodana do bazy</span>";
-                //}
-            } 
+                    header('Location: adding.php');
+                } 
+            }  
             
         }
+        $connection->close();
         
     } catch(Exception $e){
         echo $e;

@@ -9,10 +9,9 @@
 
     background:  url("broken_noise.png");/*(from http://subtlepatterns.com/) */
     font-family: "Lucida Console", Monaco, monospace;
-    height: 4000px;
+    height: 2700px;
     color: black;
-   
-    
+
 }     
 
 #container2{
@@ -20,7 +19,6 @@
     font-family: "Lucida Console", Monaco, monospace;
     height: 1200px;
     color: white;
-    
 }
 
 #header{
@@ -191,6 +189,7 @@
     width: 10%;
     height: 20px;
 
+
 }
 
 #make{
@@ -312,14 +311,14 @@
     float: left;
     width: 50%;
     font-size: 100%;
-    background-color: #66CCFF;
+    background-color: #99CCFF;
 }
 
  .persons{
     float: left;
     width: 50%;
     font-size: 100%;
-     background-color: #6699FF;
+    background-color: #99CCFF;
 }
                                
 .foot{
@@ -348,4 +347,15 @@
 
 .make{
     clear: both;
+}
+
+.infoOnTab{
+    background-color: #AA0000;
+    border-color: #AA0000;
+    border-right-color: white;
+    color: white; 
+}
+
+.neutral-tab{
+    color: white;
 }

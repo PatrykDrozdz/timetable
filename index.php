@@ -130,20 +130,6 @@ $m=1;
                 
                 <table id="trueTable" border="5"
                     class="table-active table-responsive">
-                    
-                    <tr>
-                        
-                        
-                         <td colspan="7" class="tabHead">1</td>
-                         <td class="tabHead">
-                             Dzień:
-                             <br/>
-                             Godzina:
-                         </td>
-                         <td class="tabHead"></td>
-                        
-                  
-                    </tr>
                    
                     
                     <tr id="cols">
@@ -285,13 +271,13 @@ $m=1;
                                 if($info[$a]!=NULL){
                                     
                                     if(strlen($info[$a])>21){
-                                            echo ' <td class="row" id="F'.$tabId[$a].'"
+                                            echo ' <td class="row infoOnTab"
                                                 
                                             data-toggle="modal" data-target="#MA'.$tabId[$a].'">
                                             '.$tabInfo[0].'</td>';
                                        
                                         }else{
-                                            echo ' <td class="row" id="F'.$tabId[$a].'"
+                                            echo ' <td class="row infoOnTab"
                                                 
                                             data-toggle="modal" data-target="#MA'.$tabId[$a].'">
                                             '.$info[$a].'</td>';  
@@ -316,7 +302,7 @@ $m=1;
                                     <div class="subject">
                                     <label>'.$info[$a].'</label>
                                     </div>
-                                    <div id="info'.$tabId[$a].'">
+                                    <div class="info">
                                         '.$moreInfo[$a].' 
                                     </div>
                                 <div class="dateView">
@@ -358,19 +344,7 @@ $m=1;
                                   
                                   
                                   //border-right-color: white;
-                                  
-                                  echo '<style> 
-                                          
-                                    #F'.$tabId[$a].'{
-                                            background-Color: #AA0000;
-                                            border-color: #AA0000;
-                                            border-right-color: white;
-                                           
-                                            color: white; 
-                                            font-size: 100%;
-                                    }
-                                            
-                                  </style>';
+
                                        /* $m = 1;
                                   $wordCounted = str_word_count($info[$a]);
                                   ;
@@ -398,14 +372,9 @@ $m=1;
                                          
                                        *****************************/
                                     //
-                                            echo ' <td class="row" '
+                                            echo ' <td class="row neutral-tab" '
                                     . 'id="F'.$tabId[$a] .'" >'.$tabId[$a] .'</td>';
-                                        
-                                        echo '<style> 
-                                             #F'.$tabId[$a] .'{
-                                                color: white;
-                                            }
-                                        </style>';
+
                                     
                                 } 
                                    

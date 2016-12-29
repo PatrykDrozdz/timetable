@@ -36,10 +36,7 @@ if($connection->connect_errno!=0){
             $row = $result->fetch_assoc();
             
             if(password_verify($password, $row['usersPass'])){
-            
-                
-            
-            
+
                 $_SESSION['user'] = $row['userLogin'];
                 
                 $_SESSION['idusers'] = $row['idusers'];
@@ -47,6 +44,7 @@ if($connection->connect_errno!=0){
                 $_SESSION['surname'] = $row['surname'];
                 $_SESSION['fullName'] = $row['fullName'];
                 $_SESSION['flag'] = $row['flag'];
+                $_SESSION['email'] = $row['email'];
                 $_SESSION['sectionId'] = $row['sections_idsections'];
                 $flag = $row['flag'];
                 

@@ -11,6 +11,9 @@
     require_once 'getView.php';
     require_once 'setView.php';
     require_once 'addSection.php';
+    require_once 'addView.php';
+    require_once 'editAccount.php';
+    require_once 'getSections.php';
     
     //echo $startView.'<br/>'.$endView.'<br/>'.$tableIndex ;
     //echo $newView;
@@ -106,51 +109,101 @@
                 if(isset($_SESSION['error_addView'])){
                     echo $_SESSION['error_addView'];
                 }
-                //echo $newSection;
+                //do interfejsu
+                ////////////////////////////////////////////
+                if(isset($_SESSION['error_login_change'])){
+                    echo $_SESSION['error_login_change'];
+                }
+                
+                if(isset($_SESSION['error_pass_change'])){
+                    echo $_SESSION['error_pass_change'];
+                }
+                
+                if(isset($_SESSION['error_name_change'])){
+                    echo $_SESSION['error_name_change'];
+                }
+                
+                if(isset($_SESSION['error_surename_change'])){
+                    echo $_SESSION['error_surename_change'];
+                }
+                
+                if(isset($_SESSION['error_email_change'])){
+                    echo $_SESSION['error_email_change'];
+                }
+                
                 ?>
              
         
             <div id="header">
-                 <h1>Terminarz - panel administartora</h1>
-             
-                    
-                       </div>
-           
-            <div id='menu'>
-                
-                  <?php
-                        echo 'Witaj '.$_SESSION['name'].'  '
-                                .$_SESSION['surname'];
-                        
-                        
-                         ?>
-                    <br/>
-                    <a href='logout.php'>Wyloguj sie</a>
-                     <br/>
-                     <a  href="makeAccount.php">załóż konto</a>
-                     <button type="button" 
-                                          class="btn btn-link btn-lg active" 
-                                data-toggle="modal" data-target="#addSec"
-                                >Dodaj sekcję</button>
-                    <br/>
-                    <form method="post">
-                    <select id="view" name="updateView">
-                        <?php 
-                        for($i=1; $i<=$count; $i++){
-                            echo '<option>'.$vievs[$i].'</option>';
-                        }
-                        
-                        ?>
-                   
-                    </select>
-                         <br/>
-                        <br/>
-                        <input type="submit" value="ustaw widok" id="buttonadmin"/>
-                    </form>
-                
+                 <h1>Terminarz - panel administartora</h1> 
             </div>
             
-            <!-- Modal -->
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="index.php">Organizator</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li><a data-toggle="modal" data-target="#yourDatas">Twoje dane</a></li>
+                        <li><a  href="makeAccount.php">Załóż konto</a></li>
+                        <li><a data-toggle="modal" data-target="#addSec">Dodaj sekcję</a></li>
+                        <li><a data-toggle="modal" data-target="#addView">Dodaj widok</a></li>
+                        <li><a data-toggle="modal" data-target="#changeView">Zmień widok</a></li>
+                        <li><a data-toggle="modal" href="#editAccount">Edytuj swoje konto</a></li>
+                        <li><a href="adminInterface.php">Odśwież</a></li>
+                        <li><a href="logout.php">Wyloguj się</a></li>
+                    </ul>
+                </div>
+            </nav>
+            
+            <!----dane twojego konta------------------------------>
+            
+            <div class="modal fade" id="yourDatas" role="dialog">
+                <div class="modal-dialog">
+                  
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Twoje dane</h4>
+                    </div>
+                    <div class="modal-body">
+                            <div class="form-group"> 
+                                <label for="login">Twój login</label>
+                                <div id="login"><?php echo $_SESSION['user']; ?></div>
+                            </div>
+                            <div class="form-group"> 
+                                  <label for="nameSurename">Twoje imie i nazwisko</label>
+                                <div id="nameSurename"><?php echo $_SESSION['name'].'  '
+                                    .$_SESSION['surname']; ?></div>
+                            </div>
+                            <div class="form-group"> 
+                                <label for="email">Twój e-mail</label>
+                                <div id="email"><?php echo $_SESSION['email']; ?></div>
+                            </div>
+                            <div class="form-group"> 
+                                <label for="section">Twój dział</label>
+                                <div id="section"><?php echo $tabSec[$_SESSION['sectionId']]; ?></div>
+                            </div>
+                            <div class="form-group"> 
+                                <label for="status">Twój status</label>
+                                <div id="status"><?php 
+                                    if($_SESSION['flag']==1){
+                                        echo 'admin';
+                                    } else if ($_SESSION['flag']==0) {
+                                        echo 'uzytkownik';
+                                    }
+                                    ?></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+                    </div>
+                  </div>
+                </div>
+            </div> 
+            
+
+            <!-- Modal sekcje-->
                         <div class="modal fade" id="addSec" role="dialog">
                           <div class="modal-dialog">
 
@@ -184,36 +237,325 @@
                                  </div>
       
                             </div>
-                     </div>
+                        </div>
+            
+            
+            <!-- Modal widok-->
+                        <div class="modal fade" id="addView" role="dialog">
+                          <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <button type="button" class="close" 
+                                        data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Dodaj widok</h4>
+                                </div>
+                                <div class="modal-body" id="fieldsText">
+
+                                   <form method="post">
+                                            <div class="form-group"> 
+                                                <label for="viewAdd">Nazwa widoku:</label>
+                                                <input type="text" name="viewAdd" id="viewAdd" 
+                                                   placeholder="widok" class="form-control"/>
+                                            </div>
+                                            <div class="form-group"> 
+                                                <label for="startViewAdd">Godzina początkowa:</label>
+                                                <input type="number" name="startViewAdd" id="startViewAdd" 
+                                                       value="1" min="1" max="24" step="1" 
+                                                       class="form-control"/>
+                                            </div>
+                                            <div class="form-group"> 
+                                                <label for="endViewAdd">Godzina końcowa:</label>
+                                                <input type="number" name="endViewAdd" id="endViewAdd" 
+                                                   value="24" min="1" max="24" step="1"
+                                                   class="form-control"/>
+                                            </div>
+                                            <br/>
+                                            <input class="btn btn-primary active" 
+                                                   type="submit" value="Dodaj widok" id="button"/>
+                                   </form>
+                                    
+                                 </div>
+                                     <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" 
+                                                data-dismiss="modal">Anuluj</button>
+                                    </div>
+                                 </div>
+      
+                            </div>
+                        </div>
+            
+            <!-- Modal widok-->
+                        <div class="modal fade" id="changeView" role="dialog">
+                          <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <button type="button" class="close" 
+                                        data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Zmień widok</h4>
+                                </div>
+                                <div class="modal-body" id="fieldsText">
+
+                                   <form method="post">
+                                        <div class="form-group">
+                                            <select id="view" name="updateView" class="form-control">
+                                            <?php 
+                                                for($i=1; $i<=$count; $i++){
+                                                    echo '<option>'.$vievs[$i].'</option>';
+                                                }
+                                                ?>
+                                            </select>
+                                             <br/>
+                                            <br/>
+                                            <input type="submit" value="ustaw widok" id="button"
+                                                   class="btn btn-primary active"/>
+                                        </div>
+                                    </form>
+                                    
+                                 </div>
+                                     <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" 
+                                                data-dismiss="modal">Anuluj</button>
+                                    </div>
+                                 </div>
+      
+                            </div>
+                        </div>
             
             
             
+            
+            <!----edytowanie konta------------------------------>
+            
+            <div class="modal fade" id="editAccount" role="dialog">
+                <div class="modal-dialog">
+                  
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Edytuj dane swojego konta</h4>
+                    </div>
+                    <div class="modal-body">
+                            <div class="form-group"> 
+                                 <button type="button" class="btn btn-primary btn-lg" 
+                                         data-toggle="modal" data-target="#editLogin">
+                                     Edytuj login</button>
+                        
+                            </div>
+                            <div class="form-group"> 
+                                   <button type="button" class="btn btn-primary btn-lg" 
+                                         data-toggle="modal" data-target="#editPass">
+                                       Edytuj hasło</button>
+                            </div>
+                            <div class="form-group"> 
+                                <button type="button" class="btn btn-primary btn-lg" 
+                                         data-toggle="modal" data-target="#editName">
+                                       Edytuj imię</button>
+                            </div>
+                            <div class="form-group"> 
+                                <button type="button" class="btn btn-primary btn-lg" 
+                                         data-toggle="modal" data-target="#editSurename">
+                                       Edytuj nazwisko</button>
+
+                            </div>
+                            <div class="form-group"> 
+                                <button type="button" class="btn btn-primary btn-lg" 
+                                         data-toggle="modal" data-target="#editEmail">
+                                       Edytuj e-mail</button>
+                            </div>
+                            <div class="form-group"> 
+                                <button type="button" class="btn btn-primary btn-lg" 
+                                         data-toggle="modal" data-target="#editSection">
+                                       Edytuj swoją sekcję w pracy</button>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            
+            
+            <!-- edytuj login -->
+            <div class="modal fade" id="editLogin" role="dialog">
+                <div class="modal-dialog">
+                  
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Edytuj login</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post">
+                            <div class="form-group">
+                                <label for="editLogin">Nowy login</label>
+                                <input type="text" class="form-control" id="editLogin" 
+                                       name="editLogin" placeholder="login"/>
+                            <br/>
+                            <input type="submit" value="Edytuj" class="btn btn-primary btn-lg" />   
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            
+            
+             <!-- edytuj hasło -->
+            <div class="modal fade" id="editPass" role="dialog">
+                <div class="modal-dialog">
+                  
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Edytuj hasło</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post">
+                            <div class="form-group">
+                                <label for="editPass">Nowe hasło</label>
+                                <input type="password" class="form-control" id="editPass" 
+                                       name="editPass" placeholder="hasło"/>
+                            <br/>
+                            <input type="submit" value="Edytuj" class="btn btn-primary btn-lg" />   
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            
+             <!-- edytuj imię -->
+            <div class="modal fade" id="editName" role="dialog">
+                <div class="modal-dialog">
+                  
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Zmień swoje imię</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post">
+                            <div class="form-group">
+                                <label for="editName">Nowe imię</label>
+                                <input type="text" class="form-control" id="editName" 
+                                       name="editName" placeholder="imie"/>
+                            <br/>
+                            <input type="submit" value="Edytuj" class="btn btn-primary btn-lg" />   
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+                    </div>
+                  </div>
+                </div>
+            </div> 
+             
+             
+             <!-- edytuj nazwisko-->
+            <div class="modal fade" id="editSurename" role="dialog">
+                <div class="modal-dialog">
+                  
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Zmień swoje nazwisko</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post">
+                            <div class="form-group">
+                                <label for="editSurename">Nowe nazwisko</label>
+                                <input type="text" class="form-control" id="editSurename" 
+                                       name="editSurename" placeholder="nazwisko"/>
+                            <br/>
+                            <input type="submit" value="Edytuj" class="btn btn-primary btn-lg" />   
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+                    </div>
+                  </div>
+                </div>
+            </div> 
+             
+             
+             <!-- edytuj email-->
+             <div class="modal fade" id="editEmail" role="dialog">
+                <div class="modal-dialog">
+                  
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Zmień swój e-mail</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post">
+                            <div class="form-group">
+                                <label for="editEmail">Nowy e-mail</label>
+                                <input type="text" class="form-control" id="editEmail" 
+                                       name="editEmail" placeholder="e-mail"/>
+                            <br/>
+                            <input type="submit" value="Edytuj" class="btn btn-primary btn-lg" />   
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+                    </div>
+                  </div>
+                </div>
+            </div> 
+             
+             
+            <!-- edytuj sekcje-->
+             <div class="modal fade" id="editSection" role="dialog">
+                <div class="modal-dialog">
+                  
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Zmień swoją sekcję</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post">
+                            <div class="form-group">
+                                <label for="editSection">Nowa sekcja</label>
+                                <select class="form-control" id="editSection" name="editSection">
+                                <?php 
+                                for($i=1; $i<=$count; $i++){
+                                    echo '<option>'.$tabSec[$i].'</option>';
+                                }
+                                ?>
+                                </select>
+                            <br/>
+                            <input type="submit" value="Edytuj" class="btn btn-primary btn-lg" />   
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+                    </div>
+                  </div>
+                </div>
+            </div>  
 
           
             <div class="table-responsive">
    
              <table id="trueTable" border="5" width="100%" height="20%" 
                     class="table-active">
-                 
-                  <tr>
-                        
-                        <td colspan="2" class="tabHead" id="logo">
-                         <form method="post">
-                                    <input class="btn btn-primary active" 
-                                 type="submit" value="Odśwież" id="buttonDay" name="refresh"/>
-                        </form>
-                         
-                     </td>
-                         <td colspan="5" class="tabHead">1</td>
-                         <td class="tabHead">
-                             Dzień:
-                             <br/>
-                             Godzina:
-                         </td>
-                         <td class="tabHead"></td>
-                        
-                  
-                    </tr>
                  
                     <tr>
                       <?php//////////////////////////////////////////////////
@@ -245,6 +587,7 @@
                                </div>
                             </form>
                           </td>
+
                           <td colspan="2">
                                 <form method="post"> 
                                     <div class="changes">
@@ -411,7 +754,7 @@
         //obsługa tablicy ze spotkaniami                        
                                 if($info[$a]!=NULL){
                                    
-                                       echo ' <td class="row" id="F'.$tabId[$a].'"
+                                       echo ' <td class="row infoOnTab"
                                             data-toggle="modal" data-target="#MA'.$tabId[$a].'">
                                      '.$info[$a].'</td>';  
  //////////////////////////////////////////////////////////////////////////
@@ -477,18 +820,6 @@
                                     </div>
                                                     </div>';  
                               
-echo '<style> 
-                                          
-                                    #F'.$tabId[$a].'{
-                                            background-Color: #AA0000;
-                                            border-color: #AA0000;
-                                            border-right-color: white;
-                                           
-                                            color: white; 
-                                            font-size: 100%;
-                                    }
-                                    
-                                  </style>';
                               
 ////////////////////////////////////////////////////////////////////
 
@@ -504,7 +835,7 @@ echo '<style>
                                      </div>
                                     <div class="modal-body">
                                     <form method="post">
-                                    <div id="dateView'.$tabId[$a].'">
+                                    <div class="dateView">
                                       <label for="dateDel">Data spotkania</label> 
                                       <input type="text"  name="dateDel" id="dateDel"
                                           value="'.$dateOfMeeting[$a].'"  
@@ -605,7 +936,7 @@ echo '<style>
                                           value="'.$hourMeetingEnds[$a].'" class="text" 
                                               readonly="readonly"/></h6>
                                               </div>
-                                        <div id="dateView'.$tabId[$a].'"> 
+                                        <div class="dateView"> 
                                             <label for="datepicker'.$a.'">Data spotkania</label>
                                             <input type="text" id="datepicker'.$a.'" name="dateEdit"
                                                 value="'.$dateOfMeeting[$a].'" class="form-control date-picker"
@@ -651,7 +982,7 @@ echo '<style>
                                             value="'.$info[$a].'" class="form-control"/>
                                                 </div>
 
-                                            <div id="info'.$tabId[$a].'">
+                                            <div class="info">
                                             <textarea type="text" name="moreInfoEdit" 
                                             id="textfield" 
                                                 " class="form-control" cols="30" rows="10">

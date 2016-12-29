@@ -9,7 +9,7 @@
     }
     
     require_once 'connection.php';
-    
+    require_once 'getSections.php';
     
     try{
         
@@ -18,26 +18,6 @@
         if($connection->connect_errno!=0){
             echo "Error: ".$connection->connect_errno;
         } else {
-           $query = "SELECT * FROM sections";
-            
-            $result = $connection->query($query);
-            
-             $row=$result->fetch_assoc();
-            
-            $count = $result->num_rows;
-            $result->free_result();
-            
-            for($i=1; $i<=$count; $i++){
-               $secRes = $connection->query("SELECT * FROM sections WHERE "
-                        . "idsections='$i'");
-                
-                $rowSec = $secRes->fetch_assoc();
-                
-                $tabSec[$i] = $rowSec['name'];
-                
-                $secRes->free_result();
-                
-            }
             
             if(isset($_POST['login']) && isset($_POST['section'])){
                 
@@ -110,7 +90,7 @@
                     $valid = FALSE;
                     $_SESSION['error_name'] = "<span class='list-group-item "
                                         . "list-group-item-danger'>"
-                            . "Imiemoze miec od 3 do 20 znakow</span>";
+                            . "Nazwisko moze miec od 3 do 20 znakow</span>";
                
                 }
                 
