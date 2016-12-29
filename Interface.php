@@ -39,7 +39,7 @@
        echo $mon;*/
                        
 
-    
+    //echo $sectionCount.'<br/>'.$countOfUsers;
     
 ?>
              
@@ -196,15 +196,6 @@
                                     </div>
                                 </form>
                             </td>
-                <?php  ////////////////////////////////////////////////////////
-                //zmaina godziny
-                //////////////////////////////////////////////////////////////
-                  echo '<td rowspan="'. ($SpanCol+1).'" class="changeHour"><input 
-                            class="btn btn-primary active" 
-                           type="submit" value="<<" id="buttonHour"
-                        </td>';
-                    
-                     ?>
                             
                              
                     </tr>
@@ -943,12 +934,7 @@ echo '<style>
 
                             }
                             
-                            if(((2*$allHours)-1)==$i){
-                                echo '<td rowspan="'. ($SpanCol+10).'" class="changeHour"><input 
-                                        class="btn btn-primary active" 
-                                        type="submit" value="<<" id="buttonHour"
-                                    </td>';
-                            }
+
                              echo'    </tr>';
 
                      

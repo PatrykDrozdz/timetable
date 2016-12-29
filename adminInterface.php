@@ -10,6 +10,8 @@
     require_once 'gettingDatasLoged.php';
     require_once 'getView.php';
     require_once 'setView.php';
+    require_once 'addSection.php';
+    
     //echo $startView.'<br/>'.$endView.'<br/>'.$tableIndex ;
     //echo $newView;
     //echo $idViewUpdate;
@@ -30,7 +32,7 @@
     
     $allHours = $endView;
 
-    
+    //echo $newSection;
 ?>
 
              
@@ -89,6 +91,22 @@
                     echo $_SESSION['editView'];
                 }
                 
+                if(isset($_SESSION['addSection'])){
+                    echo $_SESSION['addSection'];
+                }
+                
+                if(isset($_SESSION['error_section'])){
+                    echo $_SESSION['error_section'];
+                }
+                
+                if(isset($_SESSION['addView'])){
+                    echo $_SESSION['addView'];
+                }
+                
+                if(isset($_SESSION['error_addView'])){
+                    echo $_SESSION['error_addView'];
+                }
+                //echo $newSection;
                 ?>
              
         
@@ -110,6 +128,10 @@
                     <a href='logout.php'>Wyloguj sie</a>
                      <br/>
                      <a  href="makeAccount.php">załóż konto</a>
+                     <button type="button" 
+                                          class="btn btn-link btn-lg active" 
+                                data-toggle="modal" data-target="#addSec"
+                                >Dodaj sekcję</button>
                     <br/>
                     <form method="post">
                     <select id="view" name="updateView">
@@ -127,6 +149,45 @@
                     </form>
                 
             </div>
+            
+            <!-- Modal -->
+                        <div class="modal fade" id="addSec" role="dialog">
+                          <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <button type="button" class="close" 
+                                        data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Dodaj sekcję</h4>
+                                </div>
+                                <div class="modal-body" id="fieldsText">
+
+                                   <form method="post">
+
+                                            <div class="form-group"> 
+                                                <label for="section">Nazwa sekcji:</label>
+                                                <input type="text" name="sectionAdd" id="section" 
+                                                   placeholder="sekcja" class="form-control"/>
+                                            </div>
+                                            <br/>
+                                            <input class="btn btn-primary active" 
+                                                   type="submit" value="Dodaj sekcję" id="button"/>
+
+                                   </form>
+                                    
+                                 </div>
+                                     <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" 
+                                                data-dismiss="modal">Anuluj</button>
+                                    </div>
+                                 </div>
+      
+                            </div>
+                     </div>
+            
+            
+            
 
           
             <div class="table-responsive">
@@ -209,15 +270,7 @@
                                     </div>
                                 </form>
                             </td>
-                <?php  ////////////////////////////////////////////////////////
-                //zmaina godziny
-                //////////////////////////////////////////////////////////////
-                  echo '<td rowspan="'. ($SpanCol+1).'" class="changeHour"><input 
-                            class="btn btn-primary active" 
-                           type="submit" value="<<" id="buttonHour"
-                        </td>';
-                    
-                     ?>
+   
                             
                              
                     </tr>
@@ -742,16 +795,7 @@ echo '<script>
                                  }
 
                             }
-                            //////////////////////////////////////////////////////
-                            //przewijanie godzin
-                            if(((2*$allHours)-1)==$i){
-                                echo '<td rowspan="'. ($SpanCol).'" class="changeHour"><input 
-                                        class="btn btn-primary active" 
-                                        type="submit" value="<<" id="buttonHour"
-                                    </td>';
-                            }
-                             echo'    </tr>';
-                              /////////////////////////////////////////////
+
                      
                       }
                       

@@ -46,12 +46,16 @@
                  
                 if(ctype_alnum($login)==FALSE){
                     $valid = FALSE;
-                    $_SESSION['error_login'] = "Login nie moze miec polskich znakow";
+                    $_SESSION['error_login'] = "<span class='list-group-item "
+                                        . "list-group-item-danger'>"
+                            . "Login nie moze miec polskich znakow</span>";
                 }
              
                 if(strlen($login)<3 || strlen($login)>20){
                     $valid = FALSE;
-                    $_SESSION['error_login'] = "Login moze miec od 3 do 20 znakow";
+                    $_SESSION['error_login'] = "<span class='list-group-item "
+                                        . "list-group-item-danger'>"
+                            . "Login moze miec od 3 do 20 znakow</span>";
                
                 }
                 
@@ -59,12 +63,16 @@
             
                 if(strlen($pass)<5 || strlen($pass)>10){
                     $valid=FALSE;
-                    $_SESSION['error_pass'] = "Hasło musi miec od 5 do 10 znakow";
+                    $_SESSION['error_pass'] = "<span class='list-group-item "
+                                        . "list-group-item-danger'>"
+                            . "Hasło musi miec od 5 do 10 znakow</span>";
                 }
             
                 if(ctype_alnum($pass)==FALSE){
                     $valid = FALSE;
-                    $_SESSION['error_pass'] = "Hasło nie moze miec polskich znakow";
+                    $_SESSION['error_pass'] = "<span class='list-group-item "
+                                        . "list-group-item-danger'>"
+                            . "Hasło nie moze miec polskich znakow</span>";
                 }
                 
                 //hashowanie hasła
@@ -75,12 +83,16 @@
              
                 if(ctype_alnum($name)==FALSE){
                     $valid = FALSE;
-                    $_SESSION['error_name'] = "Imie nie moze miec polskich znakow";
+                    $_SESSION['error_name'] = "<span class='list-group-item "
+                                        . "list-group-item-danger'>"
+                            . "Imie nie moze miec polskich znakow</span>";
                 }
              
                 if(strlen($name)<3 || strlen($login)>20){
                     $valid = FALSE;
-                    $_SESSION['error_name'] = "Imiemoze miec od 3 do 20 znakow";
+                    $_SESSION['error_name'] = "<span class='list-group-item "
+                                        . "list-group-item-danger'>"
+                            . "Imiemoze miec od 3 do 20 znakow</span>";
                
                 }
                 
@@ -89,12 +101,16 @@
              
                 if(ctype_alnum($surname)==FALSE){
                     $valid = FALSE;
-                    $_SESSION['error_name'] = "Imie nie moze miec polskich znakow";
+                    $_SESSION['error_name'] = "<span class='list-group-item "
+                                        . "list-group-item-danger'>"
+                            . "Imie nie moze miec polskich znakow</span>";
                 }
              
                 if(strlen($surname)<2 || strlen($surname)>20){
                     $valid = FALSE;
-                    $_SESSION['error_name'] = "Imiemoze miec od 3 do 20 znakow";
+                    $_SESSION['error_name'] = "<span class='list-group-item "
+                                        . "list-group-item-danger'>"
+                            . "Imiemoze miec od 3 do 20 znakow</span>";
                
                 }
                 
@@ -105,7 +121,9 @@
                 if((filter_var($email_san, FILTER_VALIDATE_EMAIL)==FALSE) ||
                         $email_san!=$email){
                             $valid = FALSE;
-                            $_SESSION['error_email'] = "Podaj własciwy adres e-mail";
+                            $_SESSION['error_email'] = "<span class='list-group-item "
+                                        . "list-group-item-danger'>"
+                                    . "Podaj własciwy adres e-mail</span>";
                         }
                         
                  $flagStat=$_POST['flagStatus'];    
@@ -136,8 +154,9 @@
                  
                  if($usersCount>0){
                      $valid = FALSE;
-                     $_SESSION['error_login'] = "Uzytkownik o  podanym loginie "
-                             . "jest juz w bazie";
+                     $_SESSION['error_login'] = "<span class='list-group-item "
+                                        . "list-group-item-danger'>Uzytkownik o  podanym loginie "
+                             . "jest juz w bazie</span>";
                  }
        
                  $fullName = $name.'_'.$surname;
@@ -157,14 +176,16 @@
                          if($flag==0){
                             if($connection->query($alterQuery)){
                          
-                                $_SESSION['made'] = "Konto zostało dodane do bazy";
+                                $_SESSION['made'] = "<span class='list-group-item "
+                                        . "list-group-item-success'>Konto zostało dodane do bazy</span>";
                             
                             } else {
                              
                                 throw new Exception($connection->errno);
                             }
                          } else {
-                             $_SESSION['made'] = "Konto zostało dodane do bazy";
+                              $_SESSION['made'] = "<span class='list-group-item "
+                                        . "list-group-item-success'>Konto zostało dodane do bazy</span>";
                          }
                      } else {
                         throw new Exception($connection->errno);
@@ -177,7 +198,31 @@
     }catch(Exception $e){
         echo $e;
     }
+    
+    if(isset($_SESSION['error_login'])){
+        echo $_SESSION['error_login'];
+    }
+    
+    if(isset($_SESSION['error_pass'])){
+        echo $_SESSION['error_pass'];
+    }
 
+    if(isset($_SESSION['error_name'])){
+        echo $_SESSION['error_name'];
+    }
+    
+    if(isset($_SESSION['error_email'])){
+        echo $_SESSION['error_email'];
+    }
+    
+    if(isset($_SESSION['error_login'])){
+        echo $_SESSION['error_login'] ;
+    }
+    
+    if(isset($_SESSION['made'])){
+        echo $_SESSION['made'];
+    }
+    
 ?>
 <html lang="pl">
     <head>
