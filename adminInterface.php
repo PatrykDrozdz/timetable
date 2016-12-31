@@ -2,7 +2,7 @@
     //zabezpieczenie przed wejßciem z palca
     session_start();
 
-     if(!isset($_SESSION['loged'])){
+    if(!isset($_SESSION['logedAdmin'])){
         header('Location: index.php');
         exit();
     }
@@ -14,6 +14,7 @@
     require_once 'addView.php';
     require_once 'editAccount.php';
     require_once 'getSections.php';
+    require_once 'makeAccount.php';
     
     //echo $startView.'<br/>'.$endView.'<br/>'.$tableIndex ;
     //echo $newView;
@@ -131,6 +132,30 @@
                     echo $_SESSION['error_email_change'];
                 }
                 
+                if(isset($_SESSION['error_login'])){
+                    echo $_SESSION['error_login'];
+                }
+
+                if(isset($_SESSION['error_pass'])){
+                    echo $_SESSION['error_pass'];
+                }
+
+                if(isset($_SESSION['error_name'])){
+                    echo $_SESSION['error_name'];
+                }
+
+                if(isset($_SESSION['error_email'])){
+                    echo $_SESSION['error_email'];
+                }
+
+                if(isset($_SESSION['error_login'])){
+                    echo $_SESSION['error_login'] ;
+                }
+
+                if(isset($_SESSION['made'])){
+                    echo $_SESSION['made'];
+                }
+                
                 ?>
              
         
@@ -144,8 +169,9 @@
                         <a class="navbar-brand" href="index.php">Organizator</a>
                     </div>
                     <ul class="nav navbar-nav">
+                        <!--- href="makeAccount.php" -->
                         <li><a data-toggle="modal" data-target="#yourDatas">Twoje dane</a></li>
-                        <li><a  href="makeAccount.php">Załóż konto</a></li>
+                        <li><a data-toggle="modal" data-target="#makeAccount" >Załóż konto</a></li>
                         <li><a data-toggle="modal" data-target="#addSec">Dodaj sekcję</a></li>
                         <li><a data-toggle="modal" data-target="#addView">Dodaj widok</a></li>
                         <li><a data-toggle="modal" data-target="#changeView">Zmień widok</a></li>
@@ -202,6 +228,66 @@
                 </div>
             </div> 
             
+            <!----załóż konto------------------------------>
+            
+            <div class="modal fade" id="makeAccount" role="dialog">
+                <div class="modal-dialog">
+                  
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Załóż nowe konto</h4>
+                    </div>
+                        <div class="modal-body">
+                            <form method="post">
+                                <div class="form-group"> 
+                                    <label for="login">Login:</label>
+                                    <input type="text" class="form-control" id="login"  name="login">
+                                </div>
+                                <div class="form-group">    
+                                    <label for="pass">Hasło:</label>
+                                    <input type="password" class="form-control" id="pass" name="pass"/>
+                                </div>
+                                <div class="form-group">    
+                                    <label for="name">Imię:</label>
+                                    <input type="text" class="form-control" id="name" name="name"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="surname">Nazwisko:</label>
+                                    <input type="text" class="form-control" id="surname" name="surname"/>
+                                </div>
+                                <div class="form-group">    
+                                    <label for="email">E-mail:</label>
+                                    <input type="text" class="form-control" id="email" name="email"/>
+                                </div>
+                                <div class="form-group">    
+                                    <label for="flagStatus">Status:</label> 
+                                    <select class="form-control" id="flagStatus" name="flagStatus">
+                                        <option>admin</option>
+                                        <option>user</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">      
+                                    <label for="section">Sekcja:</label>
+                                    <select class="form-control" id="section" name="section">
+                                        <?php 
+                                        for($i=1; $i<=$count; $i++){
+                                            echo '<option>'.$tabSec[$i].'</option>';
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <input type="submit" class="btn btn-primary active" 
+                                       value="Dodaj użytkownika"/>
+                        </form>
+                            
+                        </div>
+                        <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+                    </div>
+                  </div>
+                </div>
+            </div> 
 
             <!-- Modal sekcje-->
                         <div class="modal fade" id="addSec" role="dialog">
@@ -1110,7 +1196,7 @@ echo '<script>
                                      
                                    } else if($tabId[$a]==$reserved[$r1]) {*/
                                        echo ' <td class="row" id="F'.$tabId[$a].'">
-                                              '.$tabId[$a].' </td>';
+                                              </td>';
                                      echo '<style> 
                                              #F'.$tabId[$a].'{
                                                 color: white;

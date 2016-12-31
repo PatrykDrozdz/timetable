@@ -2,15 +2,13 @@
 
 session_start();
 //sprawdzanie, czy u«ytkownik jest zalogowany
-if((isset($_SESSION['loged'])) && ($_SESSION['loged']==TRUE)){
-    $flag = $_SESSION['flag'];
-    if($flag==0){
-        header('Location: Interface.php');
-        exit();
-    }else if($flag==1){
-        header('Location: adminInterface.php');
-       exit();
-    }
+if((isset($_SESSION['logedUser'])) && ($_SESSION['logedUser']==TRUE)){
+    header('Location: Interface.php');
+    exit();
+}
+if((isset($_SESSION['logedAdmin'])) && ($_SESSION['logedAdmin']==TRUE)){
+    header('Location: adminInterface.php');
+    exit();
 }
 
 require_once 'gettingDatas.php';
@@ -371,9 +369,9 @@ $m=1;
                                         echo '<br/>';
                                          
                                        *****************************/
-                                    //
+                                    //'.$tabId[$a] .'
                                             echo ' <td class="row neutral-tab" '
-                                    . 'id="F'.$tabId[$a] .'" >'.$tabId[$a] .'</td>';
+                                    . 'id="F'.$tabId[$a] .'" ></td>';
 
                                     
                                 } 

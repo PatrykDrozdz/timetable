@@ -2,10 +2,12 @@
     //zabezpieczenie przed wejßciem z palca
     session_start();
 
-     if(!isset($_SESSION['loged'])){
+    if(!isset($_SESSION['logedUser'])){
         header('Location: index.php');
         exit();
     }
+    
+
     require_once 'gettingDatasLoged.php';
     require_once 'getView.php';
     require_once 'editAccount.php';
@@ -27,7 +29,7 @@
     $a2=$a;
     
     $allHours = $endView;
-    $r1=$r;
+    $r1=1;
     $SpanCol = $tableIndex/2;
     //echo $SpanCol;
     
@@ -1033,11 +1035,14 @@
 
                                 } else { 
                                     
-                                        //if($tabId[$a]!=$reserved[$r1] && $reserved[$r1]!=NULL){
                                     
+                                    
+                                    
+                                        if($tabId[$a]!=$reserved[$r1]){
+                                    //'.$tabId[$a].'
                                     echo ' <td class="row" id="F'.$tabId[$a].'"
                                             data-toggle="modal" data-target="#M'.$tabId[$a].'">
-                                     '.$tabId[$a].'</td>';
+                                     </td>';
                                      echo '<style> 
                                              #F'.$tabId[$a].'{
                                                 color: white;
@@ -1169,8 +1174,8 @@
                                         } );
                                     </script>';
 //////////////////////////////////////////////////////////////////////////////////////////// ///////////
-                                    /*} else {
-                                    
+                                    } else {
+
                                           echo ' <td class="row" id="F'.$tabId[$a].'"
                                             data-toggle="modal">
                                      </td>';
@@ -1181,7 +1186,7 @@
                                         </style>';
                                    
                                         
-                                    }*/
+                                    }
                                     
                                  
                                 }

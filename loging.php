@@ -50,16 +50,15 @@ if($connection->connect_errno!=0){
                 
                 $loged = 'loged'.$row['idusers'];
                 
-                $_SESSION['loged']=TRUE;
-                
                 $result->free_result();
-            
-          
-            
+
                 unset($_SESSION['error']);
+                
                 if($flag==0){
+                    $_SESSION['logedUser']=TRUE;
                     header('Location: Interface.php');
                 }else if($flag==1){
+                    $_SESSION['logedAdmin']=TRUE;
                     header('Location: adminInterface.php');
                 }
             
