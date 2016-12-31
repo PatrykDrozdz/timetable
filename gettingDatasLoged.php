@@ -173,9 +173,9 @@ try{
       
             
             $row = $result->fetch_assoc();
-            $count = $result->num_rows;
+            $countView = $result->num_rows;
           
-            for($i=1; $i<=$count; $i++){
+            for($i=1; $i<=$countView; $i++){
                 $res1 = $connection->query("SELECT * FROM view WHERE idview = '$i'");
                 $row12 = $res1->fetch_assoc();
             

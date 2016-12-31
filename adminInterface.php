@@ -389,7 +389,7 @@
                                         <div class="form-group">
                                             <select id="view" name="updateView" class="form-control">
                                             <?php 
-                                                for($i=1; $i<=$count; $i++){
+                                                for($i=1; $i<=$countView; $i++){
                                                     echo '<option>'.$vievs[$i].'</option>';
                                                 }
                                                 ?>
