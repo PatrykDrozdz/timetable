@@ -237,7 +237,7 @@ $m=1;
                     </tr>
                     <?php 
                    
-                    
+                     //      rowspan="'.(4*$timeLast[$a]).'"
                      
                     for($i=$start; $i<$end; $i++){
                           
@@ -260,7 +260,7 @@ $m=1;
                            }
                         
                            
-                     //      rowspan="'.(4*$timeLast[$a]).'"
+                    
                         
                            
                                 for($j=1; $j<=7; $j++){

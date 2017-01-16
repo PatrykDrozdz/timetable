@@ -1038,7 +1038,7 @@
                                     
                                     
                                     
-                                        if($tabId[$a]!=$reserved[$r1]){
+                                       // if($tabId[$a]!=$reserved[$r1]){
                                     //'.$tabId[$a].'
                                     echo ' <td class="row" id="F'.$tabId[$a].'"
                                             data-toggle="modal" data-target="#M'.$tabId[$a].'">
@@ -1174,7 +1174,7 @@
                                         } );
                                     </script>';
 //////////////////////////////////////////////////////////////////////////////////////////// ///////////
-                                    } else {
+                                   /* } else {
 
                                           echo ' <td class="row" id="F'.$tabId[$a].'"
                                             data-toggle="modal">
@@ -1186,7 +1186,7 @@
                                         </style>';
                                    
                                         
-                                    }
+                                    }*/
                                     
                                  
                                 }
